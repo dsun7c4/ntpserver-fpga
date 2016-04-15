@@ -1,0 +1,402 @@
+
+*** Running vivado
+    with args -log ocxo_clk_pll.vds -m64 -mode batch -messageDb vivado.pb -source ocxo_clk_pll.tcl
+
+
+****** Vivado v2014.4 (64-bit)
+  **** SW Build 1071353 on Tue Nov 18 16:47:07 MST 2014
+  **** IP Build 1070531 on Tue Nov 18 01:10:18 MST 2014
+    ** Copyright 1986-2014 Xilinx, Inc. All Rights Reserved.
+
+source ocxo_clk_pll.tcl
+# set_param gui.test TreeTableDev
+# debug::add_scope template.lib 1
+# set_msg_config -id {HDL 9-1061} -limit 100000
+# set_msg_config -id {HDL 9-1654} -limit 100000
+# create_project -in_memory -part xc7z010clg400-1
+# set_param project.compositeFile.enableAutoGeneration 0
+# set_param synth.vivado.isSynthRun true
+# set_msg_config -id {IP_Flow 19-2162} -severity warning -new_severity info
+# set_property webtalk.parent_dir /home/guest/cae/fpga/ntpserver/ip/managed_ip_project/managed_ip_project.cache/wt [current_project]
+# set_property parent.project_path /home/guest/cae/fpga/ntpserver/ip/managed_ip_project/managed_ip_project.xpr [current_project]
+# set_property default_lib xil_defaultlib [current_project]
+# set_property target_language VHDL [current_project]
+# read_ip /home/guest/cae/fpga/ntpserver/ip/ocxo_clk_pll/ocxo_clk_pll.xci
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1704] No user IP repositories specified
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/home/cae/xilinx/Vivado/2014.4/data/ip'.
+WARNING: [IP_Flow 19-3664] IP 'ocxo_clk_pll' generated file not found '/home/guest/cae/fpga/ntpserver/ip/ocxo_clk_pll/ocxo_clk_pll.dcp'. Please regenerate to continue.
+WARNING: [IP_Flow 19-3664] IP 'ocxo_clk_pll' generated file not found '/home/guest/cae/fpga/ntpserver/ip/ocxo_clk_pll/ocxo_clk_pll_stub.v'. Please regenerate to continue.
+WARNING: [IP_Flow 19-3664] IP 'ocxo_clk_pll' generated file not found '/home/guest/cae/fpga/ntpserver/ip/ocxo_clk_pll/ocxo_clk_pll_stub.vhdl'. Please regenerate to continue.
+WARNING: [IP_Flow 19-3664] IP 'ocxo_clk_pll' generated file not found '/home/guest/cae/fpga/ntpserver/ip/ocxo_clk_pll/ocxo_clk_pll_funcsim.v'. Please regenerate to continue.
+WARNING: [IP_Flow 19-3664] IP 'ocxo_clk_pll' generated file not found '/home/guest/cae/fpga/ntpserver/ip/ocxo_clk_pll/ocxo_clk_pll_funcsim.vhdl'. Please regenerate to continue.
+# set_property is_locked true [get_files /home/guest/cae/fpga/ntpserver/ip/ocxo_clk_pll/ocxo_clk_pll.xci]
+# read_xdc dont_touch.xdc
+# set_property used_in_implementation false [get_files dont_touch.xdc]
+# catch { write_hwdef -file ocxo_clk_pll.hwdef }
+INFO: [Vivado_Tcl 4-279] hardware handoff file cannot be generated as there is no block diagram instance in the design
+# synth_design -top ocxo_clk_pll -part xc7z010clg400-1 -mode out_of_context
+Command: synth_design -top ocxo_clk_pll -part xc7z010clg400-1 -mode out_of_context
+Starting synth_design
+Attempting to get a license for feature 'Synthesis' and/or device 'xc7z010'
+INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xc7z010'
+INFO: [Common 17-1223] The version limit for your license is '2016.03' and will expire in 16 days. A version limit expiration means that, although you may be able to continue to use the current version of tools or IP with this license, you will not be eligible for any updates or new releases.
+---------------------------------------------------------------------------------
+Starting RTL Elaboration : Time (s): cpu = 00:00:07 ; elapsed = 00:00:07 . Memory (MB): peak = 872.672 ; gain = 151.773 ; free physical = 125 ; free virtual = 37397
+---------------------------------------------------------------------------------
+INFO: [Synth 8-638] synthesizing module 'ocxo_clk_pll' [/home/guest/cae/fpga/ntpserver/ip/ocxo_clk_pll/ocxo_clk_pll.vhd:86]
+INFO: [Synth 8-3491] module 'ocxo_clk_pll_clk_wiz' declared at '/home/guest/cae/fpga/ntpserver/ip/ocxo_clk_pll/ocxo_clk_pll_clk_wiz.vhd:74' bound to instance 'U0' of component 'ocxo_clk_pll_clk_wiz' [/home/guest/cae/fpga/ntpserver/ip/ocxo_clk_pll/ocxo_clk_pll.vhd:104]
+INFO: [Synth 8-638] synthesizing module 'ocxo_clk_pll_clk_wiz' [/home/guest/cae/fpga/ntpserver/ip/ocxo_clk_pll/ocxo_clk_pll_clk_wiz.vhd:86]
+	Parameter CAPACITANCE bound to: DONT_CARE - type: string 
+	Parameter IBUF_DELAY_VALUE bound to: 0 - type: string 
+	Parameter IBUF_LOW_PWR bound to: 1 - type: bool 
+	Parameter IFD_DELAY_VALUE bound to: AUTO - type: string 
+	Parameter IOSTANDARD bound to: DEFAULT - type: string 
+INFO: [Synth 8-113] binding component instance 'clkin1_ibufg' to cell 'IBUF' [/home/guest/cae/fpga/ntpserver/ip/ocxo_clk_pll/ocxo_clk_pll_clk_wiz.vhd:119]
+	Parameter BANDWIDTH bound to: OPTIMIZED - type: string 
+	Parameter CLKFBOUT_MULT_F bound to: 63.750000 - type: float 
+	Parameter CLKFBOUT_PHASE bound to: 0.000000 - type: float 
+	Parameter CLKFBOUT_USE_FINE_PS bound to: 0 - type: bool 
+	Parameter CLKIN1_PERIOD bound to: 100.000000 - type: float 
+	Parameter CLKIN2_PERIOD bound to: 0.000000 - type: float 
+	Parameter CLKOUT0_DIVIDE_F bound to: 6.375000 - type: float 
+	Parameter CLKOUT0_DUTY_CYCLE bound to: 0.500000 - type: float 
+	Parameter CLKOUT0_PHASE bound to: 0.000000 - type: float 
+	Parameter CLKOUT0_USE_FINE_PS bound to: 0 - type: bool 
+	Parameter CLKOUT1_DIVIDE bound to: 1 - type: integer 
+	Parameter CLKOUT1_DUTY_CYCLE bound to: 0.500000 - type: float 
+	Parameter CLKOUT1_PHASE bound to: 0.000000 - type: float 
+	Parameter CLKOUT1_USE_FINE_PS bound to: 0 - type: bool 
+	Parameter CLKOUT2_DIVIDE bound to: 1 - type: integer 
+	Parameter CLKOUT2_DUTY_CYCLE bound to: 0.500000 - type: float 
+	Parameter CLKOUT2_PHASE bound to: 0.000000 - type: float 
+	Parameter CLKOUT2_USE_FINE_PS bound to: 0 - type: bool 
+	Parameter CLKOUT3_DIVIDE bound to: 1 - type: integer 
+	Parameter CLKOUT3_DUTY_CYCLE bound to: 0.500000 - type: float 
+	Parameter CLKOUT3_PHASE bound to: 0.000000 - type: float 
+	Parameter CLKOUT3_USE_FINE_PS bound to: 0 - type: bool 
+	Parameter CLKOUT4_CASCADE bound to: 0 - type: bool 
+	Parameter CLKOUT4_DIVIDE bound to: 1 - type: integer 
+	Parameter CLKOUT4_DUTY_CYCLE bound to: 0.500000 - type: float 
+	Parameter CLKOUT4_PHASE bound to: 0.000000 - type: float 
+	Parameter CLKOUT4_USE_FINE_PS bound to: 0 - type: bool 
+	Parameter CLKOUT5_DIVIDE bound to: 1 - type: integer 
+	Parameter CLKOUT5_DUTY_CYCLE bound to: 0.500000 - type: float 
+	Parameter CLKOUT5_PHASE bound to: 0.000000 - type: float 
+	Parameter CLKOUT5_USE_FINE_PS bound to: 0 - type: bool 
+	Parameter CLKOUT6_DIVIDE bound to: 1 - type: integer 
+	Parameter CLKOUT6_DUTY_CYCLE bound to: 0.500000 - type: float 
+	Parameter CLKOUT6_PHASE bound to: 0.000000 - type: float 
+	Parameter CLKOUT6_USE_FINE_PS bound to: 0 - type: bool 
+	Parameter COMPENSATION bound to: ZHOLD - type: string 
+	Parameter DIVCLK_DIVIDE bound to: 1 - type: integer 
+	Parameter IS_CLKINSEL_INVERTED bound to: 1'b0 
+	Parameter IS_PSEN_INVERTED bound to: 1'b0 
+	Parameter IS_PSINCDEC_INVERTED bound to: 1'b0 
+	Parameter IS_PWRDWN_INVERTED bound to: 1'b0 
+	Parameter IS_RST_INVERTED bound to: 1'b0 
+	Parameter REF_JITTER1 bound to: 0.000000 - type: float 
+	Parameter REF_JITTER2 bound to: 0.000000 - type: float 
+	Parameter SS_EN bound to: FALSE - type: string 
+	Parameter SS_MODE bound to: CENTER_HIGH - type: string 
+	Parameter SS_MOD_PERIOD bound to: 10000 - type: integer 
+	Parameter STARTUP_WAIT bound to: 0 - type: bool 
+INFO: [Synth 8-113] binding component instance 'mmcm_adv_inst' to cell 'MMCME2_ADV' [/home/guest/cae/fpga/ntpserver/ip/ocxo_clk_pll/ocxo_clk_pll_clk_wiz.vhd:131]
+INFO: [Synth 8-113] binding component instance 'clkout1_buf' to cell 'BUFG' [/home/guest/cae/fpga/ntpserver/ip/ocxo_clk_pll/ocxo_clk_pll_clk_wiz.vhd:196]
+INFO: [Synth 8-256] done synthesizing module 'ocxo_clk_pll_clk_wiz' (1#1) [/home/guest/cae/fpga/ntpserver/ip/ocxo_clk_pll/ocxo_clk_pll_clk_wiz.vhd:86]
+INFO: [Synth 8-256] done synthesizing module 'ocxo_clk_pll' (2#1) [/home/guest/cae/fpga/ntpserver/ip/ocxo_clk_pll/ocxo_clk_pll.vhd:86]
+---------------------------------------------------------------------------------
+Finished RTL Elaboration : Time (s): cpu = 00:00:08 ; elapsed = 00:00:09 . Memory (MB): peak = 908.914 ; gain = 188.016 ; free physical = 132 ; free virtual = 37359
+---------------------------------------------------------------------------------
+
+Report Check Netlist: 
++------+------------------+-------+---------+-------+------------------+
+|      |Item              |Errors |Warnings |Status |Description       |
++------+------------------+-------+---------+-------+------------------+
+|1     |multi_driven_nets |      0|        0|Passed |Multi driven nets |
++------+------------------+-------+---------+-------+------------------+
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:08 ; elapsed = 00:00:09 . Memory (MB): peak = 908.914 ; gain = 188.016 ; free physical = 132 ; free virtual = 37359
+---------------------------------------------------------------------------------
+INFO: [Netlist 29-17] Analyzing 2 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+Loading clock regions from /home/cae/xilinx/Vivado/2014.4/data/parts/xilinx/zynq/zynq/xc7z010/ClockRegion.xml
+Loading clock buffers from /home/cae/xilinx/Vivado/2014.4/data/parts/xilinx/zynq/zynq/xc7z010/ClockBuffers.xml
+Loading clock placement rules from /home/cae/xilinx/Vivado/2014.4/data/parts/xilinx/zynq/ClockPlacerRules.xml
+Loading package pin functions from /home/cae/xilinx/Vivado/2014.4/data/parts/xilinx/zynq/PinFunctions.xml...
+Loading package from /home/cae/xilinx/Vivado/2014.4/data/parts/xilinx/zynq/zynq/xc7z010/clg400/Package.xml
+Loading io standards from /home/cae/xilinx/Vivado/2014.4/data/./parts/xilinx/zynq/IOStandards.xml
+INFO: [Project 1-570] Preparing netlist for logic optimization
+
+Processing XDC Constraints
+Initializing timing engine
+Parsing XDC File [/home/guest/cae/fpga/ntpserver/ip/ocxo_clk_pll/ocxo_clk_pll_ooc.xdc] for cell 'U0'
+Finished Parsing XDC File [/home/guest/cae/fpga/ntpserver/ip/ocxo_clk_pll/ocxo_clk_pll_ooc.xdc] for cell 'U0'
+Parsing XDC File [/home/guest/cae/fpga/ntpserver/ip/ocxo_clk_pll/ocxo_clk_pll_board.xdc] for cell 'U0'
+Finished Parsing XDC File [/home/guest/cae/fpga/ntpserver/ip/ocxo_clk_pll/ocxo_clk_pll_board.xdc] for cell 'U0'
+Parsing XDC File [/home/guest/cae/fpga/ntpserver/ip/ocxo_clk_pll/ocxo_clk_pll.xdc] for cell 'U0'
+Finished Parsing XDC File [/home/guest/cae/fpga/ntpserver/ip/ocxo_clk_pll/ocxo_clk_pll.xdc] for cell 'U0'
+INFO: [Timing 38-2] Deriving generated clocks
+INFO: [Project 1-236] Implementation specific constraints were found while reading constraint file [/home/guest/cae/fpga/ntpserver/ip/ocxo_clk_pll/ocxo_clk_pll.xdc]. These constraints will be ignored for synthesis but will be used in implementation. Impacted constraints are listed in the file [.Xil/ocxo_clk_pll_propImpl.xdc].
+Resolution: To avoid this warning, move constraints listed in [.Xil/ocxo_clk_pll_propImpl.xdc] to anoth XDC file and exclude this new file from synthesis with the used_in_synthesis property (File Properties dialog in GUI) and re-run elaboration/synthesis.
+Parsing XDC File [/home/guest/cae/fpga/ntpserver/ip/managed_ip_project/managed_ip_project.runs/ocxo_clk_pll_synth_1/dont_touch.xdc]
+Finished Parsing XDC File [/home/guest/cae/fpga/ntpserver/ip/managed_ip_project/managed_ip_project.runs/ocxo_clk_pll_synth_1/dont_touch.xdc]
+Completed Processing XDC Constraints
+
+INFO: [Project 1-111] Unisim Transformation Summary:
+No Unisim elements were transformed.
+
+Constraint Validation Runtime : Time (s): cpu = 00:00:00.01 ; elapsed = 00:00:00.03 . Memory (MB): peak = 1137.246 ; gain = 0.000 ; free physical = 117 ; free virtual = 37183
+---------------------------------------------------------------------------------
+Finished Constraint Validation : Time (s): cpu = 00:00:17 ; elapsed = 00:00:19 . Memory (MB): peak = 1137.246 ; gain = 416.348 ; free physical = 135 ; free virtual = 37183
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Loading Part and Timing Information
+---------------------------------------------------------------------------------
+Loading part: xc7z010clg400-1
+---------------------------------------------------------------------------------
+Finished Loading Part and Timing Information : Time (s): cpu = 00:00:17 ; elapsed = 00:00:19 . Memory (MB): peak = 1137.246 ; gain = 416.348 ; free physical = 135 ; free virtual = 37183
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Applying 'set_property' XDC Constraints
+---------------------------------------------------------------------------------
+Applied set_property DONT_TOUCH = true for U0. (constraint file  /home/guest/cae/fpga/ntpserver/ip/managed_ip_project/managed_ip_project.runs/ocxo_clk_pll_synth_1/dont_touch.xdc, line 9).
+---------------------------------------------------------------------------------
+Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:17 ; elapsed = 00:00:19 . Memory (MB): peak = 1137.246 ; gain = 416.348 ; free physical = 135 ; free virtual = 37183
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:18 ; elapsed = 00:00:20 . Memory (MB): peak = 1137.246 ; gain = 416.348 ; free physical = 126 ; free virtual = 37174
+---------------------------------------------------------------------------------
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+---------------------------------------------------------------------------------
+Start RTL Component Statistics 
+---------------------------------------------------------------------------------
+Detailed RTL Component Info : 
+---------------------------------------------------------------------------------
+Finished RTL Component Statistics 
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start RTL Hierarchical Component Statistics 
+---------------------------------------------------------------------------------
+Hierarchical RTL Component report 
+Module ocxo_clk_pll 
+Detailed RTL Component Info : 
+Module ocxo_clk_pll_clk_wiz 
+Detailed RTL Component Info : 
+---------------------------------------------------------------------------------
+Finished RTL Hierarchical Component Statistics
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Part Resource Summary
+---------------------------------------------------------------------------------
+Part Resources:
+DSPs: 80 (col length:40)
+BRAMs: 120 (col length: RAMB18 40 RAMB36 20)
+---------------------------------------------------------------------------------
+Finished Part Resource Summary
+---------------------------------------------------------------------------------
+Start Parallel Synthesis Optimization  : Time (s): cpu = 00:00:18 ; elapsed = 00:00:20 . Memory (MB): peak = 1137.246 ; gain = 416.348 ; free physical = 127 ; free virtual = 37176
+---------------------------------------------------------------------------------
+Start Cross Boundary Optimization
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Cross Boundary Optimization : Time (s): cpu = 00:00:18 ; elapsed = 00:00:20 . Memory (MB): peak = 1137.246 ; gain = 416.348 ; free physical = 127 ; free virtual = 37176
+---------------------------------------------------------------------------------
+Finished Parallel Reinference  : Time (s): cpu = 00:00:18 ; elapsed = 00:00:20 . Memory (MB): peak = 1137.246 ; gain = 416.348 ; free physical = 127 ; free virtual = 37176
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+---------------------------------------------------------------------------------
+Start RAM, DSP and Shift Register Reporting
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished RAM, DSP and Shift Register Reporting
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Area Optimization
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Area Optimization : Time (s): cpu = 00:00:18 ; elapsed = 00:00:20 . Memory (MB): peak = 1145.250 ; gain = 424.352 ; free physical = 135 ; free virtual = 37159
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Area Optimization : Time (s): cpu = 00:00:18 ; elapsed = 00:00:20 . Memory (MB): peak = 1145.250 ; gain = 424.352 ; free physical = 137 ; free virtual = 37159
+---------------------------------------------------------------------------------
+Finished Parallel Area Optimization  : Time (s): cpu = 00:00:18 ; elapsed = 00:00:20 . Memory (MB): peak = 1145.250 ; gain = 424.352 ; free physical = 138 ; free virtual = 37159
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+Finished Parallel Synthesis Optimization  : Time (s): cpu = 00:00:18 ; elapsed = 00:00:20 . Memory (MB): peak = 1145.250 ; gain = 424.352 ; free physical = 142 ; free virtual = 37159
+---------------------------------------------------------------------------------
+Start Timing Optimization
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Applying XDC Timing Constraints
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Applying XDC Timing Constraints : Time (s): cpu = 00:00:29 ; elapsed = 00:00:31 . Memory (MB): peak = 1188.254 ; gain = 467.355 ; free physical = 130 ; free virtual = 37110
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Timing Optimization : Time (s): cpu = 00:00:29 ; elapsed = 00:00:31 . Memory (MB): peak = 1188.254 ; gain = 467.355 ; free physical = 130 ; free virtual = 37110
+---------------------------------------------------------------------------------
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+---------------------------------------------------------------------------------
+Start Technology Mapping
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Technology Mapping : Time (s): cpu = 00:00:29 ; elapsed = 00:00:31 . Memory (MB): peak = 1198.266 ; gain = 477.367 ; free physical = 121 ; free virtual = 37102
+---------------------------------------------------------------------------------
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+---------------------------------------------------------------------------------
+Start IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished IO Insertion : Time (s): cpu = 00:00:29 ; elapsed = 00:00:31 . Memory (MB): peak = 1198.266 ; gain = 477.367 ; free physical = 121 ; free virtual = 37102
+---------------------------------------------------------------------------------
+
+Report Check Netlist: 
++------+------------------+-------+---------+-------+------------------+
+|      |Item              |Errors |Warnings |Status |Description       |
++------+------------------+-------+---------+-------+------------------+
+|1     |multi_driven_nets |      0|        0|Passed |Multi driven nets |
++------+------------------+-------+---------+-------+------------------+
+---------------------------------------------------------------------------------
+Start Renaming Generated Instances
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Instances : Time (s): cpu = 00:00:29 ; elapsed = 00:00:31 . Memory (MB): peak = 1198.266 ; gain = 477.367 ; free physical = 121 ; free virtual = 37102
+---------------------------------------------------------------------------------
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+---------------------------------------------------------------------------------
+Start Rebuilding User Hierarchy
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:00:29 ; elapsed = 00:00:31 . Memory (MB): peak = 1198.266 ; gain = 477.367 ; free physical = 121 ; free virtual = 37102
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start RAM, DSP and Shift Register Reporting
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished RAM, DSP and Shift Register Reporting
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Writing Synthesis Report
+---------------------------------------------------------------------------------
+
+Report BlackBoxes: 
++-+--------------+----------+
+| |BlackBox name |Instances |
++-+--------------+----------+
++-+--------------+----------+
+
+Report Cell Usage: 
++------+-----------+------+
+|      |Cell       |Count |
++------+-----------+------+
+|1     |BUFG       |     1|
+|2     |LUT1       |     1|
+|3     |MMCME2_ADV |     1|
+|4     |IBUF       |     1|
++------+-----------+------+
+
+Report Instance Areas: 
++------+---------+---------------------+------+
+|      |Instance |Module               |Cells |
++------+---------+---------------------+------+
+|1     |top      |                     |     4|
+|2     |  U0     |ocxo_clk_pll_clk_wiz |     4|
++------+---------+---------------------+------+
+---------------------------------------------------------------------------------
+Finished Writing Synthesis Report : Time (s): cpu = 00:00:29 ; elapsed = 00:00:31 . Memory (MB): peak = 1198.266 ; gain = 477.367 ; free physical = 121 ; free virtual = 37102
+---------------------------------------------------------------------------------
+Synthesis finished with 0 errors, 0 critical warnings and 0 warnings.
+Synthesis Optimization Runtime : Time (s): cpu = 00:00:20 ; elapsed = 00:00:21 . Memory (MB): peak = 1198.266 ; gain = 144.242 ; free physical = 121 ; free virtual = 37102
+Synthesis Optimization Complete : Time (s): cpu = 00:00:29 ; elapsed = 00:00:31 . Memory (MB): peak = 1198.266 ; gain = 477.367 ; free physical = 121 ; free virtual = 37102
+INFO: [Project 1-571] Translating synthesized netlist
+INFO: [Netlist 29-17] Analyzing 2 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+INFO: [Project 1-570] Preparing netlist for logic optimization
+Parsing XDC File [/home/guest/cae/fpga/ntpserver/ip/ocxo_clk_pll/ocxo_clk_pll_ooc.xdc] for cell 'U0'
+Finished Parsing XDC File [/home/guest/cae/fpga/ntpserver/ip/ocxo_clk_pll/ocxo_clk_pll_ooc.xdc] for cell 'U0'
+Parsing XDC File [/home/guest/cae/fpga/ntpserver/ip/ocxo_clk_pll/ocxo_clk_pll_board.xdc] for cell 'U0'
+Finished Parsing XDC File [/home/guest/cae/fpga/ntpserver/ip/ocxo_clk_pll/ocxo_clk_pll_board.xdc] for cell 'U0'
+Parsing XDC File [/home/guest/cae/fpga/ntpserver/ip/ocxo_clk_pll/ocxo_clk_pll.xdc] for cell 'U0'
+INFO: [Timing 38-35] Done setting XDC timing constraints. [/home/guest/cae/fpga/ntpserver/ip/ocxo_clk_pll/ocxo_clk_pll.xdc:56]
+INFO: [Timing 38-2] Deriving generated clocks [/home/guest/cae/fpga/ntpserver/ip/ocxo_clk_pll/ocxo_clk_pll.xdc:56]
+get_clocks: Time (s): cpu = 00:00:12 ; elapsed = 00:00:13 . Memory (MB): peak = 1562.754 ; gain = 349.488 ; free physical = 127 ; free virtual = 36755
+Finished Parsing XDC File [/home/guest/cae/fpga/ntpserver/ip/ocxo_clk_pll/ocxo_clk_pll.xdc] for cell 'U0'
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+INFO: [Project 1-111] Unisim Transformation Summary:
+No Unisim elements were transformed.
+
+INFO: [Common 17-83] Releasing license: Synthesis
+25 Infos, 0 Warnings, 0 Critical Warnings and 0 Errors encountered.
+synth_design completed successfully
+synth_design: Time (s): cpu = 00:00:40 ; elapsed = 00:00:43 . Memory (MB): peak = 1562.754 ; gain = 737.078 ; free physical = 126 ; free virtual = 36755
+# rename_ref -prefix_all ocxo_clk_pll_
+# write_checkpoint -noxdef ocxo_clk_pll.dcp
+# catch { report_utilization -file ocxo_clk_pll_utilization_synth.rpt -pb ocxo_clk_pll_utilization_synth.pb }
+report_utilization: Time (s): cpu = 00:00:00.08 ; elapsed = 00:00:00.40 . Memory (MB): peak = 1578.766 ; gain = 0.000 ; free physical = 129 ; free virtual = 36753
+# if { [catch {
+#   file copy -force /home/guest/cae/fpga/ntpserver/ip/managed_ip_project/managed_ip_project.runs/ocxo_clk_pll_synth_1/ocxo_clk_pll.dcp /home/guest/cae/fpga/ntpserver/ip/ocxo_clk_pll/ocxo_clk_pll.dcp
+# } _RESULT ] } { 
+#   error "ERROR: Unable to successfully create or copy the sub-design checkpoint file."
+# }
+# if { [catch {
+#   write_verilog -force -mode synth_stub /home/guest/cae/fpga/ntpserver/ip/ocxo_clk_pll/ocxo_clk_pll_stub.v
+# } _RESULT ] } { 
+#   puts "CRITICAL WARNING: Unable to successfully create a Verilog synthesis stub for the sub-design. This may lead to errors in top level synthesis of the design. Error reported: $_RESULT"
+# }
+# if { [catch {
+#   write_vhdl -force -mode synth_stub /home/guest/cae/fpga/ntpserver/ip/ocxo_clk_pll/ocxo_clk_pll_stub.vhdl
+# } _RESULT ] } { 
+#   puts "CRITICAL WARNING: Unable to successfully create a VHDL synthesis stub for the sub-design. This may lead to errors in top level synthesis of the design. Error reported: $_RESULT"
+# }
+# if { [catch {
+#   write_verilog -force -mode funcsim /home/guest/cae/fpga/ntpserver/ip/ocxo_clk_pll/ocxo_clk_pll_funcsim.v
+# } _RESULT ] } { 
+#   puts "CRITICAL WARNING: Unable to successfully create the Verilog functional simulation sub-design file. Post-Synthesis Functional Simulation with this file may not be possible or may give incorrect results. Error reported: $_RESULT"
+# }
+# if { [catch {
+#   write_vhdl -force -mode funcsim /home/guest/cae/fpga/ntpserver/ip/ocxo_clk_pll/ocxo_clk_pll_funcsim.vhdl
+# } _RESULT ] } { 
+#   puts "CRITICAL WARNING: Unable to successfully create the VHDL functional simulation sub-design file. Post-Synthesis Functional Simulation with this file may not be possible or may give incorrect results. Error reported: $_RESULT"
+# }
+INFO: [Common 17-206] Exiting Vivado at Tue Mar 15 21:11:26 2016...
