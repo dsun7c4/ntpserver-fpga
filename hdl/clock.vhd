@@ -3,20 +3,20 @@
 -- Project    : 
 -------------------------------------------------------------------------------
 -- File       : clock.vhd
--- Author     : My Account  <guest@dsun.org>
+-- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-03-13
--- Last update: 2016-04-25
+-- Last update: 2016-04-26
 -- Platform   : 
--- Standard   : VHDL'87
+-- Standard   : VHDL'93
 -------------------------------------------------------------------------------
--- Description: 
+-- Description: Clock structure
 -------------------------------------------------------------------------------
 -- Copyright (c) 2016 
 -------------------------------------------------------------------------------
 -- Revisions  :
--- Date        Version  Author  Description
--- 2016-03-13  1.0      guest	Created
+-- Date        Version  Author      Description
+-- 2016-03-13  1.0      dcsun88osh  Created
 -------------------------------------------------------------------------------
 
 library IEEE;
@@ -125,6 +125,24 @@ architecture STRUCTURE of clock is
   attribute BLACK_BOX_PAD_PIN                 : string;
   attribute BLACK_BOX_PAD_PIN of ocxo_clk_pll : component is "clk_in1,clk_out1,resetn,locked";
 
+  component regs
+      port (
+          rst_n             : in    std_logic;
+          clk               : in    std_logic;
+
+          EPC_INTF_addr     : in    std_logic_vector(0 to 31);
+          EPC_INTF_be       : in    std_logic_vector(0 to 3);
+          EPC_INTF_burst    : in    std_logic;
+          EPC_INTF_cs_n     : in    std_logic;
+          EPC_INTF_data_i   : out   std_logic_vector(0 to 31);
+          EPC_INTF_data_o   : in    std_logic_vector(0 to 31);
+          EPC_INTF_rdy      : out   std_logic;
+          EPC_INTF_rnw      : in    std_logic;  -- Write when '0'
+
+          tmp               : out   std_logic
+
+          );
+  end component regs;
 
   signal EPC_INTF_addr   : std_logic_vector (0 to 31);
   signal EPC_INTF_ads    : std_logic;
@@ -175,6 +193,8 @@ architecture STRUCTURE of clock is
 
   SIGNAL clk             : STD_LOGIC;
   SIGNAL locked          : STD_LOGIC;
+
+  SIGNAL tmp          : std_logic;
 
 begin
 
@@ -310,5 +330,25 @@ begin
             resetn   => fclk_reset_n,
             locked   => locked
             );
+
+
+  cpu_regs: regs
+      port map (
+          rst_n             => OCXO_RESETN(0),
+          clk               => clk,
+
+          EPC_INTF_addr     => EPC_INTF_addr,
+          EPC_INTF_be       => EPC_INTF_be,
+          EPC_INTF_burst    => EPC_INTF_burst,
+          EPC_INTF_cs_n     => EPC_INTF_cs_n,
+          EPC_INTF_data_i   => EPC_INTF_data_i,
+          EPC_INTF_data_o   => EPC_INTF_data_o,
+          EPC_INTF_rdy      => EPC_INTF_rdy,
+          EPC_INTF_rnw      => EPC_INTF_rnw,
+
+          tmp               => tmp
+
+          );
+
 
 end STRUCTURE;

@@ -6,6 +6,7 @@
       <db_ref path="clock_tb_behav.wdb" id="1">
          <top_modules>
             <top_module name="clock_tb" />
+            <top_module name="tb_pkg" />
             <top_module name="util_pkg" />
          </top_modules>
       </db_ref>
@@ -98,6 +99,7 @@
    <wvobject db_ref_id="1" type="array" fp_name="/clock_tb/fpga/EPC_INTF_addr">
       <obj_property name="ElementShortName">EPC_INTF_addr[0:31]</obj_property>
       <obj_property name="ObjectShortName">EPC_INTF_addr[0:31]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
    </wvobject>
    <wvobject db_ref_id="1" type="logic" fp_name="/clock_tb/fpga/EPC_INTF_ads">
       <obj_property name="ElementShortName">EPC_INTF_ads</obj_property>
@@ -122,14 +124,17 @@
    <wvobject db_ref_id="1" type="array" fp_name="/clock_tb/fpga/EPC_INTF_data_i">
       <obj_property name="ElementShortName">EPC_INTF_data_i[0:31]</obj_property>
       <obj_property name="ObjectShortName">EPC_INTF_data_i[0:31]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
    </wvobject>
    <wvobject db_ref_id="1" type="array" fp_name="/clock_tb/fpga/EPC_INTF_data_o">
       <obj_property name="ElementShortName">EPC_INTF_data_o[0:31]</obj_property>
       <obj_property name="ObjectShortName">EPC_INTF_data_o[0:31]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
    </wvobject>
    <wvobject db_ref_id="1" type="array" fp_name="/clock_tb/fpga/EPC_INTF_data_t">
       <obj_property name="ElementShortName">EPC_INTF_data_t[0:31]</obj_property>
       <obj_property name="ObjectShortName">EPC_INTF_data_t[0:31]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
    </wvobject>
    <wvobject db_ref_id="1" type="logic" fp_name="/clock_tb/fpga/EPC_INTF_rd_n">
       <obj_property name="ElementShortName">EPC_INTF_rd_n</obj_property>

@@ -1,22 +1,22 @@
 -------------------------------------------------------------------------------
--- Title      : 
+-- Title      : Clock
 -- Project    : 
 -------------------------------------------------------------------------------
 -- File       : clock_tb.vhd
--- Author     : My Account  <guest@dsun.org>
+-- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-03-22
--- Last update: 2016-04-25
+-- Last update: 2016-04-26
 -- Platform   : 
--- Standard   : VHDL'87
+-- Standard   : VHDL'93
 -------------------------------------------------------------------------------
--- Description: 
+-- Description: Top level test bench
 -------------------------------------------------------------------------------
 -- Copyright (c) 2016 
 -------------------------------------------------------------------------------
 -- Revisions  :
--- Date        Version  Author  Description
--- 2016-03-22  1.0      guest	Created
+-- Date        Version  Author      Description
+-- 2016-03-22  1.0      dcsun88osh  Created
 -------------------------------------------------------------------------------
 
 --configuration testbench of clock is
@@ -46,6 +46,7 @@ use IEEE.STD_LOGIC_ARITH.ALL;
 
 library work;
 use work.util_pkg.all;
+use work.tb_pkg.all;
 
 architecture STRUCTURE of clock_tb is
 

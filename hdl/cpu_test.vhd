@@ -1,22 +1,22 @@
 -------------------------------------------------------------------------------
--- Title      : 
+-- Title      : Clock
 -- Project    : 
 -------------------------------------------------------------------------------
 -- File       : cpu_test.vhd
--- Author     : My Account  <guest@dsun.org>
+-- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-03-22
--- Last update: 2016-04-25
+-- Last update: 2016-04-26
 -- Platform   : 
--- Standard   : VHDL'87
+-- Standard   : VHDL'93
 -------------------------------------------------------------------------------
--- Description: 
+-- Description: CPU EPC, GPIO output testbench
 -------------------------------------------------------------------------------
 -- Copyright (c) 2016 
 -------------------------------------------------------------------------------
 -- Revisions  :
--- Date        Version  Author  Description
--- 2016-03-22  1.0      guest	Created
+-- Date        Version  Author      Description
+-- 2016-03-22  1.0      dcsun88osh  Created
 -------------------------------------------------------------------------------
 
 library IEEE;
@@ -27,74 +27,75 @@ use IEEE.STD_LOGIC_ARITH.ALL;
 
 library work;
 use work.util_pkg.all;
+use work.tb_pkg.all;
 
 entity cpu is
-  port (
-    DDR_addr : inout STD_LOGIC_VECTOR ( 14 downto 0 );
-    DDR_ba : inout STD_LOGIC_VECTOR ( 2 downto 0 );
-    DDR_cas_n : inout STD_LOGIC;
-    DDR_ck_n : inout STD_LOGIC;
-    DDR_ck_p : inout STD_LOGIC;
-    DDR_cke : inout STD_LOGIC;
-    DDR_cs_n : inout STD_LOGIC;
-    DDR_dm : inout STD_LOGIC_VECTOR ( 3 downto 0 );
-    DDR_dq : inout STD_LOGIC_VECTOR ( 31 downto 0 );
-    DDR_dqs_n : inout STD_LOGIC_VECTOR ( 3 downto 0 );
-    DDR_dqs_p : inout STD_LOGIC_VECTOR ( 3 downto 0 );
-    DDR_odt : inout STD_LOGIC;
-    DDR_ras_n : inout STD_LOGIC;
-    DDR_reset_n : inout STD_LOGIC;
-    DDR_we_n : inout STD_LOGIC;
-    EPC_INTF_addr : out STD_LOGIC_VECTOR ( 0 to 31 );
-    EPC_INTF_ads : out STD_LOGIC;
-    EPC_INTF_be : out STD_LOGIC_VECTOR ( 0 to 3 );
-    EPC_INTF_burst : out STD_LOGIC;
-    EPC_INTF_clk : in STD_LOGIC;
-    EPC_INTF_cs_n : out STD_LOGIC_VECTOR ( 0 to 0 );
-    EPC_INTF_data_i : in STD_LOGIC_VECTOR ( 0 to 31 );
-    EPC_INTF_data_o : out STD_LOGIC_VECTOR ( 0 to 31 );
-    EPC_INTF_data_t : out STD_LOGIC_VECTOR ( 0 to 31 );
-    EPC_INTF_rd_n : out STD_LOGIC;
-    EPC_INTF_rdy : in STD_LOGIC_VECTOR ( 0 to 0 );
-    EPC_INTF_rnw : out STD_LOGIC;
-    EPC_INTF_rst : in STD_LOGIC;
-    EPC_INTF_wr_n : out STD_LOGIC;
-    FCLK_CLK0 : out STD_LOGIC;
-    FCLK_RESET0_N : out STD_LOGIC;
-    FIXED_IO_ddr_vrn : inout STD_LOGIC;
-    FIXED_IO_ddr_vrp : inout STD_LOGIC;
-    FIXED_IO_mio : inout STD_LOGIC_VECTOR ( 53 downto 0 );
-    FIXED_IO_ps_clk : inout STD_LOGIC;
-    FIXED_IO_ps_porb : inout STD_LOGIC;
-    FIXED_IO_ps_srstb : inout STD_LOGIC;
-    GPIO_tri_i : in STD_LOGIC_VECTOR ( 15 downto 0 );
-    GPIO_tri_o : out STD_LOGIC_VECTOR ( 15 downto 0 );
-    GPIO_tri_t : out STD_LOGIC_VECTOR ( 15 downto 0 );
-    IIC_0_scl_i : in STD_LOGIC;
-    IIC_0_scl_o : out STD_LOGIC;
-    IIC_0_scl_t : out STD_LOGIC;
-    IIC_0_sda_i : in STD_LOGIC;
-    IIC_0_sda_o : out STD_LOGIC;
-    IIC_0_sda_t : out STD_LOGIC;
-    IIC_1_scl_i : in STD_LOGIC;
-    IIC_1_scl_o : out STD_LOGIC;
-    IIC_1_scl_t : out STD_LOGIC;
-    IIC_1_sda_i : in STD_LOGIC;
-    IIC_1_sda_o : out STD_LOGIC;
-    IIC_1_sda_t : out STD_LOGIC;
-    IIC_scl_i : in STD_LOGIC;
-    IIC_scl_o : out STD_LOGIC;
-    IIC_scl_t : out STD_LOGIC;
-    IIC_sda_i : in STD_LOGIC;
-    IIC_sda_o : out STD_LOGIC;
-    IIC_sda_t : out STD_LOGIC;
-    UART_0_rxd : in STD_LOGIC;
-    UART_0_txd : out STD_LOGIC;
-      OCXO_CLK100       : in    std_logic;
-      OCXO_RESETN       : out   std_logic_vector (0 to 0);
-      Int0              : in    std_logic_vector (0 to 0);
-      Int1              : in    std_logic_vector (0 to 0)
-  );
+    port (
+        DDR_addr          : inout std_logic_vector (14 downto 0);
+        DDR_ba            : inout std_logic_vector (2 downto 0);
+        DDR_cas_n         : inout std_logic;
+        DDR_ck_n          : inout std_logic;
+        DDR_ck_p          : inout std_logic;
+        DDR_cke           : inout std_logic;
+        DDR_cs_n          : inout std_logic;
+        DDR_dm            : inout std_logic_vector (3 downto 0);
+        DDR_dq            : inout std_logic_vector (31 downto 0);
+        DDR_dqs_n         : inout std_logic_vector (3 downto 0);
+        DDR_dqs_p         : inout std_logic_vector (3 downto 0);
+        DDR_odt           : inout std_logic;
+        DDR_ras_n         : inout std_logic;
+        DDR_reset_n       : inout std_logic;
+        DDR_we_n          : inout std_logic;
+        EPC_INTF_addr     : out   std_logic_vector (0 to 31);
+        EPC_INTF_ads      : out   std_logic;
+        EPC_INTF_be       : out   std_logic_vector (0 to 3);
+        EPC_INTF_burst    : out   std_logic;
+        EPC_INTF_clk      : in    std_logic;
+        EPC_INTF_cs_n     : out   std_logic_vector (0 to 0);
+        EPC_INTF_data_i   : in    std_logic_vector (0 to 31);
+        EPC_INTF_data_o   : out   std_logic_vector (0 to 31);
+        EPC_INTF_data_t   : out   std_logic_vector (0 to 31);
+        EPC_INTF_rd_n     : out   std_logic;
+        EPC_INTF_rdy      : in    std_logic_vector (0 to 0);
+        EPC_INTF_rnw      : out   std_logic;
+        EPC_INTF_rst      : in    std_logic;
+        EPC_INTF_wr_n     : out   std_logic;
+        FCLK_CLK0         : out   std_logic;
+        FCLK_RESET0_N     : out   std_logic;
+        FIXED_IO_ddr_vrn  : inout std_logic;
+        FIXED_IO_ddr_vrp  : inout std_logic;
+        FIXED_IO_mio      : inout std_logic_vector (53 downto 0);
+        FIXED_IO_ps_clk   : inout std_logic;
+        FIXED_IO_ps_porb  : inout std_logic;
+        FIXED_IO_ps_srstb : inout std_logic;
+        GPIO_tri_i        : in    std_logic_vector (15 downto 0);
+        GPIO_tri_o        : out   std_logic_vector (15 downto 0);
+        GPIO_tri_t        : out   std_logic_vector (15 downto 0);
+        IIC_0_scl_i       : in    std_logic;
+        IIC_0_scl_o       : out   std_logic;
+        IIC_0_scl_t       : out   std_logic;
+        IIC_0_sda_i       : in    std_logic;
+        IIC_0_sda_o       : out   std_logic;
+        IIC_0_sda_t       : out   std_logic;
+        IIC_1_scl_i       : in    std_logic;
+        IIC_1_scl_o       : out   std_logic;
+        IIC_1_scl_t       : out   std_logic;
+        IIC_1_sda_i       : in    std_logic;
+        IIC_1_sda_o       : out   std_logic;
+        IIC_1_sda_t       : out   std_logic;
+        IIC_scl_i         : in    std_logic;
+        IIC_scl_o         : out   std_logic;
+        IIC_scl_t         : out   std_logic;
+        IIC_sda_i         : in    std_logic;
+        IIC_sda_o         : out   std_logic;
+        IIC_sda_t         : out   std_logic;
+        UART_0_rxd        : in    std_logic;
+        UART_0_txd        : out   std_logic;
+        OCXO_CLK100       : in    std_logic;
+        OCXO_RESETN       : out   std_logic_vector (0 to 0);
+        Int0              : in    std_logic_vector (0 to 0);
+        Int1              : in    std_logic_vector (0 to 0)
+        );
 end cpu;
 
 
@@ -166,12 +167,114 @@ architecture TEST of cpu is
     --SIGNAL ext_reset_in : std_logic;
     --SIGNAL ext_reset_in_1: STD_LOGIC;
 
+    signal clk   : std_logic;
+    signal rst_n : std_logic;
 
 begin
 
     cpu_ck1:  clk_gen(10 ns, 50, FCLK_CLK0);
     cpu_rst:  rst_n_gen(1 us, fclk_reset0_n);
-    ocxo_rst: rst_n_gen(1 us, OCXO_RESETN(0));
+    ocxo_rst: rst_n_gen(1 us, rst_n);
 
+    clk            <= OCXO_CLK100;
+    OCXO_RESETN(0) <= rst_n;
 
+    -- Place holder signal assignments
+    GPIO_tri_o <= (others => '0');
+    GPIO_tri_t <= (others => '0');
+    IIC_0_scl_o <= '0';
+    IIC_0_scl_t <= '0';
+    IIC_0_sda_o <= '0';
+    IIC_0_sda_t <= '0';
+    IIC_1_scl_o <= '0';
+    IIC_1_scl_t <= '0';
+    IIC_1_sda_o <= '0';
+    IIC_1_sda_t <= '0';
+    IIC_scl_o   <= '0';
+    IIC_scl_t   <= '0';
+    IIC_sda_o   <= '0';
+    IIC_sda_t   <= '0';
+    UART_0_txd  <= '0';
+
+    regw:
+    process
+        procedure reg_write (addr : in std_logic_vector(31 downto 0);
+                             data : in std_logic_vector(31 downto 0)) is
+            variable count : natural;
+        begin
+            count            := 0;
+            EPC_INTF_addr    <= addr;
+            EPC_INTF_ads     <= '1';
+            EPC_INTF_be      <= x"F";
+            EPC_INTF_cs_n(0) <= '0';
+            EPC_INTF_data_o  <= data;
+            EPC_INTF_data_t  <= (others =>'0');
+            EPC_INTF_rnw     <= '0';
+            run_clk(clk, 1);
+
+            EPC_INTF_ads     <= '0';
+            while (EPC_INTF_rdy(0) /= '1' and count < 10) loop
+                count := count + 1;
+                run_clk(clk, 1);
+            end loop;
+
+            EPC_INTF_cs_n(0) <= '1';
+            EPC_INTF_rnw     <= '1';
+            EPC_INTF_data_t  <= (others =>'1');
+            run_clk(clk, 1);
+            
+        end procedure;
+        
+        procedure reg_read (addr : in std_logic_vector(31 downto 0)) is
+            variable count : natural;
+        begin
+            count            := 0;
+            EPC_INTF_addr    <= addr;
+            EPC_INTF_ads     <= '1';
+            EPC_INTF_be      <= x"F";
+            EPC_INTF_cs_n(0) <= '0';
+            EPC_INTF_data_t  <= (others =>'1');
+            EPC_INTF_rnw     <= '1';
+            run_clk(clk, 1);
+
+            EPC_INTF_ads     <= '0';
+            while (EPC_INTF_rdy(0) /= '1' and count < 10) loop
+                count := count + 1;
+                run_clk(clk, 1);
+            end loop;
+
+            EPC_INTF_cs_n(0) <= '1';
+            EPC_INTF_rnw     <= '1';
+            run_clk(clk, 1);
+            
+        end procedure;
+        
+    begin
+
+        EPC_INTF_addr     <= (others =>'0');
+        EPC_INTF_ads      <= '0';
+        EPC_INTF_be       <= (others =>'0');
+        EPC_INTF_burst    <= '0';
+        EPC_INTF_cs_n     <= (others =>'1');
+        EPC_INTF_data_o   <= (others =>'0');
+        EPC_INTF_data_t   <= (others =>'1');
+        EPC_INTF_rd_n     <= '1';
+        EPC_INTF_rnw      <= '1';
+        EPC_INTF_wr_n     <= '1';
+
+        run_clk(clk, 2000);
+
+        reg_write(x"aaaaaaaa", x"55555555");
+
+        run_clk(clk, 100);
+
+        reg_read(x"a5a5a5a5");
+
+        run_clk(clk, 100);
+
+        wait;
+        
+    end process;
+
+    
 end TEST;

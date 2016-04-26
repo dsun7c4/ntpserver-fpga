@@ -3,20 +3,20 @@
 -- Project    : 
 -------------------------------------------------------------------------------
 -- File       : clock_.vhd
--- Author     : My Account  <guest@dsun.org>
+-- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-03-13
--- Last update: 2016-03-13
+-- Last update: 2016-04-26
 -- Platform   : 
--- Standard   : VHDL'87
+-- Standard   : VHDL'93
 -------------------------------------------------------------------------------
--- Description: 
+-- Description: Top level entity for clock fpga
 -------------------------------------------------------------------------------
 -- Copyright (c) 2016 
 -------------------------------------------------------------------------------
 -- Revisions  :
--- Date        Version  Author  Description
--- 2016-03-13  1.0      guest	Created
+-- Date        Version  Author      Description
+-- 2016-03-13  1.0      dcsun88osh  Created
 -------------------------------------------------------------------------------
 
 library IEEE;

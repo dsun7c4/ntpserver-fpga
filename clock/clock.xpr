@@ -17,12 +17,30 @@
   <FileSets Version="1" Minor="31">
     <FileSet Name="sources_1" Type="DesignSrcs" RelSrcDir="$PSRCDIR/sources_1">
       <Filter Type="Srcs"/>
+      <File Path="$PPRDIR/../hdl/regs.vhd">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../ip/ocxo_clk_pll/ocxo_clk_pll.xci">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
       <File Path="$PPRDIR/../cpu/cpu.bd">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
+        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="hw_handoff/cpu_bd.tcl"/>
+        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="hw_handoff/cpu.hwh"/>
+        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="cpu_ooc.xdc"/>
+        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_auto_pc_1/cpu_auto_pc_1.xci"/>
+        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_auto_pc_0/cpu_auto_pc_0.xci"/>
         <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_xlconcat_0_0/cpu_xlconcat_0_0.xci"/>
         <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="hdl/cpu.vhd"/>
         <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_rst_M_AXI_GP1_ACLK_100M_0/cpu_rst_M_AXI_GP1_ACLK_100M_0.xci"/>
@@ -33,19 +51,7 @@
         <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_rst_processing_system7_0_100M_0/cpu_rst_processing_system7_0_100M_0.xci"/>
         <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_processing_system7_0_axi_periph_0/cpu_processing_system7_0_axi_periph_0.xci"/>
         <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_axi_gpio_0_0/cpu_axi_gpio_0_0.xci"/>
-        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="hw_handoff/cpu_bd.tcl"/>
-        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="hw_handoff/cpu.hwh"/>
-        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_auto_pc_1/cpu_auto_pc_1.xci"/>
-        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="cpu_ooc.xdc"/>
         <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_processing_system7_0_0/cpu_processing_system7_0_0.xci"/>
-        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_auto_pc_0/cpu_auto_pc_0.xci"/>
-      </File>
-      <File Path="$PPRDIR/../ip/ocxo_clk_pll/ocxo_clk_pll.xci">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
       </File>
       <File Path="$PPRDIR/../hdl/clock_.vhd">
         <FileInfo>
@@ -54,6 +60,12 @@
         </FileInfo>
       </File>
       <File Path="$PPRDIR/../hdl/clock.vhd">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../hdl/util_pkg.vhd">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
@@ -92,6 +104,24 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
+      <File Path="$PPRDIR/../hdl/tb_pkg.vhd">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../hdl/regs.vhd">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../ip/ocxo_clk_pll/ocxo_clk_pll.vhd">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
       <File Path="$PPRDIR/../hdl/cpu_test.vhd">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
@@ -99,12 +129,6 @@
         </FileInfo>
       </File>
       <File Path="$PPRDIR/../hdl/clock_.vhd">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../ip/ocxo_clk_pll/ocxo_clk_pll.vhd">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
