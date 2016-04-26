@@ -6,7 +6,7 @@
 -- Author     : My Account  <guest@dsun.org>
 -- Company    : 
 -- Created    : 2016-03-22
--- Last update: 2016-03-23
+-- Last update: 2016-04-25
 -- Platform   : 
 -- Standard   : VHDL'87
 -------------------------------------------------------------------------------
@@ -24,6 +24,9 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
 use IEEE.STD_LOGIC_ARITH.ALL;
+
+library work;
+use work.util_pkg.all;
 
 entity cpu is
   port (
@@ -85,12 +88,12 @@ entity cpu is
     IIC_sda_i : in STD_LOGIC;
     IIC_sda_o : out STD_LOGIC;
     IIC_sda_t : out STD_LOGIC;
-    M_AXI_GP0_ACLK : in STD_LOGIC;
-    M_AXI_GP1_ACLK : in STD_LOGIC;
     UART_0_rxd : in STD_LOGIC;
     UART_0_txd : out STD_LOGIC;
-    ext_reset_in : in STD_LOGIC;
-    ext_reset_in_1 : in STD_LOGIC
+      OCXO_CLK100       : in    std_logic;
+      OCXO_RESETN       : out   std_logic_vector (0 to 0);
+      Int0              : in    std_logic_vector (0 to 0);
+      Int1              : in    std_logic_vector (0 to 0)
   );
 end cpu;
 
@@ -166,6 +169,9 @@ architecture TEST of cpu is
 
 begin
 
+    cpu_ck1:  clk_gen(10 ns, 50, FCLK_CLK0);
+    cpu_rst:  rst_n_gen(1 us, fclk_reset0_n);
+    ocxo_rst: rst_n_gen(1 us, OCXO_RESETN(0));
 
 
 end TEST;

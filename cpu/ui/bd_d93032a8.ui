@@ -1,52 +1,53 @@
 {
    guistr: "# # String gsaved with Nlview 6.4.10  2014-10-02 bk=1.3207 VDI=35 GEI=35 GUI=JA:1.8
 #  -string -flagsOSRD
-preplace port DDR -pg 1 -y 610 -defaultsOSRD
-preplace port M_AXI_GP1_ACLK -pg 1 -y 420 -defaultsOSRD
-preplace port M_AXI_GP0_ACLK -pg 1 -y 20 -defaultsOSRD
-preplace port FCLK_RESET0_N -pg 1 -y 850 -defaultsOSRD
-preplace port UART_0 -pg 1 -y 650 -defaultsOSRD
-preplace port IIC -pg 1 -y 320 -defaultsOSRD
-preplace port ext_reset_in_1 -pg 1 -y 80 -defaultsOSRD
-preplace port IIC_0 -pg 1 -y 670 -defaultsOSRD
-preplace port FIXED_IO -pg 1 -y 630 -defaultsOSRD
-preplace port EPC_INTF -pg 1 -y 480 -defaultsOSRD
-preplace port IIC_1 -pg 1 -y 690 -defaultsOSRD
-preplace port FCLK_CLK0 -pg 1 -y 830 -defaultsOSRD
-preplace port ext_reset_in -pg 1 -y 490 -defaultsOSRD
-preplace port GPIO -pg 1 -y 140 -defaultsOSRD
-preplace inst rst_M_AXI_GP1_ACLK_100M -pg 1 -lvl 1 -y 510 -defaultsOSRD
-preplace inst axi_iic_0 -pg 1 -lvl 3 -y 340 -defaultsOSRD
-preplace inst rst_processing_system7_0_100M -pg 1 -lvl 1 -y 100 -defaultsOSRD
-preplace inst axi_gpio_0 -pg 1 -lvl 3 -y 140 -defaultsOSRD
-preplace inst processing_system7_0_axi_periph_1 -pg 1 -lvl 2 -y 530 -defaultsOSRD
-preplace inst axi_epc_0 -pg 1 -lvl 3 -y 480 -defaultsOSRD
+preplace port OCXO_CLK100 -pg 1 -y 380 -defaultsOSRD
+preplace port DDR -pg 1 -y 520 -defaultsOSRD
+preplace port FCLK_RESET0_N -pg 1 -y 760 -defaultsOSRD
+preplace port UART_0 -pg 1 -y 560 -defaultsOSRD
+preplace port IIC -pg 1 -y 200 -defaultsOSRD
+preplace port IIC_0 -pg 1 -y 580 -defaultsOSRD
+preplace port FIXED_IO -pg 1 -y 540 -defaultsOSRD
+preplace port EPC_INTF -pg 1 -y 370 -defaultsOSRD
+preplace port IIC_1 -pg 1 -y 600 -defaultsOSRD
+preplace port FCLK_CLK0 -pg 1 -y 620 -defaultsOSRD
+preplace port GPIO -pg 1 -y 90 -defaultsOSRD
+preplace portBus In0 -pg 1 -y 780 -defaultsOSRD
+preplace portBus In1 -pg 1 -y 800 -defaultsOSRD
+preplace portBus OCXO_RESETN -pg 1 -y 440 -defaultsOSRD
+preplace inst rst_M_AXI_GP1_ACLK_100M -pg 1 -lvl 2 -y 650 -defaultsOSRD
+preplace inst axi_iic_0 -pg 1 -lvl 3 -y 220 -defaultsOSRD
+preplace inst rst_processing_system7_0_100M -pg 1 -lvl 1 -y 160 -defaultsOSRD
+preplace inst xlconcat_0 -pg 1 -lvl 2 -y 790 -defaultsOSRD
+preplace inst axi_gpio_0 -pg 1 -lvl 3 -y 90 -defaultsOSRD
+preplace inst processing_system7_0_axi_periph_1 -pg 1 -lvl 2 -y 420 -defaultsOSRD
+preplace inst axi_epc_0 -pg 1 -lvl 3 -y 370 -defaultsOSRD
 preplace inst processing_system7_0_axi_periph -pg 1 -lvl 2 -y 130 -defaultsOSRD
-preplace inst processing_system7_0 -pg 1 -lvl 3 -y 720 -defaultsOSRD
+preplace inst processing_system7_0 -pg 1 -lvl 3 -y 630 -defaultsOSRD
 preplace netloc processing_system7_0_DDR 1 3 1 NJ
 preplace netloc processing_system7_0_UART_0 1 3 1 NJ
-preplace netloc processing_system7_0_axi_periph_M00_AXI 1 2 1 N
-preplace netloc ext_reset_in_1_1 1 0 1 NJ
-preplace netloc processing_system7_0_M_AXI_GP0 1 1 3 550 270 NJ 270 1290
-preplace netloc processing_system7_0_M_AXI_GP1 1 1 3 550 410 NJ 410 1280
-preplace netloc processing_system7_0_FCLK_RESET0_N 1 3 1 NJ
-preplace netloc rst_M_AXI_GP1_ACLK_100M_interconnect_aresetn 1 1 1 520
+preplace netloc processing_system7_0_axi_periph_M00_AXI 1 2 1 870
+preplace netloc processing_system7_0_M_AXI_GP0 1 1 3 530 290 NJ 290 1330
+preplace netloc processing_system7_0_M_AXI_GP1 1 1 3 530 300 NJ 300 1320
+preplace netloc processing_system7_0_FCLK_RESET0_N 1 0 4 160 550 500 850 NJ 850 1330
+preplace netloc rst_M_AXI_GP1_ACLK_100M_interconnect_aresetn 1 1 2 520 540 880
 preplace netloc processing_system7_0_IIC_0 1 3 1 NJ
+preplace netloc In0_1 1 0 2 NJ 780 NJ
 preplace netloc processing_system7_0_IIC_1 1 3 1 NJ
-preplace netloc processing_system7_0_axi_periph_1_M00_AXI 1 2 1 850
-preplace netloc M_AXI_GP1_ACLK_1 1 0 3 180 420 540 660 870
-preplace netloc rst_processing_system7_0_100M_peripheral_aresetn 1 1 2 540 290 880
+preplace netloc processing_system7_0_axi_periph_1_M00_AXI 1 2 1 880
+preplace netloc M_AXI_GP1_ACLK_1 1 0 3 NJ 380 510 560 920
+preplace netloc rst_processing_system7_0_100M_peripheral_aresetn 1 1 2 520 280 880
+preplace netloc xlconcat_0_dout 1 2 1 920
 preplace netloc processing_system7_0_FIXED_IO 1 3 1 NJ
-preplace netloc ext_reset_in_1 1 0 1 NJ
 preplace netloc axi_iic_0_IIC 1 3 1 NJ
 preplace netloc axi_gpio_0_GPIO 1 3 1 NJ
-preplace netloc rst_M_AXI_GP1_ACLK_100M_peripheral_aresetn 1 1 2 550 650 880
-preplace netloc rst_processing_system7_0_100M_interconnect_aresetn 1 1 1 520
-preplace netloc M_AXI_GP0_ACLK_1 1 0 3 180 10 530 280 860
-preplace netloc processing_system7_0_FCLK_CLK1 1 3 1 NJ
+preplace netloc rst_M_AXI_GP1_ACLK_100M_peripheral_aresetn 1 1 3 530 550 910 440 NJ
+preplace netloc rst_processing_system7_0_100M_interconnect_aresetn 1 1 1 500
+preplace netloc M_AXI_GP0_ACLK_1 1 0 4 160 70 510 270 900 450 1340
 preplace netloc axi_epc_0_EPC_INTF 1 3 1 NJ
-preplace netloc processing_system7_0_axi_periph_M01_AXI 1 2 1 850
-levelinfo -pg 1 160 350 700 1080 1310
+preplace netloc processing_system7_0_axi_periph_M01_AXI 1 2 1 890
+preplace netloc In1_1 1 0 2 NJ 800 NJ
+levelinfo -pg 1 140 330 700 1120 1360
 ",
 }
 {

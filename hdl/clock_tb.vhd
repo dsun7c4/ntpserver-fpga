@@ -6,7 +6,7 @@
 -- Author     : My Account  <guest@dsun.org>
 -- Company    : 
 -- Created    : 2016-03-22
--- Last update: 2016-03-23
+-- Last update: 2016-04-25
 -- Platform   : 
 -- Standard   : VHDL'87
 -------------------------------------------------------------------------------
@@ -225,8 +225,29 @@ begin
             );
 
 
-    ck1: clock_gen(100 ns, 50, ocxo_clk);
+    ocxo_10MHZ: clk_gen(100 ns, 50, ocxo_clk);
     
+    process
+    begin
+        loop
+            fan_tach <= '1';
+
+            run_clk(ocxo_clk, 1);
+
+            fan_tach <= '0';
+
+            run_clk(ocxo_clk, 2);
+
+            fan_tach <= '1';
+
+            run_clk(ocxo_clk, 3);
+
+            fan_tach <= '0';
+
+            run_clk(ocxo_clk, 4);
+
+        end loop;
+    end process;
 end STRUCTURE;
 
 

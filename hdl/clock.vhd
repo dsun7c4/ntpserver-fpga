@@ -6,7 +6,7 @@
 -- Author     : My Account  <guest@dsun.org>
 -- Company    : 
 -- Created    : 2016-03-13
--- Last update: 2016-03-16
+-- Last update: 2016-04-25
 -- Platform   : 
 -- Standard   : VHDL'87
 -------------------------------------------------------------------------------
@@ -87,12 +87,12 @@ architecture STRUCTURE of clock is
       EPC_INTF_rnw      : out   std_logic;
       EPC_INTF_rst      : in    std_logic;
       EPC_INTF_wr_n     : out   std_logic;
-      FCLK_CLK0         : out   STD_LOGIC;
-      FCLK_RESET0_N     : out   STD_LOGIC;
-      M_AXI_GP0_ACLK    : in    STD_LOGIC;
-      M_AXI_GP1_ACLK    : in    std_logic;
-      ext_reset_in      : in    std_logic;
-      ext_reset_in_1    : in    STD_LOGIC
+      OCXO_CLK100       : in    std_logic;
+      FCLK_CLK0         : out   std_logic;
+      FCLK_RESET0_N     : out   std_logic;
+      OCXO_RESETN       : out   std_logic_vector (0 to 0);
+      Int0              : in    std_logic_vector (0 to 0);
+      Int1              : in    std_logic_vector (0 to 0)
       );
   end component cpu;
 
@@ -166,8 +166,12 @@ architecture STRUCTURE of clock is
   signal iic_sda_o       : std_logic;
   signal iic_sda_t       : std_logic;
 
+  SIGNAL Int0            : std_logic_vector (0 to 0);
+  SIGNAL Int1            : std_logic_vector (0 to 0);
+
   SIGNAL fclk            : STD_LOGIC;
   SIGNAL fclk_reset_n    : STD_LOGIC;
+  SIGNAL OCXO_RESETN     : std_logic_vector (0 to 0);
 
   SIGNAL clk             : STD_LOGIC;
   SIGNAL locked          : STD_LOGIC;
@@ -204,7 +208,7 @@ begin
             EPC_INTF_ads      => EPC_INTF_ads,
             EPC_INTF_be       => EPC_INTF_be,
             EPC_INTF_burst    => EPC_INTF_burst,
-            EPC_INTF_clk      => EPC_INTF_clk,
+            EPC_INTF_clk      => clk,
             EPC_INTF_cs_n(0)  => EPC_INTF_cs_n,
             EPC_INTF_data_i   => EPC_INTF_data_i,
             EPC_INTF_data_o   => EPC_INTF_data_o,
@@ -212,7 +216,7 @@ begin
             EPC_INTF_rd_n     => EPC_INTF_rd_n,
             EPC_INTF_rdy(0)   => EPC_INTF_rdy,
             EPC_INTF_rnw      => EPC_INTF_rnw,
-            EPC_INTF_rst      => EPC_INTF_rst,
+            EPC_INTF_rst      => OCXO_RESETN(0),
             EPC_INTF_wr_n     => EPC_INTF_wr_n,
 
             GPIO_tri_i        => GPIO_tri_i,
@@ -243,12 +247,12 @@ begin
             UART_0_rxd                   => gps_rxd,
             UART_0_txd                   => gps_txd,
 
+            OCXO_CLK100       => clk,
             FCLK_CLK0         => fclk,
             FCLK_RESET0_N     => fclk_reset_n,
-            M_AXI_GP0_ACLK    => fclk,
-            M_AXI_GP1_ACLK    => clk,
-            ext_reset_in      => fclk_reset_n,
-            ext_reset_in_1    => fclk_reset_n
+            OCXO_RESETN       => OCXO_RESETN,
+            Int0              => Int0,
+            Int1              => Int1
             );
 
 

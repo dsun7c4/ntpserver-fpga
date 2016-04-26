@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="clock_tb_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="clock_tb" />
+            <top_module name="util_pkg" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <WVObjectSize size="43" />
+   <wvobject db_ref_id="1" type="logic" fp_name="/clock_tb/fpga/fclk_reset_n">
+      <obj_property name="ElementShortName">fclk_reset_n</obj_property>
+      <obj_property name="ObjectShortName">fclk_reset_n</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/clock_tb/fpga/OCXO_RESETN[0]">
+      <obj_property name="ElementShortName">[0]</obj_property>
+      <obj_property name="ObjectShortName">OCXO_RESETN[0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/clock_tb/fpga/ocxo_clk">
+      <obj_property name="ElementShortName">ocxo_clk</obj_property>
+      <obj_property name="ObjectShortName">ocxo_clk</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/clock_tb/fpga/fclk">
+      <obj_property name="ElementShortName">fclk</obj_property>
+      <obj_property name="ObjectShortName">fclk</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/clock_tb/fpga/clk">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/clock_tb/fpga/locked">
+      <obj_property name="ElementShortName">locked</obj_property>
+      <obj_property name="ObjectShortName">locked</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/clock_tb/fpga/ocxo_ena">
+      <obj_property name="ElementShortName">ocxo_ena</obj_property>
+      <obj_property name="ObjectShortName">ocxo_ena</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/clock_tb/fpga/ocxo_scl">
+      <obj_property name="ElementShortName">ocxo_scl</obj_property>
+      <obj_property name="ObjectShortName">ocxo_scl</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/clock_tb/fpga/ocxo_sda">
+      <obj_property name="ElementShortName">ocxo_sda</obj_property>
+      <obj_property name="ObjectShortName">ocxo_sda</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/clock_tb/fpga/dac_sclk">
+      <obj_property name="ElementShortName">dac_sclk</obj_property>
+      <obj_property name="ObjectShortName">dac_sclk</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/clock_tb/fpga/dac_cs_n">
+      <obj_property name="ElementShortName">dac_cs_n</obj_property>
+      <obj_property name="ObjectShortName">dac_cs_n</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/clock_tb/fpga/dac_sin">
+      <obj_property name="ElementShortName">dac_sin</obj_property>
+      <obj_property name="ObjectShortName">dac_sin</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/clock_tb/fpga/gps_ena">
+      <obj_property name="ElementShortName">gps_ena</obj_property>
+      <obj_property name="ObjectShortName">gps_ena</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/clock_tb/fpga/gps_3dfix">
+      <obj_property name="ElementShortName">gps_3dfix</obj_property>
+      <obj_property name="ObjectShortName">gps_3dfix</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/clock_tb/fpga/gps_1pps">
+      <obj_property name="ElementShortName">gps_1pps</obj_property>
+      <obj_property name="ObjectShortName">gps_1pps</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/clock_tb/fpga/disp_sclk">
+      <obj_property name="ElementShortName">disp_sclk</obj_property>
+      <obj_property name="ObjectShortName">disp_sclk</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/clock_tb/fpga/disp_blank">
+      <obj_property name="ElementShortName">disp_blank</obj_property>
+      <obj_property name="ObjectShortName">disp_blank</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/clock_tb/fpga/disp_lat">
+      <obj_property name="ElementShortName">disp_lat</obj_property>
+      <obj_property name="ObjectShortName">disp_lat</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/clock_tb/fpga/disp_sin">
+      <obj_property name="ElementShortName">disp_sin</obj_property>
+      <obj_property name="ObjectShortName">disp_sin</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/clock_tb/fpga/fan_tach">
+      <obj_property name="ElementShortName">fan_tach</obj_property>
+      <obj_property name="ObjectShortName">fan_tach</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/clock_tb/fpga/fan_pwm">
+      <obj_property name="ElementShortName">fan_pwm</obj_property>
+      <obj_property name="ObjectShortName">fan_pwm</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="array" fp_name="/clock_tb/fpga/EPC_INTF_addr">
+      <obj_property name="ElementShortName">EPC_INTF_addr[0:31]</obj_property>
+      <obj_property name="ObjectShortName">EPC_INTF_addr[0:31]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/clock_tb/fpga/EPC_INTF_ads">
+      <obj_property name="ElementShortName">EPC_INTF_ads</obj_property>
+      <obj_property name="ObjectShortName">EPC_INTF_ads</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="array" fp_name="/clock_tb/fpga/EPC_INTF_be">
+      <obj_property name="ElementShortName">EPC_INTF_be[0:3]</obj_property>
+      <obj_property name="ObjectShortName">EPC_INTF_be[0:3]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/clock_tb/fpga/EPC_INTF_burst">
+      <obj_property name="ElementShortName">EPC_INTF_burst</obj_property>
+      <obj_property name="ObjectShortName">EPC_INTF_burst</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/clock_tb/fpga/EPC_INTF_clk">
+      <obj_property name="ElementShortName">EPC_INTF_clk</obj_property>
+      <obj_property name="ObjectShortName">EPC_INTF_clk</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/clock_tb/fpga/EPC_INTF_cs_n">
+      <obj_property name="ElementShortName">EPC_INTF_cs_n</obj_property>
+      <obj_property name="ObjectShortName">EPC_INTF_cs_n</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="array" fp_name="/clock_tb/fpga/EPC_INTF_data_i">
+      <obj_property name="ElementShortName">EPC_INTF_data_i[0:31]</obj_property>
+      <obj_property name="ObjectShortName">EPC_INTF_data_i[0:31]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="array" fp_name="/clock_tb/fpga/EPC_INTF_data_o">
+      <obj_property name="ElementShortName">EPC_INTF_data_o[0:31]</obj_property>
+      <obj_property name="ObjectShortName">EPC_INTF_data_o[0:31]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="array" fp_name="/clock_tb/fpga/EPC_INTF_data_t">
+      <obj_property name="ElementShortName">EPC_INTF_data_t[0:31]</obj_property>
+      <obj_property name="ObjectShortName">EPC_INTF_data_t[0:31]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/clock_tb/fpga/EPC_INTF_rd_n">
+      <obj_property name="ElementShortName">EPC_INTF_rd_n</obj_property>
+      <obj_property name="ObjectShortName">EPC_INTF_rd_n</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/clock_tb/fpga/EPC_INTF_rdy">
+      <obj_property name="ElementShortName">EPC_INTF_rdy</obj_property>
+      <obj_property name="ObjectShortName">EPC_INTF_rdy</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/clock_tb/fpga/EPC_INTF_rnw">
+      <obj_property name="ElementShortName">EPC_INTF_rnw</obj_property>
+      <obj_property name="ObjectShortName">EPC_INTF_rnw</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/clock_tb/fpga/EPC_INTF_rst">
+      <obj_property name="ElementShortName">EPC_INTF_rst</obj_property>
+      <obj_property name="ObjectShortName">EPC_INTF_rst</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/clock_tb/fpga/EPC_INTF_wr_n">
+      <obj_property name="ElementShortName">EPC_INTF_wr_n</obj_property>
+      <obj_property name="ObjectShortName">EPC_INTF_wr_n</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="array" fp_name="/clock_tb/fpga/gpio_tri_i">
+      <obj_property name="ElementShortName">gpio_tri_i[15:0]</obj_property>
+      <obj_property name="ObjectShortName">gpio_tri_i[15:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="array" fp_name="/clock_tb/fpga/gpio_tri_o">
+      <obj_property name="ElementShortName">gpio_tri_o[15:0]</obj_property>
+      <obj_property name="ObjectShortName">gpio_tri_o[15:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="array" fp_name="/clock_tb/fpga/gpio_tri_t">
+      <obj_property name="ElementShortName">gpio_tri_t[15:0]</obj_property>
+      <obj_property name="ObjectShortName">gpio_tri_t[15:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="array" fp_name="/clock_tb/fpga/Int0">
+      <obj_property name="ElementShortName">Int0[0:0]</obj_property>
+      <obj_property name="ObjectShortName">Int0[0:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="array" fp_name="/clock_tb/fpga/Int1">
+      <obj_property name="ElementShortName">Int1[0:0]</obj_property>
+      <obj_property name="ObjectShortName">Int1[0:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="array" fp_name="/clock_tb/fpga/gpio_tri_i">
+      <obj_property name="ElementShortName">gpio_tri_i[15:0]</obj_property>
+      <obj_property name="ObjectShortName">gpio_tri_i[15:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="array" fp_name="/clock_tb/fpga/gpio_tri_o">
+      <obj_property name="ElementShortName">gpio_tri_o[15:0]</obj_property>
+      <obj_property name="ObjectShortName">gpio_tri_o[15:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="array" fp_name="/clock_tb/fpga/gpio_tri_t">
+      <obj_property name="ElementShortName">gpio_tri_t[15:0]</obj_property>
+      <obj_property name="ObjectShortName">gpio_tri_t[15:0]</obj_property>
+   </wvobject>
+</wave_config>

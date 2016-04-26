@@ -1,7 +1,7 @@
 --Copyright 1986-2014 Xilinx, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------
 --Tool Version: Vivado v.2014.4 (lin64) Build 1071353 Tue Nov 18 16:47:07 MST 2014
---Date        : Thu Apr 14 20:43:54 2016
+--Date        : Mon Apr 25 12:07:01 2016
 --Host        : graviton running 64-bit Debian GNU/Linux 7.10 (wheezy)
 --Command     : generate_target cpu.bd
 --Design      : cpu
@@ -1711,12 +1711,12 @@ entity cpu is
     IIC_sda_i : in STD_LOGIC;
     IIC_sda_o : out STD_LOGIC;
     IIC_sda_t : out STD_LOGIC;
-    M_AXI_GP0_ACLK : in STD_LOGIC;
-    M_AXI_GP1_ACLK : in STD_LOGIC;
+    Int0 : in STD_LOGIC_VECTOR ( 0 to 0 );
+    Int1 : in STD_LOGIC_VECTOR ( 0 to 0 );
+    OCXO_CLK100 : in STD_LOGIC;
+    OCXO_RESETN : out STD_LOGIC_VECTOR ( 0 to 0 );
     UART_0_rxd : in STD_LOGIC;
-    UART_0_txd : out STD_LOGIC;
-    ext_reset_in : in STD_LOGIC;
-    ext_reset_in_1 : in STD_LOGIC
+    UART_0_txd : out STD_LOGIC
   );
 end cpu;
 
@@ -1831,6 +1831,7 @@ architecture STRUCTURE of cpu is
     M_AXI_GP1_BRESP : in STD_LOGIC_VECTOR ( 1 downto 0 );
     M_AXI_GP1_RRESP : in STD_LOGIC_VECTOR ( 1 downto 0 );
     M_AXI_GP1_RDATA : in STD_LOGIC_VECTOR ( 31 downto 0 );
+    IRQ_F2P : in STD_LOGIC_VECTOR ( 1 downto 0 );
     FCLK_CLK0 : out STD_LOGIC;
     FCLK_RESET0_N : out STD_LOGIC;
     MIO : inout STD_LOGIC_VECTOR ( 53 downto 0 );
@@ -1978,7 +1979,16 @@ architecture STRUCTURE of cpu is
     peripheral_aresetn : out STD_LOGIC_VECTOR ( 0 to 0 )
   );
   end component cpu_rst_M_AXI_GP1_ACLK_100M_0;
+  component cpu_xlconcat_0_0 is
+  port (
+    In0 : in STD_LOGIC_VECTOR ( 0 to 0 );
+    In1 : in STD_LOGIC_VECTOR ( 0 to 0 );
+    dout : out STD_LOGIC_VECTOR ( 1 downto 0 )
+  );
+  end component cpu_xlconcat_0_0;
   signal GND_1 : STD_LOGIC;
+  signal In0_1 : STD_LOGIC_VECTOR ( 0 to 0 );
+  signal In1_1 : STD_LOGIC_VECTOR ( 0 to 0 );
   signal M_AXI_GP0_ACLK_1 : STD_LOGIC;
   signal M_AXI_GP1_ACLK_1 : STD_LOGIC;
   signal VCC_1 : STD_LOGIC;
@@ -2005,8 +2015,6 @@ architecture STRUCTURE of cpu is
   signal axi_iic_0_IIC_SDA_I : STD_LOGIC;
   signal axi_iic_0_IIC_SDA_O : STD_LOGIC;
   signal axi_iic_0_IIC_SDA_T : STD_LOGIC;
-  signal \^ext_reset_in_1\ : STD_LOGIC;
-  signal ext_reset_in_1_1 : STD_LOGIC;
   signal processing_system7_0_DDR_ADDR : STD_LOGIC_VECTOR ( 14 downto 0 );
   signal processing_system7_0_DDR_BA : STD_LOGIC_VECTOR ( 2 downto 0 );
   signal processing_system7_0_DDR_CAS_N : STD_LOGIC;
@@ -2022,7 +2030,6 @@ architecture STRUCTURE of cpu is
   signal processing_system7_0_DDR_RAS_N : STD_LOGIC;
   signal processing_system7_0_DDR_RESET_N : STD_LOGIC;
   signal processing_system7_0_DDR_WE_N : STD_LOGIC;
-  signal processing_system7_0_FCLK_CLK1 : STD_LOGIC;
   signal processing_system7_0_FCLK_RESET0_N : STD_LOGIC;
   signal processing_system7_0_FIXED_IO_DDR_VRN : STD_LOGIC;
   signal processing_system7_0_FIXED_IO_DDR_VRP : STD_LOGIC;
@@ -2175,6 +2182,7 @@ architecture STRUCTURE of cpu is
   signal rst_M_AXI_GP1_ACLK_100M_peripheral_aresetn : STD_LOGIC_VECTOR ( 0 to 0 );
   signal rst_processing_system7_0_100M_interconnect_aresetn : STD_LOGIC_VECTOR ( 0 to 0 );
   signal rst_processing_system7_0_100M_peripheral_aresetn : STD_LOGIC_VECTOR ( 0 to 0 );
+  signal xlconcat_0_dout : STD_LOGIC_VECTOR ( 1 downto 0 );
   signal NLW_axi_iic_0_iic2intc_irpt_UNCONNECTED : STD_LOGIC;
   signal NLW_axi_iic_0_gpo_UNCONNECTED : STD_LOGIC_VECTOR ( 0 to 0 );
   signal NLW_processing_system7_0_ENET0_PTP_DELAY_REQ_RX_UNCONNECTED : STD_LOGIC;
@@ -2209,7 +2217,7 @@ begin
   EPC_INTF_rd_n <= axi_epc_0_EPC_INTF_RD_N;
   EPC_INTF_rnw <= axi_epc_0_EPC_INTF_RNW;
   EPC_INTF_wr_n <= axi_epc_0_EPC_INTF_WR_N;
-  FCLK_CLK0 <= processing_system7_0_FCLK_CLK1;
+  FCLK_CLK0 <= M_AXI_GP0_ACLK_1;
   FCLK_RESET0_N <= processing_system7_0_FCLK_RESET0_N;
   GPIO_tri_o(15 downto 0) <= axi_gpio_0_GPIO_TRI_O(15 downto 0);
   GPIO_tri_t(15 downto 0) <= axi_gpio_0_GPIO_TRI_T(15 downto 0);
@@ -2225,10 +2233,11 @@ begin
   IIC_scl_t <= axi_iic_0_IIC_SCL_T;
   IIC_sda_o <= axi_iic_0_IIC_SDA_O;
   IIC_sda_t <= axi_iic_0_IIC_SDA_T;
-  M_AXI_GP0_ACLK_1 <= M_AXI_GP0_ACLK;
-  M_AXI_GP1_ACLK_1 <= M_AXI_GP1_ACLK;
+  In0_1(0) <= Int0(0);
+  In1_1(0) <= Int1(0);
+  M_AXI_GP1_ACLK_1 <= OCXO_CLK100;
+  OCXO_RESETN(0) <= rst_M_AXI_GP1_ACLK_100M_peripheral_aresetn(0);
   UART_0_txd <= processing_system7_0_UART_0_TxD;
-  \^ext_reset_in_1\ <= ext_reset_in;
   axi_epc_0_EPC_INTF_CLK <= EPC_INTF_clk;
   axi_epc_0_EPC_INTF_DATA_I(0 to 31) <= EPC_INTF_data_i(0 to 31);
   axi_epc_0_EPC_INTF_RDY(0) <= EPC_INTF_rdy(0);
@@ -2236,7 +2245,6 @@ begin
   axi_gpio_0_GPIO_TRI_I(15 downto 0) <= GPIO_tri_i(15 downto 0);
   axi_iic_0_IIC_SCL_I <= IIC_scl_i;
   axi_iic_0_IIC_SDA_I <= IIC_sda_i;
-  ext_reset_in_1_1 <= ext_reset_in_1;
   processing_system7_0_IIC_0_SCL_I <= IIC_0_scl_i;
   processing_system7_0_IIC_0_SDA_I <= IIC_0_sda_i;
   processing_system7_0_IIC_1_SCL_I <= IIC_1_scl_i;
@@ -2370,7 +2378,7 @@ processing_system7_0: component cpu_processing_system7_0_0
       ENET0_PTP_SYNC_FRAME_TX => NLW_processing_system7_0_ENET0_PTP_SYNC_FRAME_TX_UNCONNECTED,
       ENET0_SOF_RX => NLW_processing_system7_0_ENET0_SOF_RX_UNCONNECTED,
       ENET0_SOF_TX => NLW_processing_system7_0_ENET0_SOF_TX_UNCONNECTED,
-      FCLK_CLK0 => processing_system7_0_FCLK_CLK1,
+      FCLK_CLK0 => M_AXI_GP0_ACLK_1,
       FCLK_RESET0_N => processing_system7_0_FCLK_RESET0_N,
       I2C0_SCL_I => processing_system7_0_IIC_0_SCL_I,
       I2C0_SCL_O => processing_system7_0_IIC_0_SCL_O,
@@ -2384,6 +2392,7 @@ processing_system7_0: component cpu_processing_system7_0_0
       I2C1_SDA_I => processing_system7_0_IIC_1_SDA_I,
       I2C1_SDA_O => processing_system7_0_IIC_1_SDA_O,
       I2C1_SDA_T => processing_system7_0_IIC_1_SDA_T,
+      IRQ_F2P(1 downto 0) => xlconcat_0_dout(1 downto 0),
       MIO(53 downto 0) => FIXED_IO_mio(53 downto 0),
       M_AXI_GP0_ACLK => M_AXI_GP0_ACLK_1,
       M_AXI_GP0_ARADDR(31 downto 0) => processing_system7_0_M_AXI_GP0_ARADDR(31 downto 0),
@@ -2627,7 +2636,7 @@ rst_M_AXI_GP1_ACLK_100M: component cpu_rst_M_AXI_GP1_ACLK_100M_0
       aux_reset_in => VCC_1,
       bus_struct_reset(0) => NLW_rst_M_AXI_GP1_ACLK_100M_bus_struct_reset_UNCONNECTED(0),
       dcm_locked => VCC_1,
-      ext_reset_in => ext_reset_in_1_1,
+      ext_reset_in => processing_system7_0_FCLK_RESET0_N,
       interconnect_aresetn(0) => rst_M_AXI_GP1_ACLK_100M_interconnect_aresetn(0),
       mb_debug_sys_rst => GND_1,
       mb_reset => NLW_rst_M_AXI_GP1_ACLK_100M_mb_reset_UNCONNECTED,
@@ -2640,12 +2649,18 @@ rst_processing_system7_0_100M: component cpu_rst_processing_system7_0_100M_0
       aux_reset_in => VCC_1,
       bus_struct_reset(0) => NLW_rst_processing_system7_0_100M_bus_struct_reset_UNCONNECTED(0),
       dcm_locked => VCC_1,
-      ext_reset_in => \^ext_reset_in_1\,
+      ext_reset_in => processing_system7_0_FCLK_RESET0_N,
       interconnect_aresetn(0) => rst_processing_system7_0_100M_interconnect_aresetn(0),
       mb_debug_sys_rst => GND_1,
       mb_reset => NLW_rst_processing_system7_0_100M_mb_reset_UNCONNECTED,
       peripheral_aresetn(0) => rst_processing_system7_0_100M_peripheral_aresetn(0),
       peripheral_reset(0) => NLW_rst_processing_system7_0_100M_peripheral_reset_UNCONNECTED(0),
       slowest_sync_clk => M_AXI_GP0_ACLK_1
+    );
+xlconcat_0: component cpu_xlconcat_0_0
+    port map (
+      In0(0) => In0_1(0),
+      In1(0) => In1_1(0),
+      dout(1 downto 0) => xlconcat_0_dout(1 downto 0)
     );
 end STRUCTURE;

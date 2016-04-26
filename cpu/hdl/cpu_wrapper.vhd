@@ -1,7 +1,7 @@
 --Copyright 1986-2014 Xilinx, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------
 --Tool Version: Vivado v.2014.4 (lin64) Build 1071353 Tue Nov 18 16:47:07 MST 2014
---Date        : Thu Apr 14 20:43:55 2016
+--Date        : Mon Apr 25 12:07:02 2016
 --Host        : graviton running 64-bit Debian GNU/Linux 7.10 (wheezy)
 --Command     : generate_target cpu_wrapper.bd
 --Design      : cpu_wrapper
@@ -47,13 +47,13 @@ entity cpu_wrapper is
     FIXED_IO_ps_clk : inout STD_LOGIC;
     FIXED_IO_ps_porb : inout STD_LOGIC;
     FIXED_IO_ps_srstb : inout STD_LOGIC;
-    M_AXI_GP0_ACLK : in STD_LOGIC;
-    M_AXI_GP1_ACLK : in STD_LOGIC;
+    Int0 : in STD_LOGIC_VECTOR ( 0 to 0 );
+    Int1 : in STD_LOGIC_VECTOR ( 0 to 0 );
+    OCXO_CLK100 : in STD_LOGIC;
+    OCXO_RESETN : out STD_LOGIC_VECTOR ( 0 to 0 );
     UART_0_rxd : in STD_LOGIC;
     UART_0_txd : out STD_LOGIC;
     epc_intf_data_io : inout STD_LOGIC_VECTOR ( 31 downto 0 );
-    ext_reset_in : in STD_LOGIC;
-    ext_reset_in_1 : in STD_LOGIC;
     gpio_tri_io : inout STD_LOGIC_VECTOR ( 15 downto 0 );
     iic_0_scl_io : inout STD_LOGIC;
     iic_0_sda_io : inout STD_LOGIC;
@@ -125,12 +125,12 @@ architecture STRUCTURE of cpu_wrapper is
     EPC_INTF_rnw : out STD_LOGIC;
     EPC_INTF_rst : in STD_LOGIC;
     EPC_INTF_wr_n : out STD_LOGIC;
-    M_AXI_GP1_ACLK : in STD_LOGIC;
+    OCXO_CLK100 : in STD_LOGIC;
     FCLK_CLK0 : out STD_LOGIC;
     FCLK_RESET0_N : out STD_LOGIC;
-    M_AXI_GP0_ACLK : in STD_LOGIC;
-    ext_reset_in : in STD_LOGIC;
-    ext_reset_in_1 : in STD_LOGIC
+    OCXO_RESETN : out STD_LOGIC_VECTOR ( 0 to 0 );
+    Int0 : in STD_LOGIC_VECTOR ( 0 to 0 );
+    Int1 : in STD_LOGIC_VECTOR ( 0 to 0 )
   );
   end component cpu;
   component IOBUF is
@@ -550,12 +550,12 @@ cpu_i: component cpu
       IIC_sda_i => iic_sda_i,
       IIC_sda_o => iic_sda_o,
       IIC_sda_t => iic_sda_t,
-      M_AXI_GP0_ACLK => M_AXI_GP0_ACLK,
-      M_AXI_GP1_ACLK => M_AXI_GP1_ACLK,
+      Int0(0) => Int0(0),
+      Int1(0) => Int1(0),
+      OCXO_CLK100 => OCXO_CLK100,
+      OCXO_RESETN(0) => OCXO_RESETN(0),
       UART_0_rxd => UART_0_rxd,
-      UART_0_txd => UART_0_txd,
-      ext_reset_in => ext_reset_in,
-      ext_reset_in_1 => ext_reset_in_1
+      UART_0_txd => UART_0_txd
     );
 epc_intf_data_iobuf_0: component IOBUF
     port map (
