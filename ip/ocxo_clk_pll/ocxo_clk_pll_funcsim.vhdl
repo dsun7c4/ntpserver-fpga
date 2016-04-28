@@ -1,8 +1,8 @@
 -- Copyright 1986-2014 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2014.4 (lin64) Build 1071353 Tue Nov 18 16:47:07 MST 2014
--- Date        : Tue Mar 15 21:11:26 2016
--- Host        : graviton running 64-bit Debian GNU/Linux 7.9 (wheezy)
+-- Date        : Wed Apr 27 21:06:47 2016
+-- Host        : graviton running 64-bit Debian GNU/Linux 7.10 (wheezy)
 -- Command     : write_vhdl -force -mode funcsim /home/guest/cae/fpga/ntpserver/ip/ocxo_clk_pll/ocxo_clk_pll_funcsim.vhdl
 -- Design      : ocxo_clk_pll
 -- Purpose     : This VHDL netlist is a functional simulation representation of the design and should not be modified or
