@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-03-13
--- Last update: 2016-04-26
+-- Last update: 2016-04-28
 -- Platform   : 
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -139,10 +139,28 @@ architecture STRUCTURE of clock is
           EPC_INTF_rdy      : out   std_logic;
           EPC_INTF_rnw      : in    std_logic;  -- Write when '0'
 
+          fan_mspr          : in    std_logic_vector(15 downto 0);
+          fan_pct           : out   std_logic_vector(7 downto 0);
+
           tmp               : out   std_logic
 
           );
   end component regs;
+
+  component fan
+      port (
+          rst_n             : in    std_logic;
+          clk               : in    std_logic;
+
+          fan_pct           : in    std_logic_vector(7 downto 0);
+          fan_tach          : in    std_logic;
+
+          fan_pwm           : out   std_logic;
+          fan_mspr          : out   std_logic_vector(15 downto 0)
+          );
+  end component fan;
+
+
 
   signal EPC_INTF_addr   : std_logic_vector (0 to 31);
   signal EPC_INTF_ads    : std_logic;
@@ -193,6 +211,9 @@ architecture STRUCTURE of clock is
 
   SIGNAL clk             : STD_LOGIC;
   SIGNAL locked          : STD_LOGIC;
+
+  SIGNAL fan_pct      : std_logic_vector(7 downto 0);
+  SIGNAL fan_mspr     : std_logic_vector(15 downto 0);
 
   SIGNAL tmp          : std_logic;
 
@@ -346,8 +367,23 @@ begin
           EPC_INTF_rdy      => EPC_INTF_rdy,
           EPC_INTF_rnw      => EPC_INTF_rnw,
 
+          fan_mspr          => fan_mspr,
+          fan_pct           => fan_pct,
           tmp               => tmp
 
+          );
+
+
+  fan_ctl: fan
+      port map (
+          rst_n             => OCXO_RESETN(0),
+          clk               => clk,
+
+          fan_pct           => fan_pct,
+          fan_tach          => fan_tach,
+
+          fan_pwm           => fan_pwm,
+          fan_mspr          => fan_mspr
           );
 
 

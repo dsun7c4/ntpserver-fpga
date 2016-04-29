@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-03-13
--- Last update: 2016-04-27
+-- Last update: 2016-04-28
 -- Platform   : 
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -29,7 +29,7 @@
 -- 
 -- 0x8060_000c  |           |           |       DAC value       |
 -- 
--- 0x8060_0100  |           |         RPM           |  Fan pwm  |
+-- 0x8060_0100  |        MSPR           |           |  Fan pwm  |
 --
 -- 0x8060_0200  |  digit 3  |  digit 2  |  digit 1  |  digit 0  |
 -- 
@@ -65,6 +65,9 @@ entity regs is
       EPC_INTF_rdy      : out   std_logic;
       EPC_INTF_rnw      : in    std_logic;  -- Write when '0'
 
+      fan_mspr          : in    std_logic_vector(15 downto 0);
+      fan_pct           : out   std_logic_vector(7 downto 0);
+      
       tmp               : out   std_logic
 
   );
@@ -72,7 +75,7 @@ end regs;
 
 
 
-architecture STRUCTURE of regs is
+architecture rtl of regs is
 
     type reg_arr is array (natural range <>) of std_logic_vector(31 downto 0);
 
@@ -189,6 +192,7 @@ begin
                     when "0000" =>
                         time_regs_mux <= time_regs(0);
                         fan_regs_mux  <= fan_regs(0);
+                        fan_regs_mux(31 downto 16) <= fan_mspr;
                         disp_regs_mux <= disp_regs(0);
                     when "0001" =>
                         time_regs_mux <= time_regs(1);
@@ -263,6 +267,8 @@ begin
         end if;
     end process;
 
+    fan_pct <= fan_regs(0)(7 downto 0);
+
 
     -- disp control registers
     process (rst_n, clk) is
@@ -294,4 +300,4 @@ begin
     end process;
 
 
-end STRUCTURE;
+end rtl;

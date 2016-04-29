@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-03-22
--- Last update: 2016-04-26
+-- Last update: 2016-04-28
 -- Platform   : 
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -233,19 +233,19 @@ begin
         loop
             fan_tach <= '1';
 
-            run_clk(ocxo_clk, 1);
+            run_clk(ocxo_clk, 1000);
 
             fan_tach <= '0';
 
-            run_clk(ocxo_clk, 2);
+            run_clk(ocxo_clk, 2000);
 
             fan_tach <= '1';
 
-            run_clk(ocxo_clk, 3);
+            run_clk(ocxo_clk, 3000);
 
             fan_tach <= '0';
 
-            run_clk(ocxo_clk, 4);
+            run_clk(ocxo_clk, 4000);
 
         end loop;
     end process;
