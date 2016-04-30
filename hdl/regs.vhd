@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-03-13
--- Last update: 2016-04-28
+-- Last update: 2016-04-29
 -- Platform   : 
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -25,9 +25,11 @@
 -- 
 -- 0x8060_0004  |            TSC MSB                            |
 --
--- 0x8060_0008  |           |   hour    |  min      |  sec      |
+-- 0x8060_0008  |           1PPS Difference                     |
 -- 
--- 0x8060_000c  |           |           |       DAC value       |
+-- 0x8060_000c  |           |   hour    |  min      |  sec      |
+-- 
+-- 0x8060_0010  |           |           |       DAC value       |
 -- 
 -- 0x8060_0100  |        MSPR           |           |  Fan pwm  |
 --
@@ -64,6 +66,11 @@ entity regs is
       EPC_INTF_data_o   : in    std_logic_vector(0 to 31);
       EPC_INTF_rdy      : out   std_logic;
       EPC_INTF_rnw      : in    std_logic;  -- Write when '0'
+
+      tsc_read          : out    std_logic;
+      tsc_sync          : out    std_logic;
+      diff_1pps         : in    std_logic_vector(31 downto 0);
+      tsc_cnt           : in    std_logic_vector(63 downto 0);
 
       fan_mspr          : in    std_logic_vector(15 downto 0);
       fan_pct           : out   std_logic_vector(7 downto 0);
@@ -186,20 +193,21 @@ begin
             time_regs_mux <= (others => '0');
             fan_regs_mux  <= (others => '0');
             disp_regs_mux <= (others => '0');
+            tsc_read      <= '0';
         elsif (clk'event and clk = '1') then
             if (cs_n_d = '0') then
                 case addr(5 downto 2) is
                     when "0000" =>
-                        time_regs_mux <= time_regs(0);
+                        time_regs_mux <= tsc_cnt(31 downto 0);
                         fan_regs_mux  <= fan_regs(0);
                         fan_regs_mux(31 downto 16) <= fan_mspr;
                         disp_regs_mux <= disp_regs(0);
                     when "0001" =>
-                        time_regs_mux <= time_regs(1);
+                        time_regs_mux <= tsc_cnt(63 downto 32);
                         fan_regs_mux  <= fan_regs_mux;
                         disp_regs_mux <= disp_regs(1);
                     when "0010" =>
-                        time_regs_mux <= time_regs(2);
+                        time_regs_mux <= diff_1pps;
                         fan_regs_mux  <= fan_regs_mux;
                         disp_regs_mux <= disp_regs(2);
                     when "0011" =>
@@ -218,6 +226,14 @@ begin
                         null;
                 end case;
             end if;
+
+            -- Hold tsc value on LSW read
+            if (cs_dp_r = '1' and decode(0) = '1' and addr(5 downto 2) = "0000") then
+                tsc_read      <= '1';
+            else
+                tsc_read      <= '0';
+            end if;
+
         end if;
     end process;
 

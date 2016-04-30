@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-03-13
--- Last update: 2016-04-28
+-- Last update: 2016-04-29
 -- Platform   : 
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -139,6 +139,11 @@ architecture STRUCTURE of clock is
           EPC_INTF_rdy      : out   std_logic;
           EPC_INTF_rnw      : in    std_logic;  -- Write when '0'
 
+          tsc_read          : out    std_logic;
+          tsc_sync          : out    std_logic;
+          diff_1pps         : in    std_logic_vector(31 downto 0);
+          tsc_cnt           : in    std_logic_vector(63 downto 0);
+
           fan_mspr          : in    std_logic_vector(15 downto 0);
           fan_pct           : out   std_logic_vector(7 downto 0);
 
@@ -146,6 +151,7 @@ architecture STRUCTURE of clock is
 
           );
   end component regs;
+
 
   component fan
       port (
@@ -161,6 +167,21 @@ architecture STRUCTURE of clock is
   end component fan;
 
 
+  component tsc
+      port (
+          rst_n             : in    std_logic;
+          clk               : in    std_logic;
+
+          gps_1pps          : in    std_logic;
+          tsc_read          : in    std_logic;
+          tsc_sync          : in    std_logic;
+
+          diff_1pps         : out   std_logic_vector(31 downto 0);
+
+          tsc_1pps          : out   std_logic;
+          tsc_cnt           : out   std_logic_vector(63 downto 0)
+          );
+  end component tsc;
 
   signal EPC_INTF_addr   : std_logic_vector (0 to 31);
   signal EPC_INTF_ads    : std_logic;
@@ -214,6 +235,14 @@ architecture STRUCTURE of clock is
 
   SIGNAL fan_pct      : std_logic_vector(7 downto 0);
   SIGNAL fan_mspr     : std_logic_vector(15 downto 0);
+
+  SIGNAL tsc_read     : std_logic;
+  SIGNAL tsc_sync     : std_logic;
+
+  SIGNAL diff_1pps    : std_logic_vector(31 downto 0);
+
+  SIGNAL tsc_1pps     : std_logic;
+  SIGNAL tsc_cnt      : std_logic_vector(63 downto 0);
 
   SIGNAL tmp          : std_logic;
 
@@ -367,6 +396,11 @@ begin
           EPC_INTF_rdy      => EPC_INTF_rdy,
           EPC_INTF_rnw      => EPC_INTF_rnw,
 
+          tsc_read          => tsc_read,
+          tsc_sync          => tsc_sync,
+          diff_1pps         => diff_1pps,
+          tsc_cnt           => tsc_cnt,
+
           fan_mspr          => fan_mspr,
           fan_pct           => fan_pct,
           tmp               => tmp
@@ -384,6 +418,23 @@ begin
 
           fan_pwm           => fan_pwm,
           fan_mspr          => fan_mspr
+          );
+
+
+  time_stamp: tsc
+      port map (
+          rst_n             => OCXO_RESETN(0),
+          --rst_n             => rst_n,
+          clk               => clk,
+
+          gps_1pps          => gps_1pps,
+          tsc_read          => tsc_read,
+          tsc_sync          => tsc_sync,
+
+          diff_1pps         => diff_1pps,
+
+          tsc_1pps          => tsc_1pps,
+          tsc_cnt           => tsc_cnt
           );
 
 

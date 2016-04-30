@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-03-22
--- Last update: 2016-04-28
+-- Last update: 2016-04-29
 -- Platform   : 
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -294,7 +294,13 @@ begin
 
         reg_write(x"00000100", x"000000ff");
 
-        run_clk(clk, 100);
+        run_clk(clk, 100000);
+
+        reg_read(x"00000000");
+
+        run_clk(clk, 100000);
+
+        reg_read(x"00000004");
 
         wait;
         

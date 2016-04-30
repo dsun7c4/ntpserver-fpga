@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-03-22
--- Last update: 2016-04-28
+-- Last update: 2016-04-29
 -- Platform   : 
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -233,22 +233,28 @@ begin
         loop
             fan_tach <= '1';
 
-            run_clk(ocxo_clk, 1000);
+            run_clk(ocxo_clk, 10000);
 
             fan_tach <= '0';
 
-            run_clk(ocxo_clk, 2000);
+            run_clk(ocxo_clk, 20000);
 
             fan_tach <= '1';
 
-            run_clk(ocxo_clk, 3000);
+            run_clk(ocxo_clk, 30000);
 
             fan_tach <= '0';
 
-            run_clk(ocxo_clk, 4000);
+            run_clk(ocxo_clk, 40000);
 
         end loop;
     end process;
+
+    gps_1pps  <= '0';
+    gps_3dfix <= '0';
+    gps_rxd   <= '0';
+
+
 end STRUCTURE;
 
 
