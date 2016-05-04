@@ -46,7 +46,9 @@ end fan;
 
 architecture rtl of fan is
 
-    signal pwm_cnt     : std_logic_vector(11 downto 0);
+    signal pwm_div     : std_logic_vector(3 downto 0);
+    signal pwm_ce      : std_logic;
+    signal pwm_cnt     : std_logic_vector(7 downto 0);
     signal pwm_term    : std_logic;
     signal pwm_out     : std_logic;
     
@@ -59,6 +61,30 @@ architecture rtl of fan is
 
 begin
 
+    -- First divider to generate clock enable for the PWM
+    -- Divide by 13
+    fan_pwmdiv:
+    process (rst_n, clk) is
+    begin
+        if (rst_n = '0') then
+            pwm_div  <= (others => '0');
+            pwm_ce   <= '0';
+        elsif (clk'event and clk = '1') then
+            if (pwm_ce   = '1') then
+                pwm_div  <= (others => '0');
+            else
+                pwm_div  <= pwm_div + 1;
+            end if;
+
+            if (pwm_div = x"B") then
+                pwm_ce   <= '1';
+            else
+                pwm_ce   <= '0';
+            end if;
+        end if;
+    end process;
+
+
     -- Pulse width modulator counter
     fan_pwmcnt:
     process (rst_n, clk) is
@@ -67,16 +93,14 @@ begin
             pwm_cnt  <= (others => '0');
             pwm_term <= '0';
         elsif (clk'event and clk = '1') then
-            if (pwm_term = '1') then
-                pwm_cnt  <= (others => '0');
-            else
+            if (pwm_ce = '1') then
                 pwm_cnt  <= pwm_cnt + 1;
-            end if;
-
-            if (pwm_cnt = x"d03") then
-                pwm_term <= '1';
-            else
-                pwm_term <= '0';
+                
+                if (pwm_cnt = x"FE") then
+                    pwm_term <= '1';
+                else
+                    pwm_term <= '0';
+                end if;
             end if;
         end if;
     end process;
@@ -89,10 +113,12 @@ begin
         if (rst_n = '0') then
             pwm_out <= '0';
         elsif (clk'event and clk = '1') then
-            if (pwm_cnt = (fan_pct & "1111")) then
-                pwm_out <= '0';
-            elsif (pwm_term = '1') then
-                pwm_out <= '1';
+            if (pwm_ce = '1') then
+                if (pwm_term = '1') then
+                    pwm_out <= '1';
+                elsif (pwm_cnt = fan_pct) then
+                    pwm_out <= '0';
+                end if;
             end if;
         end if;
     end process;
@@ -103,6 +129,29 @@ begin
 
 
 
+    -- Tach millisecond clock enable generator
+    fan_ms:
+    process (rst_n, clk) is
+    begin
+        if (rst_n = '0') then
+            tach_cnt  <= (others => '0');
+            tach_ms   <= '0';
+        elsif (clk'event and clk = '1') then
+            if (tach_ms = '1') then
+                tach_cnt  <= (others => '0');
+            else
+                tach_cnt  <= tach_cnt + 1;
+            end if;
+
+            if (tach_cnt = (100000 - 2)) then
+                tach_ms   <= '1';
+            else
+                tach_ms   <= '0';
+            end if;
+        end if;
+    end process;
+
+    
     -- Tach input buffer and rising edge detector
     fan_ireg:
     process (rst_n, clk) is
@@ -111,32 +160,11 @@ begin
             tach_dly    <= (others => '0');
             tach_pulse  <= '0';
         elsif (clk'event and clk = '1') then
-            tach_dly(0) <= fan_tach;
-            tach_dly(1) <= tach_dly(0);
-            tach_dly(2) <= tach_dly(1);
-            tach_pulse  <= not tach_dly(2) and tach_dly(1);
-        end if;
-    end process;
-
-    
-    -- Tach millisecond pulse generator
-    fan_ms:
-    process (rst_n, clk) is
-    begin
-        if (rst_n = '0') then
-            tach_cnt  <= (others => '0');
-            tach_ms   <= '0';
-        elsif (clk'event and clk = '1') then
-            if (tach_ms = '1' or tach_pulse = '1') then
-                tach_cnt  <= (others => '0');
-            else
-                tach_cnt  <= tach_cnt + 1;
-            end if;
-
-            if (tach_cnt = (100000 - 2) and tach_pulse = '0') then
-                tach_ms   <= '1';
-            else
-                tach_ms   <= '0';
+            tach_dly(0) <= fan_tach;  -- input register
+            if (tach_ms = '1') then
+                tach_dly(1) <= tach_dly(0);
+                tach_dly(2) <= tach_dly(1);
+                tach_pulse  <= not tach_dly(2) and tach_dly(1);
             end if;
         end if;
     end process;
@@ -151,20 +179,22 @@ begin
             tach_meas  <= (others => '0');
             tach_msout <= (others => '0');
         elsif (clk'event and clk = '1') then
-            if (tach_pulse = '1') then
-                tach_msout <= tach_meas;
-            end if;
-
-            tach_add := ('0' & tach_meas) + 1;
-            
-            if (tach_pulse = '1') then
-                tach_meas  <= (others => '0');
-                tach_meas(0) <= '1';   -- Start measurement at one
-            else
-                -- saturating up counter
-                if (tach_add(tach_add'left) = '0' and tach_ms = '1') then
-                    tach_meas  <= tach_add(tach_meas'range);
+            if (tach_ms = '1') then
+                if (tach_pulse = '1') then
+                    tach_meas    <= (others => '0');
+                    tach_meas(0) <= '1';   -- Start measurement at one
+                else
+                    -- saturating up counter
+                    tach_add := ('0' & tach_meas) + 1;
+                    if (tach_add(tach_add'left) = '0') then
+                        tach_meas  <= tach_add(tach_meas'range);
+                    end if;
                 end if;
+
+                if (tach_pulse = '1') then
+                    tach_msout <= tach_meas;
+                end if;
+
             end if;
         end if;
     end process;

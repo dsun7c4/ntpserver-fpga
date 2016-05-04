@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-03-13
--- Last update: 2016-04-29
+-- Last update: 2016-05-03
 -- Platform   : 
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -24,6 +24,9 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
 use IEEE.STD_LOGIC_ARITH.ALL;
+
+library work;
+use work.util_pkg.all;
 
 architecture STRUCTURE of clock is
 
@@ -201,6 +204,8 @@ architecture STRUCTURE of clock is
   signal gpio_tri_i      : std_logic_vector (15 downto 0);
   signal gpio_tri_o      : std_logic_vector (15 downto 0);
   signal gpio_tri_t      : std_logic_vector (15 downto 0);
+  signal gpio_o_d        : std_logic_vector (15 downto 0);
+  signal gpio_t_d        : std_logic_vector (15 downto 0);
 
   signal iic_0_scl_i     : std_logic;
   signal iic_0_scl_o     : std_logic;
@@ -228,7 +233,7 @@ architecture STRUCTURE of clock is
 
   SIGNAL fclk            : STD_LOGIC;
   SIGNAL fclk_reset_n    : STD_LOGIC;
-  SIGNAL OCXO_RESETN     : std_logic_vector (0 to 0);
+  SIGNAL rst_n           : std_logic;
 
   SIGNAL clk             : STD_LOGIC;
   SIGNAL locked          : STD_LOGIC;
@@ -286,7 +291,7 @@ begin
             EPC_INTF_rd_n     => EPC_INTF_rd_n,
             EPC_INTF_rdy(0)   => EPC_INTF_rdy,
             EPC_INTF_rnw      => EPC_INTF_rnw,
-            EPC_INTF_rst      => OCXO_RESETN(0),
+            EPC_INTF_rst      => rst_n,
             EPC_INTF_wr_n     => EPC_INTF_wr_n,
 
             GPIO_tri_i        => GPIO_tri_i,
@@ -320,7 +325,7 @@ begin
             OCXO_CLK100       => clk,
             FCLK_CLK0         => fclk,
             FCLK_RESET0_N     => fclk_reset_n,
-            OCXO_RESETN       => OCXO_RESETN,
+            OCXO_RESETN(0)    => rst_n,
             Int0              => Int0,
             Int1              => Int1
             );
@@ -346,6 +351,9 @@ begin
     iic_sda_i   <= temp_sda;
 
 
+    gpio_oreg: delay_vec generic map (1) port map(fclk_reset_n, fclk, GPIO_tri_o, gpio_o_d);
+    gpio_treg: delay_vec generic map (1) port map(fclk_reset_n, fclk, GPIO_tri_t, gpio_t_d);
+
     -- Generic gpio interface
     gpio_tri: for i in 0 to 7 generate
     begin
@@ -357,9 +365,10 @@ begin
         --        T => GPIO_tri_t(i)
         --        );
 
-        gpio(i)       <= GPIO_tri_o(i) when GPIO_tri_t(i) = '0' else 'Z';
-        GPIO_tri_i(i) <= gpio(i);
+        gpio(i)       <= gpio_o_d(i) when gpio_t_d(i) = '0' else 'Z';
     end generate;
+
+    gpio_ireg: delay_vec generic map (1) port map(fclk_reset_n, fclk, gpio, GPIO_tri_i(gpio'range));
 
     --gpio(0)       <= gpio_tri_o(0) when gpio_tri_t(0) = '0' else 'Z';
     --gpio(1)       <= gpio_tri_o(1) when gpio_tri_t(1) = '0' else 'Z';
@@ -384,7 +393,7 @@ begin
 
   cpu_regs: regs
       port map (
-          rst_n             => OCXO_RESETN(0),
+          rst_n             => rst_n,
           clk               => clk,
 
           EPC_INTF_addr     => EPC_INTF_addr,
@@ -410,7 +419,7 @@ begin
 
   fan_ctl: fan
       port map (
-          rst_n             => OCXO_RESETN(0),
+          rst_n             => rst_n,
           clk               => clk,
 
           fan_pct           => fan_pct,
@@ -423,8 +432,7 @@ begin
 
   time_stamp: tsc
       port map (
-          rst_n             => OCXO_RESETN(0),
-          --rst_n             => rst_n,
+          rst_n             => rst_n,
           clk               => clk,
 
           gps_1pps          => gps_1pps,

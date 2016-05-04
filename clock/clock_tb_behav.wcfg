@@ -201,8 +201,8 @@
       <obj_property name="ObjectShortName">fan_pwm</obj_property>
    </wvobject>
    <wvobject db_ref_id="1" type="array" fp_name="/clock_tb/fpga/fan_ctl/pwm_cnt">
-      <obj_property name="ElementShortName">pwm_cnt[11:0]</obj_property>
-      <obj_property name="ObjectShortName">pwm_cnt[11:0]</obj_property>
+      <obj_property name="ElementShortName">pwm_cnt[7:0]</obj_property>
+      <obj_property name="ObjectShortName">pwm_cnt[7:0]</obj_property>
       <obj_property name="Radix">HEXRADIX</obj_property>
    </wvobject>
    <wvobject db_ref_id="1" type="logic" fp_name="/clock_tb/fpga/fan_ctl/pwm_term">
