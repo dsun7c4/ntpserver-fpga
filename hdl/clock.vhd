@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-03-13
--- Last update: 2016-05-03
+-- Last update: 2016-05-04
 -- Platform   : 
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -30,226 +30,228 @@ use work.util_pkg.all;
 
 architecture STRUCTURE of clock is
 
-  component cpu is
-  port (
-      DDR_cas_n         : inout std_logic;
-      DDR_cke           : inout std_logic;
-      DDR_ck_n          : inout std_logic;
-      DDR_ck_p          : inout std_logic;
-      DDR_cs_n          : inout std_logic;
-      DDR_reset_n       : inout std_logic;
-      DDR_odt           : inout std_logic;
-      DDR_ras_n         : inout std_logic;
-      DDR_we_n          : inout std_logic;
-      DDR_ba            : inout std_logic_vector (2 downto 0);
-      DDR_addr          : inout std_logic_vector (14 downto 0);
-      DDR_dm            : inout std_logic_vector (3 downto 0);
-      DDR_dq            : inout std_logic_vector (31 downto 0);
-      DDR_dqs_n         : inout std_logic_vector (3 downto 0);
-      DDR_dqs_p         : inout std_logic_vector (3 downto 0);
-      FIXED_IO_mio      : inout std_logic_vector (53 downto 0);
-      FIXED_IO_ddr_vrn  : inout std_logic;
-      FIXED_IO_ddr_vrp  : inout std_logic;
-      FIXED_IO_ps_srstb : inout std_logic;
-      FIXED_IO_ps_clk   : inout std_logic;
-      FIXED_IO_ps_porb  : inout std_logic;
-      UART_0_txd        : out   std_logic;
-      UART_0_rxd        : in    std_logic;
-      IIC_0_sda_i       : in    std_logic;
-      IIC_0_sda_o       : out   std_logic;
-      IIC_0_sda_t       : out   std_logic;
-      IIC_0_scl_i       : in    std_logic;
-      IIC_0_scl_o       : out   std_logic;
-      IIC_0_scl_t       : out   std_logic;
-      IIC_1_sda_i       : in    std_logic;
-      IIC_1_sda_o       : out   std_logic;
-      IIC_1_sda_t       : out   std_logic;
-      IIC_1_scl_i       : in    std_logic;
-      IIC_1_scl_o       : out   std_logic;
-      IIC_1_scl_t       : out   std_logic;
-      GPIO_tri_i        : in    std_logic_vector (15 downto 0);
-      GPIO_tri_o        : out   std_logic_vector (15 downto 0);
-      GPIO_tri_t        : out   std_logic_vector (15 downto 0);
-      IIC_scl_i         : in    std_logic;
-      IIC_scl_o         : out   std_logic;
-      IIC_scl_t         : out   std_logic;
-      IIC_sda_i         : in    std_logic;
-      IIC_sda_o         : out   std_logic;
-      IIC_sda_t         : out   std_logic;
-      EPC_INTF_addr     : out   std_logic_vector (0 to 31);
-      EPC_INTF_ads      : out   std_logic;
-      EPC_INTF_be       : out   std_logic_vector (0 to 3);
-      EPC_INTF_burst    : out   std_logic;
-      EPC_INTF_clk      : in    std_logic;
-      EPC_INTF_cs_n     : out   std_logic_vector (0 to 0);
-      EPC_INTF_data_i   : in    std_logic_vector (0 to 31);
-      EPC_INTF_data_o   : out   std_logic_vector (0 to 31);
-      EPC_INTF_data_t   : out   std_logic_vector (0 to 31);
-      EPC_INTF_rd_n     : out   std_logic;
-      EPC_INTF_rdy      : in    std_logic_vector (0 to 0);
-      EPC_INTF_rnw      : out   std_logic;
-      EPC_INTF_rst      : in    std_logic;
-      EPC_INTF_wr_n     : out   std_logic;
-      OCXO_CLK100       : in    std_logic;
-      FCLK_CLK0         : out   std_logic;
-      FCLK_RESET0_N     : out   std_logic;
-      OCXO_RESETN       : out   std_logic_vector (0 to 0);
-      Int0              : in    std_logic_vector (0 to 0);
-      Int1              : in    std_logic_vector (0 to 0)
-      );
-  end component cpu;
+    component cpu is
+        port (
+            DDR_cas_n         : inout std_logic;
+            DDR_cke           : inout std_logic;
+            DDR_ck_n          : inout std_logic;
+            DDR_ck_p          : inout std_logic;
+            DDR_cs_n          : inout std_logic;
+            DDR_reset_n       : inout std_logic;
+            DDR_odt           : inout std_logic;
+            DDR_ras_n         : inout std_logic;
+            DDR_we_n          : inout std_logic;
+            DDR_ba            : inout std_logic_vector (2 downto 0);
+            DDR_addr          : inout std_logic_vector (14 downto 0);
+            DDR_dm            : inout std_logic_vector (3 downto 0);
+            DDR_dq            : inout std_logic_vector (31 downto 0);
+            DDR_dqs_n         : inout std_logic_vector (3 downto 0);
+            DDR_dqs_p         : inout std_logic_vector (3 downto 0);
+            FIXED_IO_mio      : inout std_logic_vector (53 downto 0);
+            FIXED_IO_ddr_vrn  : inout std_logic;
+            FIXED_IO_ddr_vrp  : inout std_logic;
+            FIXED_IO_ps_srstb : inout std_logic;
+            FIXED_IO_ps_clk   : inout std_logic;
+            FIXED_IO_ps_porb  : inout std_logic;
+            UART_0_txd        : out   std_logic;
+            UART_0_rxd        : in    std_logic;
+            IIC_0_sda_i       : in    std_logic;
+            IIC_0_sda_o       : out   std_logic;
+            IIC_0_sda_t       : out   std_logic;
+            IIC_0_scl_i       : in    std_logic;
+            IIC_0_scl_o       : out   std_logic;
+            IIC_0_scl_t       : out   std_logic;
+            IIC_1_sda_i       : in    std_logic;
+            IIC_1_sda_o       : out   std_logic;
+            IIC_1_sda_t       : out   std_logic;
+            IIC_1_scl_i       : in    std_logic;
+            IIC_1_scl_o       : out   std_logic;
+            IIC_1_scl_t       : out   std_logic;
+            GPIO_tri_i        : in    std_logic_vector (15 downto 0);
+            GPIO_tri_o        : out   std_logic_vector (15 downto 0);
+            GPIO_tri_t        : out   std_logic_vector (15 downto 0);
+            IIC_scl_i         : in    std_logic;
+            IIC_scl_o         : out   std_logic;
+            IIC_scl_t         : out   std_logic;
+            IIC_sda_i         : in    std_logic;
+            IIC_sda_o         : out   std_logic;
+            IIC_sda_t         : out   std_logic;
+            EPC_INTF_addr     : out   std_logic_vector (0 to 31);
+            EPC_INTF_ads      : out   std_logic;
+            EPC_INTF_be       : out   std_logic_vector (0 to 3);
+            EPC_INTF_burst    : out   std_logic;
+            EPC_INTF_clk      : in    std_logic;
+            EPC_INTF_cs_n     : out   std_logic_vector (0 to 0);
+            EPC_INTF_data_i   : in    std_logic_vector (0 to 31);
+            EPC_INTF_data_o   : out   std_logic_vector (0 to 31);
+            EPC_INTF_data_t   : out   std_logic_vector (0 to 31);
+            EPC_INTF_rd_n     : out   std_logic;
+            EPC_INTF_rdy      : in    std_logic_vector (0 to 0);
+            EPC_INTF_rnw      : out   std_logic;
+            EPC_INTF_rst      : in    std_logic;
+            EPC_INTF_wr_n     : out   std_logic;
+            OCXO_CLK100       : in    std_logic;
+            FCLK_CLK0         : out   std_logic;
+            FCLK_RESET0_N     : out   std_logic;
+            OCXO_RESETN       : out   std_logic_vector (0 to 0);
+            Int0              : in    std_logic_vector (0 to 0);
+            Int1              : in    std_logic_vector (0 to 0)
+            );
+    end component cpu;
 
 
-  component IOBUF is
-  port (
-    I : in STD_LOGIC;
-    O : out STD_LOGIC;
-    T : in STD_LOGIC;
-    IO : inout STD_LOGIC
-  );
-  end component IOBUF;
+    component IOBUF is
+        port (
+            I : in STD_LOGIC;
+            O : out STD_LOGIC;
+            T : in STD_LOGIC;
+            IO : inout STD_LOGIC
+            );
+    end component IOBUF;
 
 
-  component ocxo_clk_pll
-      port
-          (                             -- Clock in ports
-              clk_in1  : in  std_logic;
-              -- Clock out ports
-              clk_out1 : out std_logic;
-              -- Status and control signals
-              resetn   : in  std_logic;
-              locked   : out std_logic
-              );
-  end component;
+    component ocxo_clk_pll
+        port
+            (                             -- Clock in ports
+                clk_in1  : in  std_logic;
+                -- Clock out ports
+                clk_out1 : out std_logic;
+                -- Status and control signals
+                resetn   : in  std_logic;
+                locked   : out std_logic
+                );
+    end component;
 
-  attribute SYN_BLACK_BOX                 : boolean;
-  attribute SYN_BLACK_BOX of ocxo_clk_pll : component is true;
+    attribute SYN_BLACK_BOX                 : boolean;
+    attribute SYN_BLACK_BOX of ocxo_clk_pll : component is true;
 
-  attribute BLACK_BOX_PAD_PIN                 : string;
-  attribute BLACK_BOX_PAD_PIN of ocxo_clk_pll : component is "clk_in1,clk_out1,resetn,locked";
+    attribute BLACK_BOX_PAD_PIN                 : string;
+    attribute BLACK_BOX_PAD_PIN of ocxo_clk_pll : component is "clk_in1,clk_out1,resetn,locked";
 
-  component regs
-      port (
-          rst_n             : in    std_logic;
-          clk               : in    std_logic;
+    component regs
+        port (
+            rst_n             : in    std_logic;
+            clk               : in    std_logic;
 
-          EPC_INTF_addr     : in    std_logic_vector(0 to 31);
-          EPC_INTF_be       : in    std_logic_vector(0 to 3);
-          EPC_INTF_burst    : in    std_logic;
-          EPC_INTF_cs_n     : in    std_logic;
-          EPC_INTF_data_i   : out   std_logic_vector(0 to 31);
-          EPC_INTF_data_o   : in    std_logic_vector(0 to 31);
-          EPC_INTF_rdy      : out   std_logic;
-          EPC_INTF_rnw      : in    std_logic;  -- Write when '0'
+            EPC_INTF_addr     : in    std_logic_vector(0 to 31);
+            EPC_INTF_be       : in    std_logic_vector(0 to 3);
+            EPC_INTF_burst    : in    std_logic;
+            EPC_INTF_cs_n     : in    std_logic;
+            EPC_INTF_data_i   : out   std_logic_vector(0 to 31);
+            EPC_INTF_data_o   : in    std_logic_vector(0 to 31);
+            EPC_INTF_rdy      : out   std_logic;
+            EPC_INTF_rnw      : in    std_logic;  -- Write when '0'
 
-          tsc_read          : out    std_logic;
-          tsc_sync          : out    std_logic;
-          diff_1pps         : in    std_logic_vector(31 downto 0);
-          tsc_cnt           : in    std_logic_vector(63 downto 0);
+            tsc_read          : out    std_logic;
+            tsc_sync          : out    std_logic;
+            diff_1pps         : in    std_logic_vector(31 downto 0);
+            tsc_cnt           : in    std_logic_vector(63 downto 0);
 
-          fan_mspr          : in    std_logic_vector(15 downto 0);
-          fan_pct           : out   std_logic_vector(7 downto 0);
+            fan_mspr          : in    std_logic_vector(15 downto 0);
+            fan_pct           : out   std_logic_vector(7 downto 0);
 
-          tmp               : out   std_logic
+            tmp               : out   std_logic
 
-          );
-  end component regs;
-
-
-  component fan
-      port (
-          rst_n             : in    std_logic;
-          clk               : in    std_logic;
-
-          fan_pct           : in    std_logic_vector(7 downto 0);
-          fan_tach          : in    std_logic;
-
-          fan_pwm           : out   std_logic;
-          fan_mspr          : out   std_logic_vector(15 downto 0)
-          );
-  end component fan;
+            );
+    end component regs;
 
 
-  component tsc
-      port (
-          rst_n             : in    std_logic;
-          clk               : in    std_logic;
+    component fan
+        port (
+            rst_n             : in    std_logic;
+            clk               : in    std_logic;
 
-          gps_1pps          : in    std_logic;
-          tsc_read          : in    std_logic;
-          tsc_sync          : in    std_logic;
+            fan_pct           : in    std_logic_vector(7 downto 0);
+            fan_tach          : in    std_logic;
 
-          diff_1pps         : out   std_logic_vector(31 downto 0);
+            fan_pwm           : out   std_logic;
+            fan_mspr          : out   std_logic_vector(15 downto 0)
+            );
+    end component fan;
 
-          tsc_1pps          : out   std_logic;
-          tsc_cnt           : out   std_logic_vector(63 downto 0)
-          );
-  end component tsc;
 
-  signal EPC_INTF_addr   : std_logic_vector (0 to 31);
-  signal EPC_INTF_ads    : std_logic;
-  signal EPC_INTF_be     : std_logic_vector (0 to 3);
-  signal EPC_INTF_burst  : std_logic;
-  signal EPC_INTF_clk    : std_logic;
-  signal EPC_INTF_cs_n   : std_logic;
-  signal EPC_INTF_data_i : std_logic_vector (0 to 31);
-  signal EPC_INTF_data_o : std_logic_vector (0 to 31);
-  signal EPC_INTF_data_t : std_logic_vector (0 to 31);
-  signal EPC_INTF_rd_n   : std_logic;
-  signal EPC_INTF_rdy    : std_logic;
-  signal EPC_INTF_rnw    : std_logic;
-  signal EPC_INTF_rst    : std_logic;
-  signal EPC_INTF_wr_n   : std_logic;
+    component tsc
+        port (
+            rst_n             : in    std_logic;
+            clk               : in    std_logic;
 
-  signal gpio_tri_i      : std_logic_vector (15 downto 0);
-  signal gpio_tri_o      : std_logic_vector (15 downto 0);
-  signal gpio_tri_t      : std_logic_vector (15 downto 0);
-  signal gpio_o_d        : std_logic_vector (15 downto 0);
-  signal gpio_t_d        : std_logic_vector (15 downto 0);
+            gps_1pps          : in    std_logic;
+            tsc_read          : in    std_logic;
+            tsc_sync          : in    std_logic;
 
-  signal iic_0_scl_i     : std_logic;
-  signal iic_0_scl_o     : std_logic;
-  signal iic_0_scl_t     : std_logic;
-  signal iic_0_sda_i     : std_logic;
-  signal iic_0_sda_o     : std_logic;
-  signal iic_0_sda_t     : std_logic;
+            diff_1pps         : out   std_logic_vector(31 downto 0);
 
-  signal iic_1_scl_i     : std_logic;
-  signal iic_1_scl_o     : std_logic;
-  signal iic_1_scl_t     : std_logic;
-  signal iic_1_sda_i     : std_logic;
-  signal iic_1_sda_o     : std_logic;
-  signal iic_1_sda_t     : std_logic;
+            tsc_cnt           : out   std_logic_vector(63 downto 0);
+            tsc_1pps          : out   std_logic;
+            tsc_1ppms         : out   std_logic
+            );
+    end component tsc;
 
-  signal iic_scl_i       : std_logic;
-  signal iic_scl_o       : std_logic;
-  signal iic_scl_t       : std_logic;
-  signal iic_sda_i       : std_logic;
-  signal iic_sda_o       : std_logic;
-  signal iic_sda_t       : std_logic;
+    signal EPC_INTF_addr   : std_logic_vector (0 to 31);
+    signal EPC_INTF_ads    : std_logic;
+    signal EPC_INTF_be     : std_logic_vector (0 to 3);
+    signal EPC_INTF_burst  : std_logic;
+    signal EPC_INTF_clk    : std_logic;
+    signal EPC_INTF_cs_n   : std_logic;
+    signal EPC_INTF_data_i : std_logic_vector (0 to 31);
+    signal EPC_INTF_data_o : std_logic_vector (0 to 31);
+    signal EPC_INTF_data_t : std_logic_vector (0 to 31);
+    signal EPC_INTF_rd_n   : std_logic;
+    signal EPC_INTF_rdy    : std_logic;
+    signal EPC_INTF_rnw    : std_logic;
+    signal EPC_INTF_rst    : std_logic;
+    signal EPC_INTF_wr_n   : std_logic;
 
-  SIGNAL Int0            : std_logic_vector (0 to 0);
-  SIGNAL Int1            : std_logic_vector (0 to 0);
+    signal gpio_tri_i      : std_logic_vector (15 downto 0);
+    signal gpio_tri_o      : std_logic_vector (15 downto 0);
+    signal gpio_tri_t      : std_logic_vector (15 downto 0);
+    signal gpio_o_d        : std_logic_vector (15 downto 0);
+    signal gpio_t_d        : std_logic_vector (15 downto 0);
 
-  SIGNAL fclk            : STD_LOGIC;
-  SIGNAL fclk_reset_n    : STD_LOGIC;
-  SIGNAL rst_n           : std_logic;
+    signal iic_0_scl_i     : std_logic;
+    signal iic_0_scl_o     : std_logic;
+    signal iic_0_scl_t     : std_logic;
+    signal iic_0_sda_i     : std_logic;
+    signal iic_0_sda_o     : std_logic;
+    signal iic_0_sda_t     : std_logic;
 
-  SIGNAL clk             : STD_LOGIC;
-  SIGNAL locked          : STD_LOGIC;
+    signal iic_1_scl_i     : std_logic;
+    signal iic_1_scl_o     : std_logic;
+    signal iic_1_scl_t     : std_logic;
+    signal iic_1_sda_i     : std_logic;
+    signal iic_1_sda_o     : std_logic;
+    signal iic_1_sda_t     : std_logic;
 
-  SIGNAL fan_pct      : std_logic_vector(7 downto 0);
-  SIGNAL fan_mspr     : std_logic_vector(15 downto 0);
+    signal iic_scl_i       : std_logic;
+    signal iic_scl_o       : std_logic;
+    signal iic_scl_t       : std_logic;
+    signal iic_sda_i       : std_logic;
+    signal iic_sda_o       : std_logic;
+    signal iic_sda_t       : std_logic;
 
-  SIGNAL tsc_read     : std_logic;
-  SIGNAL tsc_sync     : std_logic;
+    SIGNAL Int0            : std_logic_vector (0 to 0);
+    SIGNAL Int1            : std_logic_vector (0 to 0);
 
-  SIGNAL diff_1pps    : std_logic_vector(31 downto 0);
+    SIGNAL fclk            : STD_LOGIC;
+    SIGNAL fclk_reset_n    : STD_LOGIC;
+    SIGNAL rst_n           : std_logic;
 
-  SIGNAL tsc_1pps     : std_logic;
-  SIGNAL tsc_cnt      : std_logic_vector(63 downto 0);
+    SIGNAL clk             : STD_LOGIC;
+    SIGNAL locked          : STD_LOGIC;
 
-  SIGNAL tmp          : std_logic;
+    SIGNAL fan_pct      : std_logic_vector(7 downto 0);
+    SIGNAL fan_mspr     : std_logic_vector(15 downto 0);
+
+    SIGNAL tsc_read     : std_logic;
+    SIGNAL tsc_sync     : std_logic;
+
+    SIGNAL diff_1pps    : std_logic_vector(31 downto 0);
+
+    SIGNAL tsc_cnt      : std_logic_vector(63 downto 0);
+    SIGNAL tsc_1pps     : std_logic;
+    SIGNAL tsc_1ppms    : std_logic;
+
+    SIGNAL tmp          : std_logic;
 
 begin
 
@@ -441,8 +443,9 @@ begin
 
           diff_1pps         => diff_1pps,
 
+          tsc_cnt           => tsc_cnt,
           tsc_1pps          => tsc_1pps,
-          tsc_cnt           => tsc_cnt
+          tsc_1ppms         => tsc_1ppms
           );
 
 

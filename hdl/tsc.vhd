@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-04-29
--- Last update: 2016-04-29
+-- Last update: 2016-05-04
 -- Platform   : 
 -- Standard   : VHDL'87
 -------------------------------------------------------------------------------
@@ -39,8 +39,9 @@ entity tsc is
 
       diff_1pps         : out   std_logic_vector(31 downto 0);
 
+      tsc_cnt           : out   std_logic_vector(63 downto 0);
       tsc_1pps          : out   std_logic;
-      tsc_cnt           : out   std_logic_vector(63 downto 0)
+      tsc_1ppms         : out   std_logic
   );
 end tsc;
 
@@ -87,7 +88,7 @@ begin
 
     
     -- One pulse pulse per second
-    tsc_1pps_cntr:
+    tsc_1pps_ctr:
     process (rst_n, clk) is
     begin
         if (rst_n = '0') then
@@ -111,6 +112,31 @@ begin
     tsc_1pps <= pps_cnt_term;
 
 
+    -- Millisecond pulse generator synchronized to pps
+    tsc_1ppms_ctr:
+    process (rst_n, clk) is
+    begin
+        if (rst_n = '0') then
+            ppms_cnt      <= (others => '0');
+            ppms_cnt_term <= '0';
+        elsif (clk'event and clk = '1') then
+            if (ppms_cnt_term = '1' or pps_cnt_term = '1') then
+                ppms_cnt      <= (others => '0');
+            else
+                ppms_cnt      <= ppms_cnt + 1;
+            end if;
+
+            if (ppms_cnt = (100000 - 2) and pps_cnt_term = '0') then
+                ppms_cnt_term <= '1';
+            else
+                ppms_cnt_term <= '0';
+            end if;
+        end if;
+    end process;
+
+    tsc_1ppms <= ppms_cnt_term;
+
+    
     -- GPS 1 pulse per second input register
     tsc_gps_ireg:
     process (rst_n, clk) is

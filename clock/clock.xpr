@@ -41,11 +41,11 @@
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
-        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="hw_handoff/cpu_bd.tcl"/>
-        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="hw_handoff/cpu.hwh"/>
-        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="cpu_ooc.xdc"/>
         <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_auto_pc_1/cpu_auto_pc_1.xci"/>
         <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_auto_pc_0/cpu_auto_pc_0.xci"/>
+        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="cpu_ooc.xdc"/>
+        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="hw_handoff/cpu.hwh"/>
+        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="hw_handoff/cpu_bd.tcl"/>
         <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_xlconcat_0_0/cpu_xlconcat_0_0.xci"/>
         <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="hdl/cpu.vhd"/>
         <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_rst_M_AXI_GP1_ACLK_100M_0/cpu_rst_M_AXI_GP1_ACLK_100M_0.xci"/>
