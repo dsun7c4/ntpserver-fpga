@@ -1,7 +1,7 @@
 // Copyright 1986-2014 Xilinx, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
 // Tool Version: Vivado v.2014.4 (lin64) Build 1071353 Tue Nov 18 16:47:07 MST 2014
-// Date        : Wed Apr 27 21:06:46 2016
+// Date        : Fri May  6 14:51:06 2016
 // Host        : graviton running 64-bit Debian GNU/Linux 7.10 (wheezy)
 // Command     : write_verilog -force -mode synth_stub /home/guest/cae/fpga/ntpserver/ip/ocxo_clk_pll/ocxo_clk_pll_stub.v
 // Design      : ocxo_clk_pll

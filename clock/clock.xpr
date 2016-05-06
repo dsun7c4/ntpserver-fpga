@@ -23,6 +23,12 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
+      <File Path="$PPRDIR/../hdl/regs.vhd">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
       <File Path="$PPRDIR/../hdl/dac.vhd">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
@@ -30,12 +36,6 @@
         </FileInfo>
       </File>
       <File Path="$PPRDIR/../hdl/fan.vhd">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../hdl/regs.vhd">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
@@ -82,6 +82,12 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
+      <File Path="$PPRDIR/../hdl/syspll.vhd">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
       <File Path="$PPRDIR/../hdl/clock.vhd">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
@@ -115,6 +121,12 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
+      <File Path="$PPRDIR/../ip/ocxo_clk_pll/ocxo_clk_pll.vhd">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
       <File Path="$PPRDIR/../hdl/util_pkg.vhd">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
@@ -127,19 +139,13 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../hdl/fan.vhd">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
       <File Path="$PPRDIR/../hdl/regs.vhd">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../ip/ocxo_clk_pll/ocxo_clk_pll.vhd">
+      <File Path="$PPRDIR/../hdl/fan.vhd">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
@@ -175,6 +181,12 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
+      <File Path="$PPRDIR/../hdl/syspll.vhd">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
       <File Path="$PPRDIR/../hdl/clock.vhd">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
@@ -202,6 +214,19 @@
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
+        <CompFileExtendedInfo CompFileName="ocxo_clk_pll.xci" FileRelPathName="doc/clk_wiz_v5_1_changelog.txt"/>
+        <CompFileExtendedInfo CompFileName="ocxo_clk_pll.xci" FileRelPathName="ocxo_clk_pll_board.xdc"/>
+        <CompFileExtendedInfo CompFileName="ocxo_clk_pll.xci" FileRelPathName="ocxo_clk_pll.vho"/>
+        <CompFileExtendedInfo CompFileName="ocxo_clk_pll.xci" FileRelPathName="ocxo_clk_pll_clk_wiz.vhd"/>
+        <CompFileExtendedInfo CompFileName="ocxo_clk_pll.xci" FileRelPathName="ocxo_clk_pll.vhd"/>
+        <CompFileExtendedInfo CompFileName="ocxo_clk_pll.xci" FileRelPathName="ocxo_clk_pll.xdc"/>
+        <CompFileExtendedInfo CompFileName="ocxo_clk_pll.xci" FileRelPathName="ocxo_clk_pll_ooc.xdc"/>
+        <CompFileExtendedInfo CompFileName="ocxo_clk_pll.xci" FileRelPathName="ocxo_clk_pll.xml"/>
+        <CompFileExtendedInfo CompFileName="ocxo_clk_pll.xci" FileRelPathName="ocxo_clk_pll_funcsim.vhdl"/>
+        <CompFileExtendedInfo CompFileName="ocxo_clk_pll.xci" FileRelPathName="ocxo_clk_pll_funcsim.v"/>
+        <CompFileExtendedInfo CompFileName="ocxo_clk_pll.xci" FileRelPathName="ocxo_clk_pll_stub.vhdl"/>
+        <CompFileExtendedInfo CompFileName="ocxo_clk_pll.xci" FileRelPathName="ocxo_clk_pll_stub.v"/>
+        <CompFileExtendedInfo CompFileName="ocxo_clk_pll.xci" FileRelPathName="ocxo_clk_pll.dcp"/>
       </File>
       <Config>
         <Option Name="TopModule" Val="ocxo_clk_pll"/>

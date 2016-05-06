@@ -1,7 +1,7 @@
 -- Copyright 1986-2014 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2014.4 (lin64) Build 1071353 Tue Nov 18 16:47:07 MST 2014
--- Date        : Wed Apr 27 21:06:47 2016
+-- Date        : Fri May  6 14:51:06 2016
 -- Host        : graviton running 64-bit Debian GNU/Linux 7.10 (wheezy)
 -- Command     : write_vhdl -force -mode funcsim /home/guest/cae/fpga/ntpserver/ip/ocxo_clk_pll/ocxo_clk_pll_funcsim.vhdl
 -- Design      : ocxo_clk_pll
@@ -27,7 +27,6 @@ end ocxo_clk_pll_ocxo_clk_pll_clk_wiz;
 architecture STRUCTURE of ocxo_clk_pll_ocxo_clk_pll_clk_wiz is
   signal RST : STD_LOGIC;
   signal clk_in1_ocxo_clk_pll : STD_LOGIC;
-  signal clk_out1_ocxo_clk_pll : STD_LOGIC;
   signal clkfbout_ocxo_clk_pll : STD_LOGIC;
   signal NLW_mmcm_adv_inst_CLKFBOUTB_UNCONNECTED : STD_LOGIC;
   signal NLW_mmcm_adv_inst_CLKFBSTOPPED_UNCONNECTED : STD_LOGIC;
@@ -53,7 +52,6 @@ architecture STRUCTURE of ocxo_clk_pll_ocxo_clk_pll_clk_wiz is
   attribute IFD_DELAY_VALUE of clkin1_ibufg : label is "AUTO";
   attribute box_type : string;
   attribute box_type of clkin1_ibufg : label is "PRIMITIVE";
-  attribute box_type of clkout1_buf : label is "PRIMITIVE";
   attribute box_type of mmcm_adv_inst : label is "PRIMITIVE";
 begin
 clkin1_ibufg: unisim.vcomponents.IBUF
@@ -63,11 +61,6 @@ clkin1_ibufg: unisim.vcomponents.IBUF
     port map (
       I => clk_in1,
       O => clk_in1_ocxo_clk_pll
-    );
-clkout1_buf: unisim.vcomponents.BUFG
-    port map (
-      I => clk_out1_ocxo_clk_pll,
-      O => clk_out1
     );
 mmcm_adv_inst: unisim.vcomponents.MMCME2_ADV
     generic map(
@@ -129,7 +122,7 @@ mmcm_adv_inst: unisim.vcomponents.MMCME2_ADV
       CLKIN2 => '0',
       CLKINSEL => '1',
       CLKINSTOPPED => NLW_mmcm_adv_inst_CLKINSTOPPED_UNCONNECTED,
-      CLKOUT0 => clk_out1_ocxo_clk_pll,
+      CLKOUT0 => clk_out1,
       CLKOUT0B => NLW_mmcm_adv_inst_CLKOUT0B_UNCONNECTED,
       CLKOUT1 => NLW_mmcm_adv_inst_CLKOUT1_UNCONNECTED,
       CLKOUT1B => NLW_mmcm_adv_inst_CLKOUT1B_UNCONNECTED,
@@ -199,7 +192,7 @@ entity ocxo_clk_pll is
   attribute NotValidForBitStream : boolean;
   attribute NotValidForBitStream of ocxo_clk_pll : entity is true;
   attribute core_generation_info : string;
-  attribute core_generation_info of ocxo_clk_pll : entity is "ocxo_clk_pll,clk_wiz_v5_1,{component_name=ocxo_clk_pll,use_phase_alignment=false,use_min_o_jitter=false,use_max_i_jitter=false,use_dyn_phase_shift=false,use_inclk_switchover=false,use_dyn_reconfig=false,enable_axi=0,feedback_source=FDBK_AUTO,PRIMITIVE=MMCM,num_out_clk=1,clkin1_period=100.0,clkin2_period=10.0,use_power_down=false,use_reset=true,use_locked=true,use_inclk_stopped=false,feedback_type=SINGLE,CLOCK_MGR_TYPE=NA,manual_override=false}";
+  attribute core_generation_info of ocxo_clk_pll : entity is "ocxo_clk_pll,clk_wiz_v5_1,{component_name=ocxo_clk_pll,use_phase_alignment=false,use_min_o_jitter=false,use_max_i_jitter=false,use_dyn_phase_shift=false,use_inclk_switchover=false,use_dyn_reconfig=false,enable_axi=0,feedback_source=FDBK_ONCHIP,PRIMITIVE=MMCM,num_out_clk=1,clkin1_period=100.0,clkin2_period=10.0,use_power_down=false,use_reset=true,use_locked=true,use_inclk_stopped=false,feedback_type=SINGLE,CLOCK_MGR_TYPE=NA,manual_override=false}";
 end ocxo_clk_pll;
 
 architecture STRUCTURE of ocxo_clk_pll is

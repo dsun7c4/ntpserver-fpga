@@ -33,6 +33,8 @@ entity fan is
       rst_n             : in    std_logic;
       clk               : in    std_logic;
 
+      tsc_1ppms         : in    std_logic;
+
       fan_pct           : in    std_logic_vector(7 downto 0);
       fan_tach          : in    std_logic;
 
@@ -54,8 +56,6 @@ architecture rtl of fan is
     
     signal tach_dly    : std_logic_vector(2 downto 0);
     signal tach_pulse  : std_logic;
-    signal tach_cnt    : std_logic_vector(16 downto 0);
-    signal tach_ms     : std_logic;
     signal tach_meas   : std_logic_vector(15 downto 0);
     signal tach_msout  : std_logic_vector(15 downto 0);
 
@@ -129,29 +129,6 @@ begin
 
 
 
-    -- Tach millisecond clock enable generator
-    fan_ms:
-    process (rst_n, clk) is
-    begin
-        if (rst_n = '0') then
-            tach_cnt  <= (others => '0');
-            tach_ms   <= '0';
-        elsif (clk'event and clk = '1') then
-            if (tach_ms = '1') then
-                tach_cnt  <= (others => '0');
-            else
-                tach_cnt  <= tach_cnt + 1;
-            end if;
-
-            if (tach_cnt = (100000 - 2)) then
-                tach_ms   <= '1';
-            else
-                tach_ms   <= '0';
-            end if;
-        end if;
-    end process;
-
-    
     -- Tach input buffer and rising edge detector
     fan_ireg:
     process (rst_n, clk) is
@@ -161,7 +138,7 @@ begin
             tach_pulse  <= '0';
         elsif (clk'event and clk = '1') then
             tach_dly(0) <= fan_tach;  -- input register
-            if (tach_ms = '1') then
+            if (tsc_1ppms = '1') then
                 tach_dly(1) <= tach_dly(0);
                 tach_dly(2) <= tach_dly(1);
                 tach_pulse  <= not tach_dly(2) and tach_dly(1);
@@ -179,7 +156,7 @@ begin
             tach_meas  <= (others => '0');
             tach_msout <= (others => '0');
         elsif (clk'event and clk = '1') then
-            if (tach_ms = '1') then
+            if (tsc_1ppms = '1') then
                 if (tach_pulse = '1') then
                     tach_meas    <= (others => '0');
                     tach_meas(0) <= '1';   -- Start measurement at one

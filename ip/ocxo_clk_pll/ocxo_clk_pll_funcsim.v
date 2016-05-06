@@ -1,7 +1,7 @@
 // Copyright 1986-2014 Xilinx, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
 // Tool Version: Vivado v.2014.4 (lin64) Build 1071353 Tue Nov 18 16:47:07 MST 2014
-// Date        : Wed Apr 27 21:06:47 2016
+// Date        : Fri May  6 14:51:06 2016
 // Host        : graviton running 64-bit Debian GNU/Linux 7.10 (wheezy)
 // Command     : write_verilog -force -mode funcsim /home/guest/cae/fpga/ntpserver/ip/ocxo_clk_pll/ocxo_clk_pll_funcsim.v
 // Design      : ocxo_clk_pll
@@ -11,7 +11,7 @@
 // --------------------------------------------------------------------------------
 `timescale 1 ps / 1 ps
 
-(* core_generation_info = "ocxo_clk_pll,clk_wiz_v5_1,{component_name=ocxo_clk_pll,use_phase_alignment=false,use_min_o_jitter=false,use_max_i_jitter=false,use_dyn_phase_shift=false,use_inclk_switchover=false,use_dyn_reconfig=false,enable_axi=0,feedback_source=FDBK_AUTO,PRIMITIVE=MMCM,num_out_clk=1,clkin1_period=100.0,clkin2_period=10.0,use_power_down=false,use_reset=true,use_locked=true,use_inclk_stopped=false,feedback_type=SINGLE,CLOCK_MGR_TYPE=NA,manual_override=false}" *) 
+(* core_generation_info = "ocxo_clk_pll,clk_wiz_v5_1,{component_name=ocxo_clk_pll,use_phase_alignment=false,use_min_o_jitter=false,use_max_i_jitter=false,use_dyn_phase_shift=false,use_inclk_switchover=false,use_dyn_reconfig=false,enable_axi=0,feedback_source=FDBK_ONCHIP,PRIMITIVE=MMCM,num_out_clk=1,clkin1_period=100.0,clkin2_period=10.0,use_power_down=false,use_reset=true,use_locked=true,use_inclk_stopped=false,feedback_type=SINGLE,CLOCK_MGR_TYPE=NA,manual_override=false}" *) 
 (* NotValidForBitStream *)
 module ocxo_clk_pll
    (clk_in1,
@@ -50,7 +50,6 @@ module ocxo_clk_pll_ocxo_clk_pll_clk_wiz
 (* IBUF_LOW_PWR *)   wire clk_in1;
   wire clk_in1_ocxo_clk_pll;
   wire clk_out1;
-  wire clk_out1_ocxo_clk_pll;
   wire clkfbout_ocxo_clk_pll;
   wire locked;
   wire resetn;
@@ -80,10 +79,6 @@ module ocxo_clk_pll_ocxo_clk_pll_clk_wiz
      clkin1_ibufg
        (.I(clk_in1),
         .O(clk_in1_ocxo_clk_pll));
-(* box_type = "PRIMITIVE" *) 
-   BUFG clkout1_buf
-       (.I(clk_out1_ocxo_clk_pll),
-        .O(clk_out1));
 (* box_type = "PRIMITIVE" *) 
    MMCME2_ADV #(
     .BANDWIDTH("OPTIMIZED"),
@@ -143,7 +138,7 @@ module ocxo_clk_pll_ocxo_clk_pll_clk_wiz
         .CLKIN2(1'b0),
         .CLKINSEL(1'b1),
         .CLKINSTOPPED(NLW_mmcm_adv_inst_CLKINSTOPPED_UNCONNECTED),
-        .CLKOUT0(clk_out1_ocxo_clk_pll),
+        .CLKOUT0(clk_out1),
         .CLKOUT0B(NLW_mmcm_adv_inst_CLKOUT0B_UNCONNECTED),
         .CLKOUT1(NLW_mmcm_adv_inst_CLKOUT1_UNCONNECTED),
         .CLKOUT1B(NLW_mmcm_adv_inst_CLKOUT1B_UNCONNECTED),

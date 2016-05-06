@@ -193,11 +193,6 @@ begin
 
 
 
-  clkout1_buf : BUFG
-  port map
-   (O   => clk_out1,
-    I   => clk_out1_ocxo_clk_pll);
-
-
+  clk_out1 <= clk_out1_ocxo_clk_pll;
 
 end xilinx;
