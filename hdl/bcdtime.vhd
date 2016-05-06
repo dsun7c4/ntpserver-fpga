@@ -279,7 +279,7 @@ begin
     t_1m    <= dig_1m;
     t_10m   <= dig_10m;
     t_1h    <= dig_1h;
-    t_10n   <= dig_10h;
+    t_10h   <= dig_10h;
 
 
 end rtl;

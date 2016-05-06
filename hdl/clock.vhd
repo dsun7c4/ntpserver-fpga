@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-03-13
--- Last update: 2016-05-04
+-- Last update: 2016-05-05
 -- Platform   : 
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -147,6 +147,15 @@ architecture STRUCTURE of clock is
             diff_1pps         : in    std_logic_vector(31 downto 0);
             tsc_cnt           : in    std_logic_vector(63 downto 0);
 
+            set               : out   std_logic;
+            set_1s            : out   std_logic_vector(3 downto 0);
+            set_10s           : out   std_logic_vector(3 downto 0);
+            set_1m            : out   std_logic_vector(3 downto 0);
+            set_10m           : out   std_logic_vector(3 downto 0);
+            set_1h            : out   std_logic_vector(3 downto 0);
+            set_10h           : out   std_logic_vector(3 downto 0);
+            dac_val           : out   std_logic_vector(15 downto 0);
+
             fan_mspr          : in    std_logic_vector(15 downto 0);
             fan_pct           : out   std_logic_vector(7 downto 0);
 
@@ -186,6 +195,59 @@ architecture STRUCTURE of clock is
             tsc_1ppms         : out   std_logic
             );
     end component tsc;
+
+
+    component bcdtime
+        port (
+            rst_n             : in    std_logic;
+            clk               : in    std_logic;
+
+            tsc_1pps          : in    std_logic;
+            tsc_1ppms         : in    std_logic;
+            set               : in    std_logic;
+
+            set_1s            : in    std_logic_vector(3 downto 0);
+            set_10s           : in    std_logic_vector(3 downto 0);
+
+            set_1m            : in    std_logic_vector(3 downto 0);
+            set_10m           : in    std_logic_vector(3 downto 0);
+
+            set_1h            : in    std_logic_vector(3 downto 0);
+            set_10h           : in    std_logic_vector(3 downto 0);
+
+
+            t_1ms             : out   std_logic_vector(3 downto 0);
+            t_10ms            : out   std_logic_vector(3 downto 0);
+            t_100ms           : out   std_logic_vector(3 downto 0);
+
+            t_1s              : out   std_logic_vector(3 downto 0);
+            t_10s             : out   std_logic_vector(3 downto 0);
+
+            t_1m              : out   std_logic_vector(3 downto 0);
+            t_10m             : out   std_logic_vector(3 downto 0);
+
+            t_1h              : out   std_logic_vector(3 downto 0);
+            t_10h             : out   std_logic_vector(3 downto 0)
+            );
+    end component;
+
+
+    component dac
+        port (
+            rst_n             : in    std_logic;
+            clk               : in    std_logic;
+
+            tsc_1pps          : in    std_logic;
+            tsc_1ppms         : in    std_logic;
+
+            dac_val           : in    std_logic_vector(15 downto 0);
+
+            dac_sclk          : OUT   std_logic;
+            dac_cs_n          : OUT   std_logic;
+            dac_sin           : OUT   std_logic
+            );
+    end component;
+
 
     signal EPC_INTF_addr   : std_logic_vector (0 to 31);
     signal EPC_INTF_ads    : std_logic;
@@ -250,6 +312,29 @@ architecture STRUCTURE of clock is
     SIGNAL tsc_cnt      : std_logic_vector(63 downto 0);
     SIGNAL tsc_1pps     : std_logic;
     SIGNAL tsc_1ppms    : std_logic;
+
+    SIGNAL set          : std_logic;
+    SIGNAL set_1s       : std_logic_vector(3 downto 0);
+    SIGNAL set_10s      : std_logic_vector(3 downto 0);
+    SIGNAL set_1m       : std_logic_vector(3 downto 0);
+    SIGNAL set_10m      : std_logic_vector(3 downto 0);
+    SIGNAL set_1h       : std_logic_vector(3 downto 0);
+    SIGNAL set_10h      : std_logic_vector(3 downto 0);
+    SIGNAL dac_val      : std_logic_vector(15 downto 0);
+
+    SIGNAL t_1ms        : std_logic_vector(3 downto 0);
+    SIGNAL t_10ms       : std_logic_vector(3 downto 0);
+    SIGNAL t_100ms      : std_logic_vector(3 downto 0);
+
+    SIGNAL t_1s         : std_logic_vector(3 downto 0);
+    SIGNAL t_10s        : std_logic_vector(3 downto 0);
+
+    SIGNAL t_1m         : std_logic_vector(3 downto 0);
+    SIGNAL t_10m        : std_logic_vector(3 downto 0);
+
+    SIGNAL t_1h         : std_logic_vector(3 downto 0);
+    SIGNAL t_10h        : std_logic_vector(3 downto 0);
+
 
     SIGNAL tmp          : std_logic;
 
@@ -412,6 +497,15 @@ begin
           diff_1pps         => diff_1pps,
           tsc_cnt           => tsc_cnt,
 
+          set               => set,
+          set_1s            => set_1s,
+          set_10s           => set_10s,
+          set_1m            => set_1m,
+          set_10m           => set_10m,
+          set_1h            => set_1h,
+          set_10h           => set_10h,
+          dac_val           => dac_val,
+
           fan_mspr          => fan_mspr,
           fan_pct           => fan_pct,
           tmp               => tmp
@@ -447,6 +541,56 @@ begin
           tsc_1pps          => tsc_1pps,
           tsc_1ppms         => tsc_1ppms
           );
+
+
+    digits:  bcdtime
+        port map (
+            rst_n             => rst_n,
+            clk               => clk,
+
+            tsc_1pps          => tsc_1pps,
+            tsc_1ppms         => tsc_1ppms,
+            set               => set,
+
+            set_1s            => set_1s,
+            set_10s           => set_10s,
+
+            set_1m            => set_1m,
+            set_10m           => set_10m,
+
+            set_1h            => set_1h,
+            set_10h           => set_10h,
+
+
+            t_1ms             => t_1ms,
+            t_10ms            => t_10ms,
+            t_100ms           => t_100ms,
+
+            t_1s              => t_1s,
+            t_10s             => t_10s,
+
+            t_1m              => t_1m,
+            t_10m             => t_10m,
+
+            t_1h              => t_1h,
+            t_10h             => t_10h
+            );
+
+
+    dac_dvr: dac
+        port map (
+            rst_n             => rst_n,
+            clk               => clk,
+
+            tsc_1pps          => tsc_1pps,
+            tsc_1ppms         => tsc_1ppms,
+
+            dac_val           => dac_val,
+
+            dac_sclk          => dac_sclk,
+            dac_cs_n          => dac_cs_n,
+            dac_sin           => dac_sin
+            );
 
 
 end STRUCTURE;

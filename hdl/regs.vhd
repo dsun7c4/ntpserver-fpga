@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-03-13
--- Last update: 2016-04-29
+-- Last update: 2016-05-05
 -- Platform   : 
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -67,10 +67,19 @@ entity regs is
       EPC_INTF_rdy      : out   std_logic;
       EPC_INTF_rnw      : in    std_logic;  -- Write when '0'
 
-      tsc_read          : out    std_logic;
-      tsc_sync          : out    std_logic;
+      tsc_read          : out   std_logic;
+      tsc_sync          : out   std_logic;
       diff_1pps         : in    std_logic_vector(31 downto 0);
       tsc_cnt           : in    std_logic_vector(63 downto 0);
+
+      set               : out   std_logic;
+      set_1s            : out   std_logic_vector(3 downto 0);
+      set_10s           : out   std_logic_vector(3 downto 0);
+      set_1m            : out   std_logic_vector(3 downto 0);
+      set_10m           : out   std_logic_vector(3 downto 0);
+      set_1h            : out   std_logic_vector(3 downto 0);
+      set_10h           : out   std_logic_vector(3 downto 0);
+      dac_val           : out   std_logic_vector(15 downto 0);
 
       fan_mspr          : in    std_logic_vector(15 downto 0);
       fan_pct           : out   std_logic_vector(7 downto 0);
@@ -86,7 +95,7 @@ architecture rtl of regs is
 
     type reg_arr is array (natural range <>) of std_logic_vector(31 downto 0);
 
-    signal time_regs   : reg_arr(3 downto 0);
+    signal time_regs   : reg_arr(4 downto 0);
     signal fan_regs    : reg_arr(0 downto 0);
     signal disp_regs   : reg_arr(5 downto 0);
 
@@ -242,9 +251,11 @@ begin
     process (rst_n, clk) is
     begin
         if (rst_n = '0') then
-            for i in 0 to 3 loop
+            for i in 0 to 4 loop
                 time_regs(i) <= (others => '0');
             end loop;
+            set <= '0';
+            time_regs(4)(15 downto 0) <= x"8000";
         elsif (clk'event and clk = '1') then
             if (cs_dp_w = '1' and decode(0) = '1') then
                 case addr(5 downto 2) is
@@ -256,13 +267,30 @@ begin
                         time_regs(2) <= data_o;
                     when "0011" =>
                         time_regs(3) <= data_o;
+                    when "0100" =>
+                        time_regs(4) <= data_o;
                     when others =>
                         null;
                 end case;
             end if;
+
+            -- Trigger time set
+            if (cs_dp_w = '1' and decode(0) = '1' and addr(5 downto 2) = "0011") then
+                set          <= '1';
+            else
+                set          <= '0';
+            end if;
         end if;
     end process;
 
+    set_1s  <= time_regs(3)(3 downto 0);
+    set_10s <= time_regs(3)(7 downto 4);
+    set_1m  <= time_regs(3)(11 downto 8);
+    set_10m <= time_regs(3)(15 downto 12);
+    set_1h  <= time_regs(3)(19 downto 16);
+    set_10h <= time_regs(3)(23 downto 20);
+    dac_val <= time_regs(4)(15 downto 0);
+    
 
     -- Fan control registers
     process (rst_n, clk) is

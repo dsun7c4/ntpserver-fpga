@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-04-29
--- Last update: 2016-05-04
+-- Last update: 2016-05-05
 -- Platform   : 
 -- Standard   : VHDL'87
 -------------------------------------------------------------------------------
@@ -53,6 +53,9 @@ architecture rtl of tsc is
 
     signal pps_cnt        : std_logic_vector(27 downto 0);
     signal pps_cnt_term   : std_logic;
+
+    signal ppms_cnt       : std_logic_vector(16 downto 0);
+    signal ppms_cnt_term  : std_logic;
 
     signal gps_1pps_dly   : std_logic_vector(2 downto 0);
     signal gps_1pps_pulse : std_logic;
