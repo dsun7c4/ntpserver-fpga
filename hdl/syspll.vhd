@@ -85,20 +85,20 @@ begin
             );
 
 
-    --clkmux: BUFGMUX
-    --    port map (
-    --        O  => clk,
-    --        I0 => fclk,
-    --        I1 => pll_clk0,
-    --        S  => pll_locked
-    --        );
-
-    
-    clkbuf: BUFG
+    clkmux: BUFGMUX_CTRL
         port map (
             O  => clk,
-            I => pll_clk0
+            I0 => fclk,
+            I1 => pll_clk0,
+            S  => pll_locked
             );
+
+    
+    --clkbuf: BUFG
+    --    port map (
+    --        O  => clk,
+    --        I => pll_clk0
+    --        );
 
     locked<= pll_locked;
 

@@ -47,22 +47,22 @@
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
-        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="cpu_ooc.xdc"/>
-        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_auto_pc_0/cpu_auto_pc_0.xci"/>
         <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="hw_handoff/cpu.hwh"/>
         <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="hw_handoff/cpu_bd.tcl"/>
+        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="hdl/cpu.vhd"/>
+        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_xlconcat_0_0/cpu_xlconcat_0_0.xci"/>
+        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_auto_pc_0/cpu_auto_pc_0.xci"/>
         <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_auto_pc_1/cpu_auto_pc_1.xci"/>
-        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_axi_gpio_0_0/cpu_axi_gpio_0_0.xci"/>
-        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_processing_system7_0_axi_periph_0/cpu_processing_system7_0_axi_periph_0.xci"/>
-        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_rst_processing_system7_0_100M_0/cpu_rst_processing_system7_0_100M_0.xci"/>
-        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_axi_iic_0_0/cpu_axi_iic_0_0.xci"/>
+        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="cpu_ooc.xdc"/>
+        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_rst_M_AXI_GP1_ACLK_100M_0/cpu_rst_M_AXI_GP1_ACLK_100M_0.xci"/>
+        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_processing_system7_0_axi_periph_1_0/cpu_processing_system7_0_axi_periph_1_0.xci"/>
         <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_xbar_0/cpu_xbar_0.xci"/>
         <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_axi_epc_0_0/cpu_axi_epc_0_0.xci"/>
+        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_rst_processing_system7_0_100M_0/cpu_rst_processing_system7_0_100M_0.xci"/>
+        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_processing_system7_0_axi_periph_0/cpu_processing_system7_0_axi_periph_0.xci"/>
+        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_axi_iic_0_0/cpu_axi_iic_0_0.xci"/>
+        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_axi_gpio_0_0/cpu_axi_gpio_0_0.xci"/>
         <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_processing_system7_0_0/cpu_processing_system7_0_0.xci"/>
-        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_rst_M_AXI_GP1_ACLK_100M_0/cpu_rst_M_AXI_GP1_ACLK_100M_0.xci"/>
-        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="hdl/cpu.vhd"/>
-        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_processing_system7_0_axi_periph_1_0/cpu_processing_system7_0_axi_periph_1_0.xci"/>
-        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_xlconcat_0_0/cpu_xlconcat_0_0.xci"/>
       </File>
       <File Path="$PPRDIR/../hdl/clock_.vhd">
         <FileInfo>
@@ -103,6 +103,12 @@
     <FileSet Name="constrs_1" Type="Constrs" RelSrcDir="$PSRCDIR/constrs_1">
       <Filter Type="Constrs"/>
       <File Path="$PPRDIR/../xdc/pin.xdc">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../xdc/timing.xdc">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
@@ -214,19 +220,6 @@
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
-        <CompFileExtendedInfo CompFileName="ocxo_clk_pll.xci" FileRelPathName="doc/clk_wiz_v5_1_changelog.txt"/>
-        <CompFileExtendedInfo CompFileName="ocxo_clk_pll.xci" FileRelPathName="ocxo_clk_pll_board.xdc"/>
-        <CompFileExtendedInfo CompFileName="ocxo_clk_pll.xci" FileRelPathName="ocxo_clk_pll.vho"/>
-        <CompFileExtendedInfo CompFileName="ocxo_clk_pll.xci" FileRelPathName="ocxo_clk_pll_clk_wiz.vhd"/>
-        <CompFileExtendedInfo CompFileName="ocxo_clk_pll.xci" FileRelPathName="ocxo_clk_pll.vhd"/>
-        <CompFileExtendedInfo CompFileName="ocxo_clk_pll.xci" FileRelPathName="ocxo_clk_pll.xdc"/>
-        <CompFileExtendedInfo CompFileName="ocxo_clk_pll.xci" FileRelPathName="ocxo_clk_pll_ooc.xdc"/>
-        <CompFileExtendedInfo CompFileName="ocxo_clk_pll.xci" FileRelPathName="ocxo_clk_pll.xml"/>
-        <CompFileExtendedInfo CompFileName="ocxo_clk_pll.xci" FileRelPathName="ocxo_clk_pll_funcsim.vhdl"/>
-        <CompFileExtendedInfo CompFileName="ocxo_clk_pll.xci" FileRelPathName="ocxo_clk_pll_funcsim.v"/>
-        <CompFileExtendedInfo CompFileName="ocxo_clk_pll.xci" FileRelPathName="ocxo_clk_pll_stub.vhdl"/>
-        <CompFileExtendedInfo CompFileName="ocxo_clk_pll.xci" FileRelPathName="ocxo_clk_pll_stub.v"/>
-        <CompFileExtendedInfo CompFileName="ocxo_clk_pll.xci" FileRelPathName="ocxo_clk_pll.dcp"/>
       </File>
       <Config>
         <Option Name="TopModule" Val="ocxo_clk_pll"/>
