@@ -1,7 +1,7 @@
 --Copyright 1986-2014 Xilinx, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------
 --Tool Version: Vivado v.2014.4 (lin64) Build 1071353 Tue Nov 18 16:47:07 MST 2014
---Date        : Mon Apr 25 12:07:02 2016
+--Date        : Sun May  8 10:26:19 2016
 --Host        : graviton running 64-bit Debian GNU/Linux 7.10 (wheezy)
 --Command     : generate_target cpu_wrapper.bd
 --Design      : cpu_wrapper
@@ -126,9 +126,9 @@ architecture STRUCTURE of cpu_wrapper is
     EPC_INTF_rst : in STD_LOGIC;
     EPC_INTF_wr_n : out STD_LOGIC;
     OCXO_CLK100 : in STD_LOGIC;
+    OCXO_RESETN : out STD_LOGIC_VECTOR ( 0 to 0 );
     FCLK_CLK0 : out STD_LOGIC;
     FCLK_RESET0_N : out STD_LOGIC;
-    OCXO_RESETN : out STD_LOGIC_VECTOR ( 0 to 0 );
     Int0 : in STD_LOGIC_VECTOR ( 0 to 0 );
     Int1 : in STD_LOGIC_VECTOR ( 0 to 0 )
   );

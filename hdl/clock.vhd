@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-03-13
--- Last update: 2016-05-06
+-- Last update: 2016-05-08
 -- Platform   : 
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -437,11 +437,11 @@ begin
     iic_sda_i   <= temp_sda;
 
 
+    -- Generic gpio interface
     gpio_oreg: delay_vec generic map (1) port map(fclk_reset_n, fclk, GPIO_tri_o, gpio_o_d);
     gpio_treg: delay_vec generic map (1) port map(fclk_reset_n, fclk, GPIO_tri_t, gpio_t_d);
 
-    -- Generic gpio interface
-    gpio_tri: for i in 0 to 7 generate
+    gpio_tri: for i in 8 to 15 generate
     begin
         --gpio_tri_iobuf: component IOBUF
         --    port map (
@@ -451,19 +451,38 @@ begin
         --        T => GPIO_tri_t(i)
         --        );
 
-        gpio(i)       <= gpio_o_d(i) when gpio_t_d(i) = '0' else 'Z';
+        gpio(i - 8) <= gpio_o_d(i) when gpio_t_d(i) = '0' else 'Z';
     end generate;
 
-    gpio_ireg: delay_vec generic map (1) port map(fclk_reset_n, fclk, gpio, GPIO_tri_i(gpio'range));
+    gpio_ireg: delay_vec generic map (1) port map(fclk_reset_n, fclk, gpio, GPIO_tri_i(15 downto 8));
 
-    --gpio(0)       <= gpio_tri_o(0) when gpio_tri_t(0) = '0' else 'Z';
-    --gpio(1)       <= gpio_tri_o(1) when gpio_tri_t(1) = '0' else 'Z';
-    --gpio(2)       <= gpio_tri_o(2) when gpio_tri_t(2) = '0' else 'Z';
-    --gpio(3)       <= gpio_tri_o(3) when gpio_tri_t(3) = '0' else 'Z';
-    --gpio(4)       <= gpio_tri_o(4) when gpio_tri_t(4) = '0' else 'Z';
-    --gpio(5)       <= gpio_tri_o(5) when gpio_tri_t(5) = '0' else 'Z';
-    --gpio(6)       <= gpio_tri_o(6) when gpio_tri_t(6) = '0' else 'Z';
-    --gpio(7)       <= gpio_tri_o(7) when gpio_tri_t(7) = '0' else 'Z';
+    --gpio(0)       <= gpio_o_d(8)  when gpio_t_d(8)  = '0' else 'Z';
+    --gpio(1)       <= gpio_o_d(9)  when gpio_t_d(9)  = '0' else 'Z';
+    --gpio(2)       <= gpio_o_d(10) when gpio_t_d(10) = '0' else 'Z';
+    --gpio(3)       <= gpio_o_d(11) when gpio_t_d(11) = '0' else 'Z';
+    --gpio(4)       <= gpio_o_d(12) when gpio_t_d(12) = '0' else 'Z';
+    --gpio(5)       <= gpio_o_d(13) when gpio_t_d(13) = '0' else 'Z';
+    --gpio(6)       <= gpio_o_d(14) when gpio_t_d(14) = '0' else 'Z';
+    --gpio(7)       <= gpio_o_d(15) when gpio_t_d(15) = '0' else 'Z';
+                                                      
+    -- gpio control interface
+    ocxo_ena      <= gpio_o_d(0)  when gpio_t_d(0)  = '0' else 'Z';
+    GPIO_tri_i(0) <= '0';
+    pll_lock: delay_sig generic map (1) port map (rst_n, clk, locked, GPIO_tri_i(1));
+    --GPIO_tri_i(1) <= '0';
+    gps_ena       <= gpio_o_d(2)  when gpio_t_d(2)  = '0' else 'Z';
+    GPIO_tri_i(2) <= '0';
+
+    GPIO_tri_i(3) <= '0';
+    GPIO_tri_i(4) <= '0';
+    GPIO_tri_i(5) <= '0';
+    GPIO_tri_i(6) <= '0';
+    GPIO_tri_i(7) <= '0';
+
+
+    -- Interrupts
+    int(0) <= '0';
+    int(1) <= '0';
 
 
     pll : syspll

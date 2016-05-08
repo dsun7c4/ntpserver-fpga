@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
-<EDKSYSTEM EDWVERSION="1.2" TIMESTAMP="Mon Apr 25 12:06:59 2016" VIVADOVERSION="2014.4">
+<EDKSYSTEM EDWVERSION="1.2" TIMESTAMP="Sun May  8 10:26:15 2016" VIVADOVERSION="2014.4">
 
   <SYSTEMINFO ARCH="zynq" BOARD="em.avnet.com:microzed_7010:part0:1.0" DEVICE="7z010" NAME="cpu_imp" PACKAGE="clg400" SPEEDGRADE="-1"/>
 
@@ -72,6 +72,11 @@
         <CONNECTION INSTANCE="processing_system7_0_axi_periph_1" PORT="M00_ACLK"/>
       </CONNECTIONS>
     </PORT>
+    <PORT DIR="O" LEFT="0" NAME="OCXO_RESETN" RIGHT="0" SIGIS="undef" SIGNAME="rst_M_AXI_GP1_ACLK_100M_peripheral_aresetn">
+      <CONNECTIONS>
+        <CONNECTION INSTANCE="rst_M_AXI_GP1_ACLK_100M" PORT="peripheral_aresetn"/>
+      </CONNECTIONS>
+    </PORT>
     <PORT CLKFREQUENCY="100000000" DIR="O" NAME="FCLK_CLK0" SIGIS="clk" SIGNAME="processing_system7_0_FCLK_CLK0">
       <CONNECTIONS>
         <CONNECTION INSTANCE="ps7_clockc_0" PORT="FCLK0"/>
@@ -80,11 +85,6 @@
     <PORT DIR="O" NAME="FCLK_RESET0_N" SIGIS="rst" SIGNAME="processing_system7_0_FCLK_RESET0_N">
       <CONNECTIONS>
         <CONNECTION INSTANCE="processing_system7_0" PORT="FCLK_RESET0_N"/>
-      </CONNECTIONS>
-    </PORT>
-    <PORT DIR="O" LEFT="0" NAME="OCXO_RESETN" RIGHT="0" SIGIS="undef" SIGNAME="rst_M_AXI_GP1_ACLK_100M_peripheral_aresetn">
-      <CONNECTIONS>
-        <CONNECTION INSTANCE="rst_M_AXI_GP1_ACLK_100M" PORT="peripheral_aresetn"/>
       </CONNECTIONS>
     </PORT>
     <PORT DIR="I" IRQID="61" LEFT="0" NAME="Int0" RIGHT="0" SIGIS="undef" SIGNAME="External_Ports_Int0">
@@ -383,8 +383,8 @@
         <PARAMETER NAME="C_ALL_OUTPUTS" VALUE="0"/>
         <PARAMETER NAME="C_ALL_OUTPUTS_2" VALUE="0"/>
         <PARAMETER NAME="C_INTERRUPT_PRESENT" VALUE="0"/>
-        <PARAMETER NAME="C_DOUT_DEFAULT" VALUE="0x00000000"/>
-        <PARAMETER NAME="C_TRI_DEFAULT" VALUE="0xFFFFFFFF"/>
+        <PARAMETER NAME="C_DOUT_DEFAULT" VALUE="0x00000005"/>
+        <PARAMETER NAME="C_TRI_DEFAULT" VALUE="0xFFFFFFFA"/>
         <PARAMETER NAME="C_IS_DUAL" VALUE="0"/>
         <PARAMETER NAME="C_DOUT_DEFAULT_2" VALUE="0x00000000"/>
         <PARAMETER NAME="C_TRI_DEFAULT_2" VALUE="0xFFFFFFFF"/>
@@ -2210,10 +2210,10 @@
         </PORT>
         <PORT DIR="O" LEFT="0" NAME="peripheral_aresetn" RIGHT="0" SIGIS="rst" SIGNAME="rst_M_AXI_GP1_ACLK_100M_peripheral_aresetn">
           <CONNECTIONS>
+            <CONNECTION INSTANCE="External_Ports" PORT="OCXO_RESETN"/>
             <CONNECTION INSTANCE="axi_epc_0" PORT="s_axi_aresetn"/>
             <CONNECTION INSTANCE="processing_system7_0_axi_periph_1" PORT="S00_ARESETN"/>
             <CONNECTION INSTANCE="processing_system7_0_axi_periph_1" PORT="M00_ARESETN"/>
-            <CONNECTION INSTANCE="External_Ports" PORT="OCXO_RESETN"/>
           </CONNECTIONS>
         </PORT>
       </PORTS>
@@ -2299,6 +2299,7 @@
         <PORT CLKFREQUENCY="100000000" DIR="O" NAME="FCLK0" SIGIS="CLK" SIGNAME="processing_system7_0_FCLK_CLK0">
           <CONNECTIONS>
             <CONNECTION INSTANCE="ps7_dev_cfg_0" PORT="FCLK0"/>
+            <CONNECTION INSTANCE="External_Ports" PORT="FCLK_CLK0"/>
             <CONNECTION INSTANCE="processing_system7_0" PORT="M_AXI_GP0_ACLK"/>
             <CONNECTION INSTANCE="rst_processing_system7_0_100M" PORT="slowest_sync_clk"/>
             <CONNECTION INSTANCE="axi_gpio_0" PORT="s_axi_aclk"/>
@@ -2307,7 +2308,6 @@
             <CONNECTION INSTANCE="processing_system7_0_axi_periph" PORT="ACLK"/>
             <CONNECTION INSTANCE="processing_system7_0_axi_periph" PORT="M00_ACLK"/>
             <CONNECTION INSTANCE="processing_system7_0_axi_periph" PORT="M01_ACLK"/>
-            <CONNECTION INSTANCE="External_Ports" PORT="FCLK_CLK0"/>
           </CONNECTIONS>
         </PORT>
         <PORT CLKFREQUENCY="100000000" DIR="O" NAME="FCLK1" SIGIS="CLK" SIGNAME="ps7_clockc_0_FCLK1">
