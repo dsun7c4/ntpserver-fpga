@@ -396,9 +396,9 @@
         <spirit:componentRef spirit:library="ip" spirit:name="axi_gpio" spirit:vendor="xilinx.com" spirit:version="2.0"/>
         <spirit:configurableElementValues>
           <spirit:configurableElementValue spirit:referenceId="bd:xciName">cpu_axi_gpio_0_0</spirit:configurableElementValue>
-          <spirit:configurableElementValue spirit:referenceId="C_TRI_DEFAULT">0xFFFFFFFA</spirit:configurableElementValue>
+          <spirit:configurableElementValue spirit:referenceId="C_TRI_DEFAULT">0xFFFFFFEC</spirit:configurableElementValue>
           <spirit:configurableElementValue spirit:referenceId="C_GPIO_WIDTH">16</spirit:configurableElementValue>
-          <spirit:configurableElementValue spirit:referenceId="C_DOUT_DEFAULT">0x00000005</spirit:configurableElementValue>
+          <spirit:configurableElementValue spirit:referenceId="C_DOUT_DEFAULT">0x00000013</spirit:configurableElementValue>
         </spirit:configurableElementValues>
       </spirit:componentInstance>
       <spirit:componentInstance>

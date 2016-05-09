@@ -295,6 +295,7 @@ architecture STRUCTURE of clock is
     SIGNAL fclk            : STD_LOGIC;
     SIGNAL fclk_reset_n    : STD_LOGIC;
     SIGNAL rst_n           : std_logic;
+    SIGNAL pll_rst_n       : std_logic;
     SIGNAL clk_sel         : std_logic;
 
     SIGNAL clk             : STD_LOGIC;
@@ -467,14 +468,15 @@ begin
                                                       
     -- gpio control interface
     ocxo_ena      <= gpio_o_d(0)  when gpio_t_d(0)  = '0' else 'Z';
-    GPIO_tri_i(0) <= '0';
-    pll_lock: delay_sig generic map (1) port map (rst_n, clk, locked, GPIO_tri_i(1));
-    --GPIO_tri_i(1) <= '0';
-    gps_ena       <= gpio_o_d(2)  when gpio_t_d(2)  = '0' else 'Z';
-    GPIO_tri_i(2) <= '0';
-
+    xtal_ena: delay_sig generic map (1) port map (rst_n, clk, gpio_o_d(0), GPIO_tri_i(0));
+    pll_rst_n     <= gpio_o_d(1) and fclk_reset_n;
+    GPIO_tri_i(1) <= pll_rst_n;
+    pll_lock: delay_sig generic map (1) port map (rst_n, clk, locked, GPIO_tri_i(2));
+    --GPIO_tri_i(2) <= '0';
     GPIO_tri_i(3) <= '0';
-    GPIO_tri_i(4) <= '0';
+
+    gps_ena       <= gpio_o_d(4)  when gpio_t_d(4)  = '0' else 'Z';
+    loc_ena: delay_sig generic map (1) port map (rst_n, clk, gpio_o_d(4), GPIO_tri_i(4));
     GPIO_tri_i(5) <= '0';
     GPIO_tri_i(6) <= '0';
     GPIO_tri_i(7) <= '0';
@@ -496,7 +498,7 @@ begin
             clk               => clk,
 
             -- Status and control signals
-            pll_rst_n         => fclk_reset_n,
+            pll_rst_n         => pll_rst_n,
             locked            => locked
             );
 
