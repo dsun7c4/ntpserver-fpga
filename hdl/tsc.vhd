@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-04-29
--- Last update: 2016-05-05
+-- Last update: 2016-05-15
 -- Platform   : 
 -- Standard   : VHDL'87
 -------------------------------------------------------------------------------
@@ -41,7 +41,8 @@ entity tsc is
 
       tsc_cnt           : out   std_logic_vector(63 downto 0);
       tsc_1pps          : out   std_logic;
-      tsc_1ppms         : out   std_logic
+      tsc_1ppms         : out   std_logic;
+      tsc_1ppus         : out   std_logic
   );
 end tsc;
 
@@ -56,6 +57,9 @@ architecture rtl of tsc is
 
     signal ppms_cnt       : std_logic_vector(16 downto 0);
     signal ppms_cnt_term  : std_logic;
+
+    signal ppus_cnt       : std_logic_vector(6 downto 0);
+    signal ppus_cnt_term  : std_logic;
 
     signal gps_1pps_dly   : std_logic_vector(2 downto 0);
     signal gps_1pps_pulse : std_logic;
@@ -138,6 +142,31 @@ begin
     end process;
 
     tsc_1ppms <= ppms_cnt_term;
+
+    
+    -- Microsecond pulse generator synchronized to pps
+    tsc_1ppus_ctr:
+    process (rst_n, clk) is
+    begin
+        if (rst_n = '0') then
+            ppus_cnt      <= (others => '0');
+            ppus_cnt_term <= '0';
+        elsif (clk'event and clk = '1') then
+            if (ppus_cnt_term = '1' or pps_cnt_term = '1') then
+                ppus_cnt      <= (others => '0');
+            else
+                ppus_cnt      <= ppus_cnt + 1;
+            end if;
+
+            if (ppus_cnt = (100 - 2) and pps_cnt_term = '0') then
+                ppus_cnt_term <= '1';
+            else
+                ppus_cnt_term <= '0';
+            end if;
+        end if;
+    end process;
+
+    tsc_1ppus <= ppus_cnt_term;
 
     
     -- GPS 1 pulse per second input register

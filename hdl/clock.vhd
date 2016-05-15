@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-03-13
--- Last update: 2016-05-08
+-- Last update: 2016-05-15
 -- Platform   : 
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -193,7 +193,9 @@ architecture STRUCTURE of clock is
 
             tsc_cnt           : out   std_logic_vector(63 downto 0);
             tsc_1pps          : out   std_logic;
-            tsc_1ppms         : out   std_logic
+            tsc_1ppms         : out   std_logic;
+            tsc_1ppus         : out   std_logic
+
             );
     end component tsc;
 
@@ -312,6 +314,7 @@ architecture STRUCTURE of clock is
     SIGNAL tsc_cnt      : std_logic_vector(63 downto 0);
     SIGNAL tsc_1pps     : std_logic;
     SIGNAL tsc_1ppms    : std_logic;
+    SIGNAL tsc_1ppus    : std_logic;
 
     SIGNAL set          : std_logic;
     SIGNAL set_1s       : std_logic_vector(3 downto 0);
@@ -566,7 +569,8 @@ begin
 
           tsc_cnt           => tsc_cnt,
           tsc_1pps          => tsc_1pps,
-          tsc_1ppms         => tsc_1ppms
+          tsc_1ppms         => tsc_1ppms,
+          tsc_1ppus         => tsc_1ppus
           );
 
 
