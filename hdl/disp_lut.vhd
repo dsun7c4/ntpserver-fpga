@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-05-17
--- Last update: 2016-05-17
+-- Last update: 2016-05-19
 -- Platform   : 
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -44,8 +44,8 @@ entity disp_lut is
       cpu_datao         : in    std_logic_vector(31 downto 0);
       cpu_datai         : out   std_logic_vector(31 downto 0);
 
-      disp_addr         : in    std_logic_vector(11 downto 0);
-      disp_data         : out   std_logic_vector(7 downto 0)
+      lut_addr          : in    std_logic_vector(11 downto 0);
+      lut_data          : out   std_logic_vector(7 downto 0)
       );
 end disp_lut;
 
@@ -248,9 +248,9 @@ BRAM_TDP_MACRO_inst : BRAM_TDP_MACRO
         INITP_0F => X"0000000000000000000000000000000000000000000000000000000000000000")
     port map (
         DOA    => cpu_datai,  -- Output port-A data, width defined by READ_WIDTH_A parameter
-        DOB    => disp_data,  -- Output port-B data, width defined by READ_WIDTH_B parameter
+        DOB    => lut_data,  -- Output port-B data, width defined by READ_WIDTH_B parameter
         ADDRA  => cpu_addr,  -- Input port-A address, width defined by Port A depth
-        ADDRB  => disp_addr,  -- Input port-B address, width defined by Port B depth
+        ADDRB  => lut_addr,  -- Input port-B address, width defined by Port B depth
         CLKA   => clk,                  -- 1-bit input port-A clock
         CLKB   => clk,                  -- 1-bit input port-B clock
         DIA    => cpu_datao,  -- Input port-A data, width defined by WRITE_WIDTH_A parameter
