@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-05-17
--- Last update: 2016-05-19
+-- Last update: 2016-05-20
 -- Platform   : 
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -100,7 +100,7 @@ BRAM_TDP_MACRO_inst : BRAM_TDP_MACRO
         WRITE_WIDTH_A => 32, -- Valid values are 1-36 (19-36 only valid when BRAM_SIZE="36Kb")
         WRITE_WIDTH_B => 8, -- Valid values are 1-36 (19-36 only valid when BRAM_SIZE="36Kb")
         -- The following INIT_xx declarations specify the initial contents of the RAM
-        INIT_00 => X"0000000000000000000000000000000000000000000000000000000000000000",
+        INIT_00 => X"0000000000000000000000000000000083828180003a39383736353433323130",
         INIT_01 => X"0000000000000000000000000000000000000000000000000000000000000000",
         INIT_02 => X"0000000000000000000000000000000000000000000000000000000000000000",
         INIT_03 => X"0000000000000000000000000000000000000000000000000000000000000000",
@@ -165,7 +165,7 @@ BRAM_TDP_MACRO_inst : BRAM_TDP_MACRO
         INIT_3F => X"0000000000000000000000000000000000000000000000000000000000000000",
         -- The next set of INIT_xx are valid when configured as 36Kb
         INIT_40 => X"0000000000000000000000000000000000000000000000000000000000000000",
-        INIT_41 => X"0000000000000000000000000000000000000000000000000000000000000000",
+        INIT_41 => X"0000000000000000000000000000007e00000000000000000000000000000000",
         INIT_42 => X"0000000000000000000000000000000000000000000000000000000000000000",
         INIT_43 => X"0000000000000000000000000000000000000000000000000000000000000000",
         INIT_44 => X"0000000000000000000000000000000000000000000000000000000000000000",
@@ -261,7 +261,10 @@ BRAM_TDP_MACRO_inst : BRAM_TDP_MACRO
         REGCEB => '1',   -- 1-bit input port-B output register enable
         RSTA   => rst,   -- 1-bit input port-A reset
         RSTB   => rst,     -- 1-bit input port-B reset
-        WEA    => cpu_we & cpu_we & cpu_we & cpu_we,  -- Input port-A write enable, width defined by Port A depth
+        WEA(0)    => cpu_we,  -- Input port-A write enable, width defined by Port A depth
+        WEA(1)    => cpu_we,  -- Input port-A write enable, width defined by Port A depth
+        WEA(2)    => cpu_we,  -- Input port-A write enable, width defined by Port A depth
+        WEA(3)    => cpu_we,  -- Input port-A write enable, width defined by Port A depth
         WEB    => "0"  -- Input port-B write enable, width defined by Port B depth
         );
 -- End of BRAM_TDP_MACRO_inst instantiation

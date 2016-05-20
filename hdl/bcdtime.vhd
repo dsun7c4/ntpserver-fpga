@@ -115,7 +115,7 @@ begin
         elsif (clk'event and clk = '1') then
             if (sync_time = '1' and tsc_1pps = '1') then
                 dig_1ms   <= (others => '0');
-                dig_1ms(0) <= '1';  -- Set 1ms ahead for display pipe delay
+                dig_1ms(1) <= '1';  -- Set 2ms ahead for display pipe delay
                 dig_10ms  <= (others => '0');
                 dig_100ms <= (others => '0');
                 ms_carry  <= '0';

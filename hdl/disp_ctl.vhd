@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-05-19
--- Last update: 2016-05-19
+-- Last update: 2016-05-20
 -- Platform   : 
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -85,6 +85,7 @@ architecture rtl of disp_ctl is
 
     type ctl_t is (ctl_idle,
                    ctl_rd,
+                   ctl_mux,
                    ctl_disp,
                    ctl_proc0,
                    ctl_proc1,
@@ -124,18 +125,20 @@ begin
             cnt       <= (others => '0');
             cnt_term  <= '0';
         elsif (clk'event and clk = '1') then
-            if (rst_addr = '0') then
+            if (rst_addr = '1') then
                 cnt <= (others => '0');
-            elsif (ce = '1') then
+            elsif (ce = '1' and inc_addr = '1') then
                 cnt <= cnt + 1;
             end if;
 
             if (rst_addr = '1') then
                 cnt_term <= '0';
-            elsif (ce = '1' and cnt = 30)  then
-                cnt_term <= '1';
-            else
-                cnt_term <= '0';
+            elsif (ce = '1' and inc_addr = '1') then
+                if ( cnt = 30)  then
+                    cnt_term <= '1';
+                else
+                    cnt_term <= '0';
+                end if;
             end if;
         end if;
     end process;
@@ -248,7 +251,7 @@ begin
     -- For now just a shift register, use a state machine in case a more
     -- complex sequence is needed.
     disp_ctl_next:
-    process (tsc_1ppms, cnt_term) is
+    process (curr_state, tsc_1ppms, cnt_term) is
     begin
         -- outputs
         rst_addr <= '0';
@@ -273,6 +276,11 @@ begin
             when ctl_rd =>
                 -- Read the display memory
                 disp_mem <= '1';
+
+                next_state <= ctl_mux;
+
+            when ctl_mux =>
+                -- Address mux state
 
                 next_state <= ctl_disp;
 
