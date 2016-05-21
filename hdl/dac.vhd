@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    :
 -- Created    : 2016-05-05
--- Last update: 2016-05-05
+-- Last update: 2016-05-20
 -- Platform   :
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -77,10 +77,12 @@ begin
         if (rst_n = '0') then
             trig <= '0';
         elsif (clk'event and clk = '1') then
-            if (tsc_1pps = '1') then
-                trig <= '1';
-            elsif (finish = '1') then
-                trig <= '0';
+            if (tsc_1ppms = '1') then
+                if (tsc_1pps = '1') then
+                    trig <= '1';
+                elsif (finish = '1') then
+                    trig <= '0';
+                end if;
             end if;
         end if;
     end process;
@@ -94,16 +96,20 @@ begin
             bit_cnt <= (others => '0');
             finish  <= '0';
         elsif (clk'event and clk = '1') then
-            if (trig = '0') then
-                bit_cnt <= (others => '0');
-            elsif (tsc_1ppms = '1' and trig = '1') then
-                bit_cnt <= bit_cnt + 1;
-            end if;
+            if (tsc_1ppms = '1') then
+                if (trig = '0') then
+                    bit_cnt <= (others => '0');
+                else
+                    bit_cnt <= bit_cnt + 1;
+                end if;
 
-            if (tsc_1ppms = '1' and bit_cnt = 31)  then
-                finish <= '1';
-            else
-                finish <= '0';
+                if (trig = '0') then
+                    finish <= '0';
+                elsif (bit_cnt = 30)  then
+                    finish <= '1';
+                else
+                    finish <= '0';
+                end if;
             end if;
         end if;
     end process;
@@ -119,13 +125,13 @@ begin
             sclk   <= '0';
             sin    <= '0';
         elsif (clk'event and clk = '1') then
-            if (tsc_1pps = '1') then
-                bit_sr <= dac_val;
-            elsif (tsc_1ppms = '1' and bit_cnt(0) = '1') then
-                bit_sr <= bit_sr(bit_sr'left - 1 downto 0) & '0';
-            end if;
-                
             if (tsc_1ppms = '1') then
+                if (tsc_1pps = '1') then
+                    bit_sr <= dac_val;
+                elsif (bit_cnt(0) = '1') then
+                    bit_sr <= bit_sr(bit_sr'left - 1 downto 0) & '0';
+                end if;
+                
                 cs     <= not trig;
                 sclk   <= bit_cnt(0);
                 sin    <= bit_sr(bit_sr'left);

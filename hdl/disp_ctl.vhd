@@ -69,8 +69,8 @@ architecture rtl of disp_ctl is
     signal cnt            : std_logic_vector(4 downto 0);
     signal cnt_term       : std_logic;
 
-    signal dchar          : std_logic_vector(7 downto 0);
     signal char           : std_logic_vector(7 downto 0);
+    signal dchar          : std_logic_vector(7 downto 0);
 
     signal seg            : std_logic_vector(7 downto 0);
     type out_arr_t is array (natural range <>) of std_logic_vector(7 downto 0);
@@ -125,19 +125,21 @@ begin
             cnt       <= (others => '0');
             cnt_term  <= '0';
         elsif (clk'event and clk = '1') then
-            if (rst_addr = '1') then
-                cnt <= (others => '0');
-            elsif (ce = '1' and inc_addr = '1') then
-                cnt <= cnt + 1;
-            end if;
+            if (ce = '1') then
+                if (rst_addr = '1') then
+                    cnt <= (others => '0');
+                elsif (inc_addr = '1') then
+                    cnt <= cnt + 1;
+                end if;
 
-            if (rst_addr = '1') then
-                cnt_term <= '0';
-            elsif (ce = '1' and inc_addr = '1') then
-                if ( cnt = 30)  then
-                    cnt_term <= '1';
-                else
+                if (rst_addr = '1') then
                     cnt_term <= '0';
+                elsif (inc_addr = '1') then
+                    if (cnt = 30)  then
+                        cnt_term <= '1';
+                    else
+                        cnt_term <= '0';
+                    end if;
                 end if;
             end if;
         end if;
@@ -150,15 +152,15 @@ begin
         variable digit : std_logic_vector(3 downto 0);
     begin
         if (rst_n = '0') then
-            dchar <= (others => '0');
             char  <= (others => '0');
+            dchar <= (others => '0');
         elsif (clk'event and clk = '1') then
             if (ce = '1') then
                 if (data_val = '1') then
-                    dchar <= lut_data;
+                    char  <= lut_data;
                 end if;
 
-                case dchar(3 downto 0) is
+                case char(3 downto 0) is
                     when "0000" =>
                         digit := t_1ms;
                     when "0001" =>
@@ -181,10 +183,10 @@ begin
                         digit := (others => '0');
                 end case;
 
-                if (dchar(7) = '1') then
-                    char  <= digit + x"30";
+                if (char(7) = '1') then
+                    dchar <= digit + x"30";
                 else
-                    char  <= '0' & dchar(6 downto 0);
+                    dchar <= '0' & char(6 downto 0);
                 end if;
             end if;
         end if;
@@ -202,7 +204,7 @@ begin
                 if (disp_mem = '1') then
                     lut_addr <= "0000000" & cnt;
                 else
-                    lut_addr <= "1000" & char;
+                    lut_addr <= "1000" & dchar;
                 end if;
             end if;
         end if;
@@ -224,8 +226,10 @@ begin
                     seg <= lut_data;
                 end if;
                 
+                -- Or in dp register bits with lut data
                 if (out_reg = '1') then
                     disp_sr(conv_integer(cnt)) <= seg;
+                    disp_sr(conv_integer(cnt))(0) <= seg(0) or dp(conv_integer(cnt));
                 end if;
             end if;
         end if;
@@ -332,8 +336,7 @@ begin
 
     out_map:
     for i in 0 to 31 generate
-        disp_data(i * 8 + 7 downto i * 8 + 1) <= disp_sr(i)(7 downto 1);
-        disp_data(i * 8)                      <= dp(i);
+        disp_data(i * 8 + 7 downto i * 8) <= disp_sr(i)(7 downto 0);
     end generate;
 
 end rtl;

@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-03-13
--- Last update: 2016-05-05
+-- Last update: 2016-05-20
 -- Platform   : 
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -30,21 +30,45 @@
 -- 0x8060_000c  |           |   hour    |  min      |  sec      |
 -- 
 -- 0x8060_0010  |           |           |       DAC value       |
--- 
+--
+--
 -- 0x8060_0100  |        MSPR           |           |  Fan pwm  |
 --
--- 0x8060_0200  |  digit 3  |  digit 2  |  digit 1  |  digit 0  |
+--
+-- 0x8060_0200  |           |           |           |  disp pdm |
 -- 
--- 0x8060_0204  |  digit 7  |  digit 6  |  digit 5  |  digit 4  |
+-- 0x8060_0204  |  Decimal point    ...    fedcba98    76543210 |
+--
+--
+-- 0x8060_1000  |  digit 3  |  digit 2  |  digit 1  |  digit 0  |
 -- 
--- 0x8060_0208  |  digit 11 |  digit 10 |  digit 9  |  digit 8  |
+-- 0x8060_1004  |  digit 7  |  digit 6  |  digit 5  |  digit 4  |
 -- 
--- 0x8060_020c  |  digit 15 |  digit 14 |  digit 13 |  digit 12 |
+-- 0x8060_1008  |  digit 11 |  digit 10 |  digit 9  |  digit 8  |
 -- 
--- 0x8060_0210  |  digit 19 |  digit 18 |  digit 17 |  digit 16 |
+-- 0x8060_100c  |  digit 15 |  digit 14 |  digit 13 |  digit 12 |
 -- 
--- 0x8060_0214  |           |           |           |  disp pdm |
+-- 0x8060_1010  |  digit 19 |  digit 18 |  digit 17 |  digit 16 |
 -- 
+-- 0x8060_1014  |                RAM                            |
+-- 0x8060_17FC  |                RAM                            |
+--
+-- 0x8060_1800  |   lut  3  |   lut  2  |   lut  1  |   lut  0  |
+-- 
+-- 0x8060_1804  |   lut  7  |   lut  6  |   lut  5  |   lut  4  |
+-- 
+-- 0x8060_1808  |   lut  11 |   lut  10 |   lut  9  |   lut  8  |
+-- 
+-- 0x8060_180c  |   lut  15 |   lut  14 |   lut  13 |   lut  12 |
+-- 
+-- 0x8060_1810  |   lut  19 |   lut  18 |   lut  17 |   lut  16 |
+-- 
+--
+-- 0x8060_187C  |   lut 127 |   lut 126 |   lut 125 |   lut 124 |
+-- 
+-- 0x8060_1880  |                RAM                            |
+-- 0x8060_1FFC  |                RAM                            |
+--
 
 
 library IEEE;
@@ -67,11 +91,13 @@ entity regs is
       EPC_INTF_rdy      : out   std_logic;
       EPC_INTF_rnw      : in    std_logic;  -- Write when '0'
 
+      -- Time stamp counter
       tsc_read          : out   std_logic;
       tsc_sync          : out   std_logic;
       diff_1pps         : in    std_logic_vector(31 downto 0);
       tsc_cnt           : in    std_logic_vector(63 downto 0);
 
+      -- Time setting
       set               : out   std_logic;
       set_1s            : out   std_logic_vector(3 downto 0);
       set_10s           : out   std_logic_vector(3 downto 0);
@@ -81,9 +107,19 @@ entity regs is
       set_10h           : out   std_logic_vector(3 downto 0);
       dac_val           : out   std_logic_vector(15 downto 0);
 
+      -- Fan ms per revolution, percent speed
       fan_mspr          : in    std_logic_vector(15 downto 0);
       fan_pct           : out   std_logic_vector(7 downto 0);
       
+      -- Display memory
+      dp                : out   std_logic_vector(31 downto 0);
+      cpu_addr          : out   std_logic_vector(9 downto 0);
+      cpu_we            : out   std_logic;
+      cpu_datao         : out   std_logic_vector(31 downto 0);
+      cpu_datai         : in    std_logic_vector(31 downto 0);
+
+      disp_pdm          : out   std_logic_vector(7 downto 0);
+
       tmp               : out   std_logic
 
   );
@@ -97,7 +133,7 @@ architecture rtl of regs is
 
     signal time_regs   : reg_arr(4 downto 0);
     signal fan_regs    : reg_arr(0 downto 0);
-    signal disp_regs   : reg_arr(5 downto 0);
+    signal disp_regs   : reg_arr(1 downto 0);
 
     signal addr        : std_logic_vector(31 downto 0);
     signal be          : std_logic_vector(3 downto 0);
@@ -111,10 +147,12 @@ architecture rtl of regs is
     signal rdy_d       : std_logic_vector(2 downto 0);
     
     signal decode      : std_logic_vector(3 downto 0);
+    signal sram        : std_logic;
 
     signal time_regs_mux  : std_logic_vector(31 downto 0);
     signal fan_regs_mux   : std_logic_vector(31 downto 0);
     signal disp_regs_mux  : std_logic_vector(31 downto 0);
+    signal sram_regs_mux  : std_logic_vector(31 downto 0);
 
 begin
 
@@ -148,11 +186,14 @@ begin
     begin
         if (rst_n = '0') then
             decode <= (others => '0');
+            sram   <= '0';
         elsif (clk'event and clk = '1') then
             if (EPC_INTF_cs_n = '0') then
                 decode(conv_integer(addr(9 downto 8))) <= '1';
+                sram   <= addr(12);
             else
                 decode <= (others => '0');
+                sram   <= '0';
             end if;
         end if;
     end process;
@@ -184,7 +225,9 @@ begin
         if (rst_n = '0') then
             data_i <= (others => '0');
         elsif (clk'event and clk = '1') then
-            if (decode(0) = '1') then
+            if (sram = '1') then
+                data_i <= sram_regs_mux;
+            elsif (decode(0) = '1') then
                 data_i <= time_regs_mux;
             elsif (decode(1) = '1') then
                 data_i <= fan_regs_mux;
@@ -202,9 +245,11 @@ begin
             time_regs_mux <= (others => '0');
             fan_regs_mux  <= (others => '0');
             disp_regs_mux <= (others => '0');
+            sram_regs_mux <= (others => '0');
             tsc_read      <= '0';
         elsif (clk'event and clk = '1') then
             if (cs_n_d = '0') then
+                sram_regs_mux <= cpu_datai;
                 case addr(5 downto 2) is
                     when "0000" =>
                         time_regs_mux <= tsc_cnt(31 downto 0);
@@ -218,19 +263,19 @@ begin
                     when "0010" =>
                         time_regs_mux <= diff_1pps;
                         fan_regs_mux  <= fan_regs_mux;
-                        disp_regs_mux <= disp_regs(2);
+                        disp_regs_mux <= disp_regs_mux;
                     when "0011" =>
                         time_regs_mux <= time_regs(3);
                         fan_regs_mux  <= fan_regs_mux;
-                        disp_regs_mux <= disp_regs(3);
+                        disp_regs_mux <= disp_regs_mux;
                     when "0100" =>
                         time_regs_mux <= time_regs_mux;
                         fan_regs_mux  <= fan_regs_mux;
-                        disp_regs_mux <= disp_regs(4);
+                        disp_regs_mux <= disp_regs_mux;
                     when "1000" =>
                         time_regs_mux <= time_regs_mux;
                         fan_regs_mux  <= fan_regs_mux;
-                        disp_regs_mux <= disp_regs(5);
+                        disp_regs_mux <= disp_regs_mux;
                     when others =>
                         null;
                 end case;
@@ -318,9 +363,12 @@ begin
     process (rst_n, clk) is
     begin
         if (rst_n = '0') then
-            for i in 0 to 5 loop
+            for i in 0 to 1 loop
                 disp_regs(i) <= (others => '0');
             end loop;
+            cpu_addr  <= (others => '0');
+            cpu_we    <= '0';
+            cpu_datao <= (others => '0');
         elsif (clk'event and clk = '1') then
             if (cs_dp_w = '1' and decode(2) = '1') then
                 case addr(5 downto 2) is
@@ -328,20 +376,18 @@ begin
                         disp_regs(0) <= data_o;
                     when "0001" =>
                         disp_regs(1) <= data_o;
-                    when "0010" =>
-                        disp_regs(2) <= data_o;
-                    when "0011" =>
-                        disp_regs(3) <= data_o;
-                    when "0100" =>
-                        disp_regs(4) <= data_o;
-                    when "1000" =>
-                        disp_regs(5) <= data_o;
                     when others =>
                         null;
                 end case;
             end if;
+            cpu_addr  <= addr(11 downto 2);
+            cpu_we    <= sram and cs_dp_w;
+            cpu_datao <= data_o;
         end if;
     end process;
+
+    disp_pdm <= disp_regs(0)(7 downto 0);
+    dp       <= disp_regs(1);
 
 
 end rtl;

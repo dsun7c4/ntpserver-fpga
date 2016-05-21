@@ -46,78 +46,34 @@ end disp_dark;
 
 architecture rtl of disp_dark is
 
-    signal pwm_div     : std_logic_vector(3 downto 0);
-    signal pwm_ce      : std_logic;
-    signal pwm_cnt     : std_logic_vector(7 downto 0);
-    signal pwm_term    : std_logic;
-    signal pwm_out     : std_logic;
+    signal pdm_ce      : std_logic;
+    signal pdm_cnt     : std_logic_vector(7 downto 0);
+    signal pdm_term    : std_logic;
     
 begin
 
-    -- First divider to generate clock enable for the PWM
-    -- Divide by 13
-    disp_pwmdiv:
-    process (rst_n, clk) is
-    begin
-        if (rst_n = '0') then
-            pwm_div  <= (others => '0');
-            pwm_ce   <= '0';
-        elsif (clk'event and clk = '1') then
-            if (pwm_ce   = '1') then
-                pwm_div  <= (others => '0');
-            else
-                pwm_div  <= pwm_div + 1;
-            end if;
-
-            if (pwm_div = x"B") then
-                pwm_ce   <= '1';
-            else
-                pwm_ce   <= '0';
-            end if;
-        end if;
-    end process;
-
+    pdm_ce <= tsc_1ppms;
 
     -- Pulse width modulator counter
-    disp_pwmcnt:
+    disp_pdmcnt:
     process (rst_n, clk) is
+        variable pdm_sum : std_logic_vector(8 downto 0);
     begin
         if (rst_n = '0') then
-            pwm_cnt  <= (others => '0');
-            pwm_term <= '0';
+            pdm_cnt  <= (others => '0');
+            pdm_term <= '0';
         elsif (clk'event and clk = '1') then
-            if (pwm_ce = '1') then
-                pwm_cnt  <= pwm_cnt + 1;
-                
-                if (pwm_cnt = x"FE") then
-                    pwm_term <= '1';
-                else
-                    pwm_term <= '0';
-                end if;
+            if (pdm_ce = '1') then
+                pdm_sum  := '0' & pdm_cnt + disp_pdm;
+
+                pdm_cnt  <= pdm_sum(pdm_cnt'range);
+                pdm_term <= pdm_sum(pdm_sum'left);
             end if;
         end if;
     end process;
 
 
-    -- Pulse width modulator output
-    disp_pwmout:
-    process (rst_n, clk) is
-    begin
-        if (rst_n = '0') then
-            pwm_out <= '0';
-        elsif (clk'event and clk = '1') then
-            if (pwm_ce = '1') then
-                if (pwm_term = '1') then
-                    pwm_out <= '1';
-                elsif (pwm_cnt = disp_pdm) then
-                    pwm_out <= '0';
-                end if;
-            end if;
-        end if;
-    end process;
-
-    
     -- Final output register
-    disp_oreg: delay_sig generic map (1) port map (rst_n, clk, pwm_out, disp_blank);
+    disp_oreg: delay_sig generic map (1) port map (rst_n, clk, pdm_term, disp_blank);
 
 end rtl;

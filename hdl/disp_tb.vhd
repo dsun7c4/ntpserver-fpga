@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-05-19
--- Last update: 2016-05-19
+-- Last update: 2016-05-20
 -- Platform   : 
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -230,7 +230,35 @@ begin
 
         disp_pdm <= x"aa";
         
-        run_clk(clk, 2000);
+        run_clk(clk, 51200);
+
+        disp_pdm <= x"ff";
+        
+        run_clk(clk, 512000);
+
+        disp_pdm <= x"fe";
+        
+        run_clk(clk, 512000);
+
+        disp_pdm <= x"fd";
+        
+        run_clk(clk, 512000);
+
+        disp_pdm <= x"80";
+        
+        run_clk(clk, 512000);
+
+        disp_pdm <= x"01";
+        
+        run_clk(clk, 512000);
+
+        disp_pdm <= x"02";
+        
+        run_clk(clk, 512000);
+
+        disp_pdm <= x"03";
+        
+        run_clk(clk, 512000);
 
         wait;
     end process;

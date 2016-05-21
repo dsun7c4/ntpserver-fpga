@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-03-13
--- Last update: 2016-05-15
+-- Last update: 2016-05-20
 -- Platform   : 
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -141,11 +141,13 @@ architecture STRUCTURE of clock is
             EPC_INTF_rdy      : out   std_logic;
             EPC_INTF_rnw      : in    std_logic;  -- Write when '0'
 
-            tsc_read          : out    std_logic;
-            tsc_sync          : out    std_logic;
+            -- Time stamp counter
+            tsc_read          : out   std_logic;
+            tsc_sync          : out   std_logic;
             diff_1pps         : in    std_logic_vector(31 downto 0);
             tsc_cnt           : in    std_logic_vector(63 downto 0);
 
+            -- Time setting
             set               : out   std_logic;
             set_1s            : out   std_logic_vector(3 downto 0);
             set_10s           : out   std_logic_vector(3 downto 0);
@@ -155,11 +157,20 @@ architecture STRUCTURE of clock is
             set_10h           : out   std_logic_vector(3 downto 0);
             dac_val           : out   std_logic_vector(15 downto 0);
 
+            -- Fan ms per revolution, percent speed
             fan_mspr          : in    std_logic_vector(15 downto 0);
             fan_pct           : out   std_logic_vector(7 downto 0);
 
-            tmp               : out   std_logic
+            -- Display memory
+            dp                : out   std_logic_vector(31 downto 0);
+            cpu_addr          : out   std_logic_vector(9 downto 0);
+            cpu_we            : out   std_logic;
+            cpu_datao         : out   std_logic_vector(31 downto 0);
+            cpu_datai         : in    std_logic_vector(31 downto 0);
 
+            disp_pdm          : out   std_logic_vector(7 downto 0);
+
+            tmp               : out   std_logic
             );
     end component regs;
 
@@ -252,6 +263,47 @@ architecture STRUCTURE of clock is
     end component;
 
 
+    component disp
+        port (
+            rst_n             : in    std_logic;
+            clk               : in    std_logic;
+
+            tsc_1pps          : in    std_logic;
+            tsc_1ppms         : in    std_logic;
+            tsc_1ppus         : in    std_logic;
+
+            disp_pdm          : in    std_logic_vector(7 downto 0);
+
+            -- Display memory
+            dp                : in    std_logic_vector(31 downto 0);
+            cpu_addr          : in    std_logic_vector(9 downto 0);
+            cpu_we            : in    std_logic;
+            cpu_datao         : in    std_logic_vector(31 downto 0);
+            cpu_datai         : out   std_logic_vector(31 downto 0);
+
+            -- Time of day
+            t_1ms             : in    std_logic_vector(3 downto 0);
+            t_10ms            : in    std_logic_vector(3 downto 0);
+            t_100ms           : in    std_logic_vector(3 downto 0);
+
+            t_1s              : in    std_logic_vector(3 downto 0);
+            t_10s             : in    std_logic_vector(3 downto 0);
+
+            t_1m              : in    std_logic_vector(3 downto 0);
+            t_10m             : in    std_logic_vector(3 downto 0);
+
+            t_1h              : in    std_logic_vector(3 downto 0);
+            t_10h             : in    std_logic_vector(3 downto 0);
+
+            -- Output to tlc59282 LED driver
+            disp_sclk         : OUT   std_logic;
+            disp_blank        : OUT   std_logic;
+            disp_lat          : OUT   std_logic;
+            disp_sin          : OUT   std_logic
+            );
+    end component;
+
+
     signal EPC_INTF_addr   : std_logic_vector (0 to 31);
     signal EPC_INTF_ads    : std_logic;
     signal EPC_INTF_be     : std_logic_vector (0 to 3);
@@ -338,6 +390,13 @@ architecture STRUCTURE of clock is
     SIGNAL t_1h         : std_logic_vector(3 downto 0);
     SIGNAL t_10h        : std_logic_vector(3 downto 0);
 
+    SIGNAL dp           : std_logic_vector(31 downto 0);
+    SIGNAL cpu_addr     : std_logic_vector(9 downto 0);
+    SIGNAL cpu_we       : std_logic;
+    SIGNAL cpu_datao    : std_logic_vector(31 downto 0);
+    SIGNAL cpu_datai    : std_logic_vector(31 downto 0);
+
+    SIGNAL disp_pdm     : std_logic_vector(7 downto 0);
 
     SIGNAL tmp          : std_logic;
 
@@ -520,11 +579,13 @@ begin
             EPC_INTF_rdy      => EPC_INTF_rdy,
             EPC_INTF_rnw      => EPC_INTF_rnw,
 
+            -- Time stamp counter
             tsc_read          => tsc_read,
             tsc_sync          => tsc_sync,
             diff_1pps         => diff_1pps,
             tsc_cnt           => tsc_cnt,
 
+            -- Time setting
             set               => set,
             set_1s            => set_1s,
             set_10s           => set_10s,
@@ -534,8 +595,19 @@ begin
             set_10h           => set_10h,
             dac_val           => dac_val,
 
+            -- Fan ms per revolution, percent speed
             fan_mspr          => fan_mspr,
             fan_pct           => fan_pct,
+
+            -- Display memory
+            dp                => dp,
+            cpu_addr          => cpu_addr,
+            cpu_we            => cpu_we,
+            cpu_datao         => cpu_datao,
+            cpu_datai         => cpu_datai,
+
+            disp_pdm          => disp_pdm,
+
             tmp               => tmp
 
             );
@@ -621,6 +693,46 @@ begin
             dac_sclk          => dac_sclk,
             dac_cs_n          => dac_cs_n,
             dac_sin           => dac_sin
+            );
+
+
+    disp_i : disp
+        port map (
+            rst_n             => rst_n,
+            clk               => clk,
+
+            tsc_1pps          => tsc_1pps,
+            tsc_1ppms         => tsc_1ppms,
+            tsc_1ppus         => tsc_1ppus,
+
+            disp_pdm          => disp_pdm,
+
+            -- Display memory
+            dp                => dp,
+            cpu_addr          => cpu_addr,
+            cpu_we            => cpu_we,
+            cpu_datao         => cpu_datao,
+            cpu_datai         => cpu_datai,
+
+            -- Time of day
+            t_1ms             => t_1ms,
+            t_10ms            => t_10ms,
+            t_100ms           => t_100ms,
+
+            t_1s              => t_1s,
+            t_10s             => t_10s,
+
+            t_1m              => t_1m,
+            t_10m             => t_10m,
+
+            t_1h              => t_1h,
+            t_10h             => t_10h,
+
+            -- Output to tlc59282 LED driver
+            disp_sclk         => disp_sclk,
+            disp_blank        => disp_blank,
+            disp_lat          => disp_lat,
+            disp_sin          => disp_sin
             );
 
 
