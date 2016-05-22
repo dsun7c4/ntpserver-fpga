@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-03-13
--- Last update: 2016-05-20
+-- Last update: 2016-05-21
 -- Platform   : 
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -78,51 +78,48 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 use IEEE.STD_LOGIC_ARITH.ALL;
 
 entity regs is
-  port (
-      rst_n             : in    std_logic;
-      clk               : in    std_logic;
+    port (
+        rst_n             : in    std_logic;
+        clk               : in    std_logic;
 
-      EPC_INTF_addr     : in    std_logic_vector(0 to 31);
-      EPC_INTF_be       : in    std_logic_vector(0 to 3);
-      EPC_INTF_burst    : in    std_logic;
-      EPC_INTF_cs_n     : in    std_logic;
-      EPC_INTF_data_i   : out   std_logic_vector(0 to 31);
-      EPC_INTF_data_o   : in    std_logic_vector(0 to 31);
-      EPC_INTF_rdy      : out   std_logic;
-      EPC_INTF_rnw      : in    std_logic;  -- Write when '0'
+        EPC_INTF_addr     : in    std_logic_vector(0 to 31);
+        EPC_INTF_be       : in    std_logic_vector(0 to 3);
+        EPC_INTF_burst    : in    std_logic;
+        EPC_INTF_cs_n     : in    std_logic;
+        EPC_INTF_data_i   : out   std_logic_vector(0 to 31);
+        EPC_INTF_data_o   : in    std_logic_vector(0 to 31);
+        EPC_INTF_rdy      : out   std_logic;
+        EPC_INTF_rnw      : in    std_logic;  -- Write when '0'
 
-      -- Time stamp counter
-      tsc_read          : out   std_logic;
-      tsc_sync          : out   std_logic;
-      diff_1pps         : in    std_logic_vector(31 downto 0);
-      tsc_cnt           : in    std_logic_vector(63 downto 0);
+        -- Time stamp counter
+        tsc_read          : out   std_logic;
+        tsc_sync          : out   std_logic;
+        diff_1pps         : in    std_logic_vector(31 downto 0);
+        tsc_cnt           : in    std_logic_vector(63 downto 0);
 
-      -- Time setting
-      set               : out   std_logic;
-      set_1s            : out   std_logic_vector(3 downto 0);
-      set_10s           : out   std_logic_vector(3 downto 0);
-      set_1m            : out   std_logic_vector(3 downto 0);
-      set_10m           : out   std_logic_vector(3 downto 0);
-      set_1h            : out   std_logic_vector(3 downto 0);
-      set_10h           : out   std_logic_vector(3 downto 0);
-      dac_val           : out   std_logic_vector(15 downto 0);
+        -- Time setting
+        set               : out   std_logic;
+        set_1s            : out   std_logic_vector(3 downto 0);
+        set_10s           : out   std_logic_vector(3 downto 0);
+        set_1m            : out   std_logic_vector(3 downto 0);
+        set_10m           : out   std_logic_vector(3 downto 0);
+        set_1h            : out   std_logic_vector(3 downto 0);
+        set_10h           : out   std_logic_vector(3 downto 0);
+        dac_val           : out   std_logic_vector(15 downto 0);
 
-      -- Fan ms per revolution, percent speed
-      fan_mspr          : in    std_logic_vector(15 downto 0);
-      fan_pct           : out   std_logic_vector(7 downto 0);
-      
-      -- Display memory
-      dp                : out   std_logic_vector(31 downto 0);
-      cpu_addr          : out   std_logic_vector(9 downto 0);
-      cpu_we            : out   std_logic;
-      cpu_datao         : out   std_logic_vector(31 downto 0);
-      cpu_datai         : in    std_logic_vector(31 downto 0);
+        -- Fan ms per revolution, percent speed
+        fan_mspr          : in    std_logic_vector(15 downto 0);
+        fan_pct           : out   std_logic_vector(7 downto 0);
+        
+        -- Display memory
+        dp                : out   std_logic_vector(31 downto 0);
+        sram_addr         : out   std_logic_vector(9 downto 0);
+        sram_we           : out   std_logic;
+        sram_datao        : out   std_logic_vector(31 downto 0);
+        sram_datai        : in    std_logic_vector(31 downto 0);
 
-      disp_pdm          : out   std_logic_vector(7 downto 0);
-
-      tmp               : out   std_logic
-
-  );
+        disp_pdm          : out   std_logic_vector(7 downto 0)
+        );
 end regs;
 
 
@@ -131,23 +128,23 @@ architecture rtl of regs is
 
     type reg_arr is array (natural range <>) of std_logic_vector(31 downto 0);
 
-    signal time_regs   : reg_arr(4 downto 0);
-    signal fan_regs    : reg_arr(0 downto 0);
-    signal disp_regs   : reg_arr(1 downto 0);
+    signal time_regs      : reg_arr(4 downto 0);
+    signal fan_regs       : reg_arr(0 downto 0);
+    signal disp_regs      : reg_arr(1 downto 0);
 
-    signal addr        : std_logic_vector(31 downto 0);
-    signal be          : std_logic_vector(3 downto 0);
-    signal data_i      : std_logic_vector(31 downto 0);
-    signal data_o      : std_logic_vector(31 downto 0);
+    signal addr           : std_logic_vector(31 downto 0);
+    signal be             : std_logic_vector(3 downto 0);
+    signal data_i         : std_logic_vector(31 downto 0);
+    signal data_o         : std_logic_vector(31 downto 0);
 
-    signal cs_n_d      : std_logic;
-    signal cs_dp_r     : std_logic;
-    signal cs_dp_w     : std_logic;
-    signal rnw         : std_logic;
-    signal rdy_d       : std_logic_vector(2 downto 0);
+    signal cs_n_d         : std_logic;
+    signal cs_dp_r        : std_logic;
+    signal cs_dp_w        : std_logic;
+    signal rnw            : std_logic;
+    signal rdy_d          : std_logic_vector(2 downto 0);
     
-    signal decode      : std_logic_vector(3 downto 0);
-    signal sram        : std_logic;
+    signal decode         : std_logic_vector(3 downto 0);
+    signal sram           : std_logic;
 
     signal time_regs_mux  : std_logic_vector(31 downto 0);
     signal fan_regs_mux   : std_logic_vector(31 downto 0);
@@ -249,7 +246,7 @@ begin
             tsc_read      <= '0';
         elsif (clk'event and clk = '1') then
             if (cs_n_d = '0') then
-                sram_regs_mux <= cpu_datai;
+                sram_regs_mux <= sram_datai;
                 case addr(5 downto 2) is
                     when "0000" =>
                         time_regs_mux <= tsc_cnt(31 downto 0);
@@ -366,9 +363,9 @@ begin
             for i in 0 to 1 loop
                 disp_regs(i) <= (others => '0');
             end loop;
-            cpu_addr  <= (others => '0');
-            cpu_we    <= '0';
-            cpu_datao <= (others => '0');
+            sram_addr  <= (others => '0');
+            sram_we    <= '0';
+            sram_datao <= (others => '0');
         elsif (clk'event and clk = '1') then
             if (cs_dp_w = '1' and decode(2) = '1') then
                 case addr(5 downto 2) is
@@ -380,9 +377,9 @@ begin
                         null;
                 end case;
             end if;
-            cpu_addr  <= addr(11 downto 2);
-            cpu_we    <= sram and cs_dp_w;
-            cpu_datao <= data_o;
+            sram_addr  <= addr(11 downto 2);
+            sram_we    <= sram and cs_dp_w;
+            sram_datao <= data_o;
         end if;
     end process;
 

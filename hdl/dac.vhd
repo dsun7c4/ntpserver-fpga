@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    :
 -- Created    : 2016-05-05
--- Last update: 2016-05-20
+-- Last update: 2016-05-21
 -- Platform   :
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -35,6 +35,7 @@ entity dac is
       tsc_1pps          : in    std_logic;
       tsc_1ppms         : in    std_logic;
 
+      dac_ena           : in    std_logic;
       dac_val           : in    std_logic_vector(15 downto 0);
 
       dac_sclk          : OUT   std_logic;
@@ -78,7 +79,7 @@ begin
             trig <= '0';
         elsif (clk'event and clk = '1') then
             if (tsc_1ppms = '1') then
-                if (tsc_1pps = '1') then
+                if (tsc_1pps = '1' and dac_ena = '1') then
                     trig <= '1';
                 elsif (finish = '1') then
                     trig <= '0';

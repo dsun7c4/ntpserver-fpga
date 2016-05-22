@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-05-14
--- Last update: 2016-05-19
+-- Last update: 2016-05-21
 -- Platform   : 
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -37,14 +37,15 @@ entity disp is
       tsc_1ppms         : in    std_logic;
       tsc_1ppus         : in    std_logic;
 
+      disp_ena          : in    std_logic;
       disp_pdm          : in    std_logic_vector(7 downto 0);
+      dp                : in    std_logic_vector(31 downto 0);
 
       -- Display memory
-      dp                : in    std_logic_vector(31 downto 0);
-      cpu_addr          : in    std_logic_vector(9 downto 0);
-      cpu_we            : in    std_logic;
-      cpu_datao         : in    std_logic_vector(31 downto 0);
-      cpu_datai         : out   std_logic_vector(31 downto 0);
+      sram_addr         : in    std_logic_vector(9 downto 0);
+      sram_we           : in    std_logic;
+      sram_datao        : in    std_logic_vector(31 downto 0);
+      sram_datai        : out   std_logic_vector(31 downto 0);
 
       -- Time of day
       t_1ms             : in    std_logic_vector(3 downto 0);
@@ -97,10 +98,10 @@ architecture rtl of disp is
             rst_n             : in    std_logic;
             clk               : in    std_logic;
 
-            cpu_addr          : in    std_logic_vector(9 downto 0);
-            cpu_we            : in    std_logic;
-            cpu_datao         : in    std_logic_vector(31 downto 0);
-            cpu_datai         : out   std_logic_vector(31 downto 0);
+            sram_addr         : in    std_logic_vector(9 downto 0);
+            sram_we           : in    std_logic;
+            sram_datao        : in    std_logic_vector(31 downto 0);
+            sram_datai        : out   std_logic_vector(31 downto 0);
 
             lut_addr          : in    std_logic_vector(11 downto 0);
             lut_data          : out   std_logic_vector(7 downto 0)
@@ -129,6 +130,7 @@ architecture rtl of disp is
 
             tsc_1ppms         : in    std_logic;
 
+            disp_ena          : in    std_logic;
             dp                : in    std_logic_vector(31 downto 0);
 
             -- Time of day
@@ -184,10 +186,10 @@ begin
             rst_n             => rst_n,
             clk               => clk,
 
-            cpu_addr          => cpu_addr,
-            cpu_we            => cpu_we,
-            cpu_datao         => cpu_datao,
-            cpu_datai         => cpu_datai,
+            sram_addr         => sram_addr,
+            sram_we           => sram_we,
+            sram_datao        => sram_datao,
+            sram_datai        => sram_datai,
 
             lut_addr          => lut_addr,
             lut_data          => lut_data
@@ -214,6 +216,7 @@ begin
 
             tsc_1ppms         => tsc_1ppms,
 
+            disp_ena          => disp_ena,
             dp                => dp,
 
             -- Time of day

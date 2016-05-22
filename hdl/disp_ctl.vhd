@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-05-19
--- Last update: 2016-05-20
+-- Last update: 2016-05-21
 -- Platform   : 
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -35,6 +35,7 @@ entity disp_ctl is
 
       tsc_1ppms         : in    std_logic;
 
+      disp_ena          : in    std_logic;
       dp                : in    std_logic_vector(31 downto 0);
 
       -- Time of day
@@ -271,7 +272,7 @@ begin
                 -- Start building the shift register data every ms
                 rst_addr <= '1';
                 
-                if (tsc_1ppms = '1') then
+                if (tsc_1ppms = '1' and disp_ena = '1') then
                     next_state <= ctl_rd;
                 else
                     next_state <= ctl_idle;

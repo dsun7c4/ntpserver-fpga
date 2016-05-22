@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-05-17
--- Last update: 2016-05-20
+-- Last update: 2016-05-21
 -- Platform   : 
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -39,10 +39,10 @@ entity disp_lut is
       rst_n             : in    std_logic;
       clk               : in    std_logic;
 
-      cpu_addr          : in    std_logic_vector(9 downto 0);
-      cpu_we            : in    std_logic;
-      cpu_datao         : in    std_logic_vector(31 downto 0);
-      cpu_datai         : out   std_logic_vector(31 downto 0);
+      sram_addr         : in    std_logic_vector(9 downto 0);
+      sram_we           : in    std_logic;
+      sram_datao        : in    std_logic_vector(31 downto 0);
+      sram_datai        : out   std_logic_vector(31 downto 0);
 
       lut_addr          : in    std_logic_vector(11 downto 0);
       lut_data          : out   std_logic_vector(7 downto 0)
@@ -82,23 +82,23 @@ begin
 --------------------------------------------------------------------------
 BRAM_TDP_MACRO_inst : BRAM_TDP_MACRO
     generic map (
-        BRAM_SIZE => "36Kb", -- Target BRAM, "18Kb" or "36Kb"
-        DEVICE => "7SERIES", -- Target Device: "VIRTEX5", "VIRTEX6", "7SERIES", "SPARTAN6"
-        DOA_REG => 0, -- Optional port A output register (0 or 1)
-        DOB_REG => 0, -- Optional port B output register (0 or 1)
-        INIT_A => X"000000000", -- Initial values on A output port
-        INIT_B => X"000000000", -- Initial values on B output port
-        INIT_FILE => "NONE",
-        READ_WIDTH_A => 32, -- Valid values are 1-36 (19-36 only valid when BRAM_SIZE="36Kb")
-        READ_WIDTH_B => 8, -- Valid values are 1-36 (19-36 only valid when BRAM_SIZE="36Kb")
+        BRAM_SIZE           => "36Kb", -- Target BRAM, "18Kb" or "36Kb"
+        DEVICE              => "7SERIES", -- Target Device: "VIRTEX5", "VIRTEX6", "7SERIES", "SPARTAN6"
+        DOA_REG             => 0, -- Optional port A output register (0 or 1)
+        DOB_REG             => 0, -- Optional port B output register (0 or 1)
+        INIT_A              => X"000000000", -- Initial values on A output port
+        INIT_B              => X"000000000", -- Initial values on B output port
+        INIT_FILE           => "NONE",
+        READ_WIDTH_A        => 32, -- Valid values are 1-36 (19-36 only valid when BRAM_SIZE="36Kb")
+        READ_WIDTH_B        => 8, -- Valid values are 1-36 (19-36 only valid when BRAM_SIZE="36Kb")
         SIM_COLLISION_CHECK => "ALL", -- Collision check enable "ALL", "WARNING_ONLY",
 -- "GENERATE_X_ONLY" or "NONE"
-        SRVAL_A => X"000000000", -- Set/Reset value for A port output
-        SRVAL_B => X"000000000", -- Set/Reset value for B port output
-        WRITE_MODE_A => "WRITE_FIRST", -- "WRITE_FIRST", "READ_FIRST" or "NO_CHANGE"
-        WRITE_MODE_B => "WRITE_FIRST", -- "WRITE_FIRST", "READ_FIRST" or "NO_CHANGE"
-        WRITE_WIDTH_A => 32, -- Valid values are 1-36 (19-36 only valid when BRAM_SIZE="36Kb")
-        WRITE_WIDTH_B => 8, -- Valid values are 1-36 (19-36 only valid when BRAM_SIZE="36Kb")
+        SRVAL_A             => X"000000000", -- Set/Reset value for A port output
+        SRVAL_B             => X"000000000", -- Set/Reset value for B port output
+        WRITE_MODE_A        => "WRITE_FIRST", -- "WRITE_FIRST", "READ_FIRST" or "NO_CHANGE"
+        WRITE_MODE_B        => "WRITE_FIRST", -- "WRITE_FIRST", "READ_FIRST" or "NO_CHANGE"
+        WRITE_WIDTH_A       => 32, -- Valid values are 1-36 (19-36 only valid when BRAM_SIZE="36Kb")
+        WRITE_WIDTH_B       => 8, -- Valid values are 1-36 (19-36 only valid when BRAM_SIZE="36Kb")
         -- The following INIT_xx declarations specify the initial contents of the RAM
         INIT_00 => X"0000000000000000000000000000000083828180003a39383736353433323130",
         INIT_01 => X"0000000000000000000000000000000000000000000000000000000000000000",
@@ -247,13 +247,13 @@ BRAM_TDP_MACRO_inst : BRAM_TDP_MACRO
         INITP_0E => X"0000000000000000000000000000000000000000000000000000000000000000",
         INITP_0F => X"0000000000000000000000000000000000000000000000000000000000000000")
     port map (
-        DOA    => cpu_datai,  -- Output port-A data, width defined by READ_WIDTH_A parameter
+        DOA    => sram_datai,  -- Output port-A data, width defined by READ_WIDTH_A parameter
         DOB    => lut_data,  -- Output port-B data, width defined by READ_WIDTH_B parameter
-        ADDRA  => cpu_addr,  -- Input port-A address, width defined by Port A depth
+        ADDRA  => sram_addr,  -- Input port-A address, width defined by Port A depth
         ADDRB  => lut_addr,  -- Input port-B address, width defined by Port B depth
         CLKA   => clk,                  -- 1-bit input port-A clock
         CLKB   => clk,                  -- 1-bit input port-B clock
-        DIA    => cpu_datao,  -- Input port-A data, width defined by WRITE_WIDTH_A parameter
+        DIA    => sram_datao,  -- Input port-A data, width defined by WRITE_WIDTH_A parameter
         DIB    => x"00",  -- Input port-B data, width defined by WRITE_WIDTH_B parameter
         ENA    => '1',   -- 1-bit input port-A enable
         ENB    => '1',   -- 1-bit input port-B enable
@@ -261,10 +261,10 @@ BRAM_TDP_MACRO_inst : BRAM_TDP_MACRO
         REGCEB => '1',   -- 1-bit input port-B output register enable
         RSTA   => rst,   -- 1-bit input port-A reset
         RSTB   => rst,     -- 1-bit input port-B reset
-        WEA(0)    => cpu_we,  -- Input port-A write enable, width defined by Port A depth
-        WEA(1)    => cpu_we,  -- Input port-A write enable, width defined by Port A depth
-        WEA(2)    => cpu_we,  -- Input port-A write enable, width defined by Port A depth
-        WEA(3)    => cpu_we,  -- Input port-A write enable, width defined by Port A depth
+        WEA(0) => sram_we,  -- Input port-A write enable, width defined by Port A depth
+        WEA(1) => sram_we,  -- Input port-A write enable, width defined by Port A depth
+        WEA(2) => sram_we,  -- Input port-A write enable, width defined by Port A depth
+        WEA(3) => sram_we,  -- Input port-A write enable, width defined by Port A depth
         WEB    => "0"  -- Input port-B write enable, width defined by Port B depth
         );
 -- End of BRAM_TDP_MACRO_inst instantiation

@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-03-22
--- Last update: 2016-05-20
+-- Last update: 2016-05-21
 -- Platform   : 
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -180,7 +180,7 @@ begin
     OCXO_RESETN(0) <= rst_n;
 
     -- Place holder signal assignments
-    GPIO_tri_o <= x"0013";
+    GPIO_tri_o <= x"00d3";
     GPIO_tri_t <= (others => '0');
     IIC_0_scl_o <= '0';
     IIC_0_scl_t <= '0';

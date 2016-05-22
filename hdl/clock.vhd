@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-03-13
--- Last update: 2016-05-20
+-- Last update: 2016-05-21
 -- Platform   : 
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -100,21 +100,38 @@ architecture STRUCTURE of clock is
     end component cpu;
 
 
-    component IOBUF is
+    component io
         port (
-            I : in STD_LOGIC;
-            O : out STD_LOGIC;
-            T : in STD_LOGIC;
-            IO : inout STD_LOGIC
+            fclk_rst_n        : in    std_logic;
+            fclk              : in    std_logic;
+            rst_n             : in    std_logic;
+            clk               : in    std_logic;
+
+            -- fclk
+            GPIO_tri_i        : out   std_logic_vector (15 downto 0);
+            GPIO_tri_o        : in    std_logic_vector (15 downto 0);
+            GPIO_tri_t        : in    std_logic_vector (15 downto 0);
+
+            -- clk
+            locked            : in    std_logic;
+            dac_ena           : out   std_logic;
+            disp_ena          : out   std_logic;
+
+            -- fclk
+            pll_rst_n         : out   std_logic;
+            ocxo_ena          : out   std_logic;
+            gps_ena           : out   std_logic;
+            gpio              : inout std_logic_vector (7 DOWNTO 0)
+
             );
-    end component IOBUF;
+    end component;
 
 
     component syspll
         port (
             -- Clock in ports
-            ocxo_clk          : IN    std_logic;
-            fclk              : IN    std_logic;
+            ocxo_clk          : in    std_logic;
+            fclk              : in    std_logic;
             clk_sel           : in    std_logic;
 
             -- Clock out ports
@@ -162,15 +179,13 @@ architecture STRUCTURE of clock is
             fan_pct           : out   std_logic_vector(7 downto 0);
 
             -- Display memory
+            sram_addr         : out   std_logic_vector(9 downto 0);
+            sram_we           : out   std_logic;
+            sram_datao        : out   std_logic_vector(31 downto 0);
+            sram_datai        : in    std_logic_vector(31 downto 0);
+
             dp                : out   std_logic_vector(31 downto 0);
-            cpu_addr          : out   std_logic_vector(9 downto 0);
-            cpu_we            : out   std_logic;
-            cpu_datao         : out   std_logic_vector(31 downto 0);
-            cpu_datai         : in    std_logic_vector(31 downto 0);
-
-            disp_pdm          : out   std_logic_vector(7 downto 0);
-
-            tmp               : out   std_logic
+            disp_pdm          : out   std_logic_vector(7 downto 0)
             );
     end component regs;
 
@@ -254,11 +269,12 @@ architecture STRUCTURE of clock is
             tsc_1pps          : in    std_logic;
             tsc_1ppms         : in    std_logic;
 
+            dac_ena           : in    std_logic;
             dac_val           : in    std_logic_vector(15 downto 0);
 
-            dac_sclk          : OUT   std_logic;
-            dac_cs_n          : OUT   std_logic;
-            dac_sin           : OUT   std_logic
+            dac_sclk          : out   std_logic;
+            dac_cs_n          : out   std_logic;
+            dac_sin           : out   std_logic
             );
     end component;
 
@@ -272,14 +288,15 @@ architecture STRUCTURE of clock is
             tsc_1ppms         : in    std_logic;
             tsc_1ppus         : in    std_logic;
 
+            disp_ena          : in    std_logic;
             disp_pdm          : in    std_logic_vector(7 downto 0);
+            dp                : in    std_logic_vector(31 downto 0);
 
             -- Display memory
-            dp                : in    std_logic_vector(31 downto 0);
-            cpu_addr          : in    std_logic_vector(9 downto 0);
-            cpu_we            : in    std_logic;
-            cpu_datao         : in    std_logic_vector(31 downto 0);
-            cpu_datai         : out   std_logic_vector(31 downto 0);
+            sram_addr         : in    std_logic_vector(9 downto 0);
+            sram_we           : in    std_logic;
+            sram_datao        : in    std_logic_vector(31 downto 0);
+            sram_datai        : out   std_logic_vector(31 downto 0);
 
             -- Time of day
             t_1ms             : in    std_logic_vector(3 downto 0);
@@ -296,10 +313,10 @@ architecture STRUCTURE of clock is
             t_10h             : in    std_logic_vector(3 downto 0);
 
             -- Output to tlc59282 LED driver
-            disp_sclk         : OUT   std_logic;
-            disp_blank        : OUT   std_logic;
-            disp_lat          : OUT   std_logic;
-            disp_sin          : OUT   std_logic
+            disp_sclk         : out   std_logic;
+            disp_blank        : out   std_logic;
+            disp_lat          : out   std_logic;
+            disp_sin          : out   std_logic
             );
     end component;
 
@@ -317,11 +334,11 @@ architecture STRUCTURE of clock is
     signal EPC_INTF_rnw    : std_logic;
     signal EPC_INTF_wr_n   : std_logic;
 
-    signal gpio_tri_i      : std_logic_vector (15 downto 0);
-    signal gpio_tri_o      : std_logic_vector (15 downto 0);
-    signal gpio_tri_t      : std_logic_vector (15 downto 0);
-    signal gpio_o_d        : std_logic_vector (15 downto 0);
-    signal gpio_t_d        : std_logic_vector (15 downto 0);
+    signal GPIO_tri_i      : std_logic_vector (15 downto 0);
+    signal GPIO_tri_o      : std_logic_vector (15 downto 0);
+    signal GPIO_tri_t      : std_logic_vector (15 downto 0);
+    SIGNAL dac_ena         : std_logic;
+    SIGNAL disp_ena        : std_logic;
 
     signal iic_0_scl_i     : std_logic;
     signal iic_0_scl_o     : std_logic;
@@ -344,61 +361,59 @@ architecture STRUCTURE of clock is
     signal iic_sda_o       : std_logic;
     signal iic_sda_t       : std_logic;
 
-    SIGNAL int             : std_logic_vector (1 downto 0);
+    signal int             : std_logic_vector (1 downto 0);
 
-    SIGNAL fclk            : STD_LOGIC;
-    SIGNAL fclk_reset_n    : STD_LOGIC;
-    SIGNAL rst_n           : std_logic;
-    SIGNAL pll_rst_n       : std_logic;
-    SIGNAL clk_sel         : std_logic;
+    signal fclk            : std_logic;
+    signal fclk_rst_n      : std_logic;
+    signal rst_n           : std_logic;
+    signal pll_rst_n       : std_logic;
+    signal clk_sel         : std_logic;
 
-    SIGNAL clk             : STD_LOGIC;
-    SIGNAL locked          : STD_LOGIC;
+    signal clk             : std_logic;
+    signal locked          : std_logic;
 
-    SIGNAL fan_pct      : std_logic_vector(7 downto 0);
-    SIGNAL fan_mspr     : std_logic_vector(15 downto 0);
+    signal fan_pct         : std_logic_vector(7 downto 0);
+    signal fan_mspr        : std_logic_vector(15 downto 0);
 
-    SIGNAL tsc_read     : std_logic;
-    SIGNAL tsc_sync     : std_logic;
+    signal tsc_read        : std_logic;
+    signal tsc_sync        : std_logic;
 
-    SIGNAL diff_1pps    : std_logic_vector(31 downto 0);
+    signal diff_1pps       : std_logic_vector(31 downto 0);
 
-    SIGNAL tsc_cnt      : std_logic_vector(63 downto 0);
-    SIGNAL tsc_1pps     : std_logic;
-    SIGNAL tsc_1ppms    : std_logic;
-    SIGNAL tsc_1ppus    : std_logic;
+    signal tsc_cnt         : std_logic_vector(63 downto 0);
+    signal tsc_1pps        : std_logic;
+    signal tsc_1ppms       : std_logic;
+    signal tsc_1ppus       : std_logic;
 
-    SIGNAL set          : std_logic;
-    SIGNAL set_1s       : std_logic_vector(3 downto 0);
-    SIGNAL set_10s      : std_logic_vector(3 downto 0);
-    SIGNAL set_1m       : std_logic_vector(3 downto 0);
-    SIGNAL set_10m      : std_logic_vector(3 downto 0);
-    SIGNAL set_1h       : std_logic_vector(3 downto 0);
-    SIGNAL set_10h      : std_logic_vector(3 downto 0);
-    SIGNAL dac_val      : std_logic_vector(15 downto 0);
+    signal set             : std_logic;
+    signal set_1s          : std_logic_vector(3 downto 0);
+    signal set_10s         : std_logic_vector(3 downto 0);
+    signal set_1m          : std_logic_vector(3 downto 0);
+    signal set_10m         : std_logic_vector(3 downto 0);
+    signal set_1h          : std_logic_vector(3 downto 0);
+    signal set_10h         : std_logic_vector(3 downto 0);
+    signal dac_val         : std_logic_vector(15 downto 0);
 
-    SIGNAL t_1ms        : std_logic_vector(3 downto 0);
-    SIGNAL t_10ms       : std_logic_vector(3 downto 0);
-    SIGNAL t_100ms      : std_logic_vector(3 downto 0);
+    signal t_1ms           : std_logic_vector(3 downto 0);
+    signal t_10ms          : std_logic_vector(3 downto 0);
+    signal t_100ms         : std_logic_vector(3 downto 0);
 
-    SIGNAL t_1s         : std_logic_vector(3 downto 0);
-    SIGNAL t_10s        : std_logic_vector(3 downto 0);
+    signal t_1s            : std_logic_vector(3 downto 0);
+    signal t_10s           : std_logic_vector(3 downto 0);
 
-    SIGNAL t_1m         : std_logic_vector(3 downto 0);
-    SIGNAL t_10m        : std_logic_vector(3 downto 0);
+    signal t_1m            : std_logic_vector(3 downto 0);
+    signal t_10m           : std_logic_vector(3 downto 0);
 
-    SIGNAL t_1h         : std_logic_vector(3 downto 0);
-    SIGNAL t_10h        : std_logic_vector(3 downto 0);
+    signal t_1h            : std_logic_vector(3 downto 0);
+    signal t_10h           : std_logic_vector(3 downto 0);
 
-    SIGNAL dp           : std_logic_vector(31 downto 0);
-    SIGNAL cpu_addr     : std_logic_vector(9 downto 0);
-    SIGNAL cpu_we       : std_logic;
-    SIGNAL cpu_datao    : std_logic_vector(31 downto 0);
-    SIGNAL cpu_datai    : std_logic_vector(31 downto 0);
+    signal sram_addr       : std_logic_vector(9 downto 0);
+    signal sram_we         : std_logic;
+    signal sram_datao      : std_logic_vector(31 downto 0);
+    signal sram_datai      : std_logic_vector(31 downto 0);
 
-    SIGNAL disp_pdm     : std_logic_vector(7 downto 0);
-
-    SIGNAL tmp          : std_logic;
+    signal dp              : std_logic_vector(31 downto 0);
+    signal disp_pdm        : std_logic_vector(7 downto 0);
 
 begin
 
@@ -473,7 +488,7 @@ begin
 
             OCXO_CLK100               => clk,
             FCLK_CLK0                 => fclk,
-            FCLK_RESET0_N             => fclk_reset_n,
+            FCLK_RESET0_N             => fclk_rst_n,
             OCXO_RESETN(0)            => rst_n,
             Int0(0)                   => int(0),
             Int1(0)                   => int(1)
@@ -500,56 +515,38 @@ begin
     iic_sda_i   <= temp_sda;
 
 
-    -- Generic gpio interface
-    gpio_oreg: delay_vec generic map (1) port map(fclk_reset_n, fclk, GPIO_tri_o, gpio_o_d);
-    gpio_treg: delay_vec generic map (1) port map(fclk_reset_n, fclk, GPIO_tri_t, gpio_t_d);
+    io_i : io
+        port map (
+            fclk_rst_n        => fclk_rst_n,
+            fclk              => fclk,
+            rst_n             => rst_n,
+            clk               => clk,
 
-    gpio_tri: for i in 8 to 15 generate
-    begin
-        --gpio_tri_iobuf: component IOBUF
-        --    port map (
-        --        I => GPIO_tri_o(i),
-        --        IO => gpio(i),
-        --        O => GPIO_tri_i(i),
-        --        T => GPIO_tri_t(i)
-        --        );
+            -- fclk
+            GPIO_tri_i        => GPIO_tri_i,
+            GPIO_tri_o        => GPIO_tri_o,
+            GPIO_tri_t        => GPIO_tri_t,
 
-        gpio(i - 8) <= gpio_o_d(i) when gpio_t_d(i) = '0' else 'Z';
-    end generate;
+            -- clk
+            locked            => locked,
+            dac_ena           => dac_ena,
+            disp_ena          => disp_ena,
 
-    gpio_ireg: delay_vec generic map (1) port map(fclk_reset_n, fclk, gpio, GPIO_tri_i(15 downto 8));
-
-    --gpio(0)       <= gpio_o_d(8)  when gpio_t_d(8)  = '0' else 'Z';
-    --gpio(1)       <= gpio_o_d(9)  when gpio_t_d(9)  = '0' else 'Z';
-    --gpio(2)       <= gpio_o_d(10) when gpio_t_d(10) = '0' else 'Z';
-    --gpio(3)       <= gpio_o_d(11) when gpio_t_d(11) = '0' else 'Z';
-    --gpio(4)       <= gpio_o_d(12) when gpio_t_d(12) = '0' else 'Z';
-    --gpio(5)       <= gpio_o_d(13) when gpio_t_d(13) = '0' else 'Z';
-    --gpio(6)       <= gpio_o_d(14) when gpio_t_d(14) = '0' else 'Z';
-    --gpio(7)       <= gpio_o_d(15) when gpio_t_d(15) = '0' else 'Z';
-                                                      
-    -- gpio control interface
-    ocxo_ena      <= gpio_o_d(0)  when gpio_t_d(0)  = '0' else 'Z';
-    xtal_ena: delay_sig generic map (1) port map (rst_n, clk, gpio_o_d(0), GPIO_tri_i(0));
-    pll_rst_n     <= gpio_o_d(1) and fclk_reset_n;
-    GPIO_tri_i(1) <= pll_rst_n;
-    pll_lock: delay_sig generic map (1) port map (rst_n, clk, locked, GPIO_tri_i(2));
-    --GPIO_tri_i(2) <= '0';
-    GPIO_tri_i(3) <= '0';
-
-    gps_ena       <= gpio_o_d(4)  when gpio_t_d(4)  = '0' else 'Z';
-    loc_ena: delay_sig generic map (1) port map (rst_n, clk, gpio_o_d(4), GPIO_tri_i(4));
-    GPIO_tri_i(5) <= '0';
-    GPIO_tri_i(6) <= '0';
-    GPIO_tri_i(7) <= '0';
+            -- fclk
+            pll_rst_n         => pll_rst_n,
+            ocxo_ena          => ocxo_ena,
+            gps_ena           => gps_ena,
+            gpio              => gpio
+            );
 
 
     -- Interrupts
     int(0) <= '0';
     int(1) <= '0';
 
+    clk_sel <= '0';
 
-    pll : syspll
+    syspll_i : syspll
         port map (
             -- Clock in ports
             ocxo_clk          => ocxo_clk,
@@ -565,7 +562,7 @@ begin
             );
 
 
-    cpu_regs: regs
+    regs_i: regs
         port map (
             rst_n             => rst_n,
             clk               => clk,
@@ -600,20 +597,18 @@ begin
             fan_pct           => fan_pct,
 
             -- Display memory
+            sram_addr         => sram_addr,
+            sram_we           => sram_we,
+            sram_datao        => sram_datao,
+            sram_datai        => sram_datai,
+
             dp                => dp,
-            cpu_addr          => cpu_addr,
-            cpu_we            => cpu_we,
-            cpu_datao         => cpu_datao,
-            cpu_datai         => cpu_datai,
-
-            disp_pdm          => disp_pdm,
-
-            tmp               => tmp
+            disp_pdm          => disp_pdm
 
             );
 
 
-  fan_ctl: fan
+  fan_i: fan
       port map (
           rst_n             => rst_n,
           clk               => clk,
@@ -628,7 +623,7 @@ begin
           );
 
 
-  time_stamp: tsc
+  tsc_i: tsc
       port map (
           rst_n             => rst_n,
           clk               => clk,
@@ -646,7 +641,7 @@ begin
           );
 
 
-    digits:  bcdtime
+    bcdtime_i:  bcdtime
         port map (
             rst_n             => rst_n,
             clk               => clk,
@@ -680,7 +675,7 @@ begin
             );
 
 
-    dac_spi: dac
+    dac_i: dac
         port map (
             rst_n             => rst_n,
             clk               => clk,
@@ -688,6 +683,7 @@ begin
             tsc_1pps          => tsc_1pps,
             tsc_1ppms         => tsc_1ppms,
 
+            dac_ena           => dac_ena,
             dac_val           => dac_val,
 
             dac_sclk          => dac_sclk,
@@ -705,14 +701,15 @@ begin
             tsc_1ppms         => tsc_1ppms,
             tsc_1ppus         => tsc_1ppus,
 
+            disp_ena          => disp_ena,
             disp_pdm          => disp_pdm,
+            dp                => dp,
 
             -- Display memory
-            dp                => dp,
-            cpu_addr          => cpu_addr,
-            cpu_we            => cpu_we,
-            cpu_datao         => cpu_datao,
-            cpu_datai         => cpu_datai,
+            sram_addr         => sram_addr,
+            sram_we           => sram_we,
+            sram_datao        => sram_datao,
+            sram_datai        => sram_datai,
 
             -- Time of day
             t_1ms             => t_1ms,
