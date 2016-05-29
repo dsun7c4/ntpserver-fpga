@@ -1,18 +1,18 @@
 -------------------------------------------------------------------------------
 -- Title      : CLock
--- Project    : 
+-- Project    :
 -------------------------------------------------------------------------------
 -- File       : regs.vhd
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
--- Company    : 
+-- Company    :
 -- Created    : 2016-03-13
--- Last update: 2016-05-21
--- Platform   : 
+-- Last update: 2016-05-22
+-- Platform   :
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
 -- Description: Register interface to the EPC bus
 -------------------------------------------------------------------------------
--- Copyright (c) 2016 
+-- Copyright (c) 2016
 -------------------------------------------------------------------------------
 -- Revisions  :
 -- Date        Version  Author      Description
@@ -20,54 +20,62 @@
 -------------------------------------------------------------------------------
 --
 --              Address range: 0x8060_0000 - 0x8060_FFFF
+--             | 3 |         2         |         1         |         0         |
+--             |1|0|9|8|7|6|5|4|3|2|1|0|9|8|7|6|5|4|3|2|1|0|9|8|7|6|5|4|3|2|1|0|
 --
--- 0x8060_0000  |            TSC LSB                            |
--- 
--- 0x8060_0004  |            TSC MSB                            |
+-- 0x8060_0000 |                            TSC LSB                            |
 --
--- 0x8060_0008  |           1PPS Difference                     |
--- 
--- 0x8060_000c  |           |   hour    |  min      |  sec      |
--- 
--- 0x8060_0010  |           |           |       DAC value       |
+-- 0x8060_0004 |                            TSC MSB                            |
 --
+-- 0x8060_0008 |                           1PPS Difference                     |
 --
--- 0x8060_0100  |        MSPR           |           |  Fan pwm  |
+-- 0x8060_000c |               | 10 h  | 1 h   | 10 m  |  1 m  | 10 s  |  1 s  |
 --
---
--- 0x8060_0200  |           |           |           |  disp pdm |
--- 
--- 0x8060_0204  |  Decimal point    ...    fedcba98    76543210 |
+-- 0x8060_0010 |                               |            DAC value          |
 --
 --
--- 0x8060_1000  |  digit 3  |  digit 2  |  digit 1  |  digit 0  |
--- 
--- 0x8060_1004  |  digit 7  |  digit 6  |  digit 5  |  digit 4  |
--- 
--- 0x8060_1008  |  digit 11 |  digit 10 |  digit 9  |  digit 8  |
--- 
--- 0x8060_100c  |  digit 15 |  digit 14 |  digit 13 |  digit 12 |
--- 
--- 0x8060_1010  |  digit 19 |  digit 18 |  digit 17 |  digit 16 |
--- 
--- 0x8060_1014  |                RAM                            |
--- 0x8060_17FC  |                RAM                            |
+-- 0x8060_0100 |             MSPR              |               |    Fan pwm    |
 --
--- 0x8060_1800  |   lut  3  |   lut  2  |   lut  1  |   lut  0  |
--- 
--- 0x8060_1804  |   lut  7  |   lut  6  |   lut  5  |   lut  4  |
--- 
--- 0x8060_1808  |   lut  11 |   lut  10 |   lut  9  |   lut  8  |
--- 
--- 0x8060_180c  |   lut  15 |   lut  14 |   lut  13 |   lut  12 |
--- 
--- 0x8060_1810  |   lut  19 |   lut  18 |   lut  17 |   lut  16 |
--- 
 --
--- 0x8060_187C  |   lut 127 |   lut 126 |   lut 125 |   lut 124 |
--- 
--- 0x8060_1880  |                RAM                            |
--- 0x8060_1FFC  |                RAM                            |
+-- 0x8060_0200 |                                               |    disp pdm   |
+--
+-- 0x8060_0204 |      Decimal point      ...    f e d c b a 9 8 7 6 5 4 3 2 1 0|
+--
+--
+-- 0x8060_1000 |    digit 3    |    digit 2    |    digit 1    |    digit 0    |
+--
+-- 0x8060_1004 |    digit 7    |    digit 6    |    digit 5    |    digit 4    |
+--
+-- 0x8060_1008 |    digit 11   |    digit 10   |    digit 9    |    digit 8    |
+--
+-- 0x8060_100c |    digit 15   |    digit 14   |    digit 13   |    digit 12   |
+--
+-- 0x8060_1010 |    digit 19   |    digit 18   |    digit 17   |    digit 16   |
+--
+-- 0x8060_1014 |    digit 23   |    digit 22   |    digit 21   |    digit 20   |
+--
+-- 0x8060_1018 |    digit 27   |    digit 26   |    digit 25   |    digit 24   |
+--
+-- 0x8060_101c |    digit 31   |    digit 30   |    digit 29   |    digit 28   |
+--
+-- 0x8060_1020 |                              RAM                              |
+-- 0x8060_17FC |                              RAM                              |
+--
+-- 0x8060_1800 |     lut  3    |     lut  2    |     lut  1    |     lut  0    |
+--
+-- 0x8060_1804 |     lut  7    |     lut  6    |     lut  5    |     lut  4    |
+--
+-- 0x8060_1808 |     lut  11   |     lut  10   |     lut  9    |     lut  8    |
+--
+-- 0x8060_180c |     lut  15   |     lut  14   |     lut  13   |     lut  12   |
+--
+-- 0x8060_1810 |     lut  19   |     lut  18   |     lut  17   |     lut  16   |
+--
+--
+-- 0x8060_187C |     lut 127   |     lut 126   |     lut 125   |     lut 124   |
+--
+-- 0x8060_1880 |                              RAM                              |
+-- 0x8060_1FFC |                              RAM                              |
 --
 
 
@@ -110,14 +118,14 @@ entity regs is
         -- Fan ms per revolution, percent speed
         fan_mspr          : in    std_logic_vector(15 downto 0);
         fan_pct           : out   std_logic_vector(7 downto 0);
-        
+
         -- Display memory
-        dp                : out   std_logic_vector(31 downto 0);
         sram_addr         : out   std_logic_vector(9 downto 0);
         sram_we           : out   std_logic;
         sram_datao        : out   std_logic_vector(31 downto 0);
         sram_datai        : in    std_logic_vector(31 downto 0);
 
+        dp                : out   std_logic_vector(31 downto 0);
         disp_pdm          : out   std_logic_vector(7 downto 0)
         );
 end regs;
@@ -142,7 +150,7 @@ architecture rtl of regs is
     signal cs_dp_w        : std_logic;
     signal rnw            : std_logic;
     signal rdy_d          : std_logic_vector(2 downto 0);
-    
+
     signal decode         : std_logic_vector(3 downto 0);
     signal sram           : std_logic;
 
@@ -332,7 +340,7 @@ begin
     set_1h  <= time_regs(3)(19 downto 16);
     set_10h <= time_regs(3)(23 downto 20);
     dac_val <= time_regs(4)(15 downto 0);
-    
+
 
     -- Fan control registers
     process (rst_n, clk) is

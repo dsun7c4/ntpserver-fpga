@@ -429,7 +429,9 @@
         <spirit:componentRef spirit:library="ip" spirit:name="axi_epc" spirit:vendor="xilinx.com" spirit:version="2.0"/>
         <spirit:configurableElementValues>
           <spirit:configurableElementValue spirit:referenceId="bd:xciName">cpu_axi_epc_0_0</spirit:configurableElementValue>
+          <spirit:configurableElementValue spirit:referenceId="C_PRH0_RDY_WIDTH">100000</spirit:configurableElementValue>
           <spirit:configurableElementValue spirit:referenceId="C_PRH0_SYNC">1</spirit:configurableElementValue>
+          <spirit:configurableElementValue spirit:referenceId="C_PRH_CLK_PERIOD_PS">10000</spirit:configurableElementValue>
         </spirit:configurableElementValues>
       </spirit:componentInstance>
       <spirit:componentInstance>

@@ -282,7 +282,7 @@ BEGIN
   U0 : axi_epc
     GENERIC MAP (
       C_S_AXI_CLK_PERIOD_PS => 10000,
-      C_PRH_CLK_PERIOD_PS => 20000,
+      C_PRH_CLK_PERIOD_PS => 10000,
       C_FAMILY => "zynq",
       C_INSTANCE => "axi_epc_inst",
       C_S_AXI_ADDR_WIDTH => 32,
@@ -315,7 +315,7 @@ BEGIN
       C_PRH0_DATA_TOUT => 0,
       C_PRH0_DATA_TINV => 0,
       C_PRH0_RDY_TOUT => 0,
-      C_PRH0_RDY_WIDTH => 0,
+      C_PRH0_RDY_WIDTH => 100000,
       C_PRH1_BASEADDR => X"B000FFFF",
       C_PRH1_HIGHADDR => X"BFFFFFFF",
       C_PRH1_FIFO_ACCESS => 0,

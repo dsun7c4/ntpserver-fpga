@@ -438,7 +438,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>customizationCRC</spirit:name>
-            <spirit:value>9b4618ae</spirit:value>
+            <spirit:value>187658cb</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>customizationCRCversion</spirit:name>
@@ -446,7 +446,7 @@
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Fri Apr 15 00:44:23 UTC 2016</spirit:value>
+            <spirit:value>Sun May 29 18:23:48 UTC 2016</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>StaleAtRelink</spirit:name>
@@ -471,7 +471,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>customizationCRC</spirit:name>
-            <spirit:value>9b4618ae</spirit:value>
+            <spirit:value>187658cb</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>customizationCRCversion</spirit:name>
@@ -479,7 +479,7 @@
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Fri Apr 15 00:44:23 UTC 2016</spirit:value>
+            <spirit:value>Sun May 29 18:23:48 UTC 2016</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>StaleAtRelink</spirit:name>
@@ -498,7 +498,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>customizationCRC</spirit:name>
-            <spirit:value>9b4618ae</spirit:value>
+            <spirit:value>187658cb</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>customizationCRCversion</spirit:name>
@@ -506,7 +506,7 @@
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Fri Apr 15 00:44:23 UTC 2016</spirit:value>
+            <spirit:value>Sun May 29 18:23:48 UTC 2016</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>StaleAtRelink</spirit:name>
@@ -531,7 +531,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>customizationCRC</spirit:name>
-            <spirit:value>32e92905</spirit:value>
+            <spirit:value>2ab1ba97</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>customizationCRCversion</spirit:name>
@@ -539,7 +539,7 @@
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Fri Apr 15 00:44:23 UTC 2016</spirit:value>
+            <spirit:value>Sun May 29 18:23:48 UTC 2016</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>StaleAtRelink</spirit:name>
@@ -558,7 +558,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>customizationCRC</spirit:name>
-            <spirit:value>32e92905</spirit:value>
+            <spirit:value>2ab1ba97</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>customizationCRCversion</spirit:name>
@@ -566,7 +566,7 @@
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Fri Apr 15 00:44:23 UTC 2016</spirit:value>
+            <spirit:value>Sun May 29 18:23:48 UTC 2016</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>StaleAtRelink</spirit:name>
@@ -584,7 +584,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>customizationCRC</spirit:name>
-            <spirit:value>9b4618ae</spirit:value>
+            <spirit:value>187658cb</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>customizationCRCversion</spirit:name>
@@ -592,7 +592,7 @@
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Fri Apr 15 00:44:23 UTC 2016</spirit:value>
+            <spirit:value>Sun May 29 18:23:48 UTC 2016</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>StaleAtRelink</spirit:name>
@@ -1373,7 +1373,7 @@
       <spirit:modelParameter spirit:dataType="integer">
         <spirit:name>C_PRH_CLK_PERIOD_PS</spirit:name>
         <spirit:displayName>C Prh Clk Period Ps</spirit:displayName>
-        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.C_PRH_CLK_PERIOD_PS">20000</spirit:value>
+        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.C_PRH_CLK_PERIOD_PS">10000</spirit:value>
       </spirit:modelParameter>
       <spirit:modelParameter spirit:dataType="string">
         <spirit:name>C_FAMILY</spirit:name>
@@ -1537,7 +1537,7 @@
       <spirit:modelParameter spirit:dataType="integer">
         <spirit:name>C_PRH0_RDY_WIDTH</spirit:name>
         <spirit:displayName>C Prh0 Rdy Width</spirit:displayName>
-        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.C_PRH0_RDY_WIDTH">0</spirit:value>
+        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.C_PRH0_RDY_WIDTH">100000</spirit:value>
       </spirit:modelParameter>
       <spirit:modelParameter spirit:dataType="std_logic_vector">
         <spirit:name>C_PRH1_BASEADDR</spirit:name>
@@ -2711,7 +2711,7 @@
       <spirit:name>C_PRH0_RDY_WIDTH</spirit:name>
       <spirit:displayName>max. Ready Assertion Period</spirit:displayName>
       <spirit:description>Maximum period of device ready signal (PRH_Rdy) to wait before device timeout</spirit:description>
-      <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="PARAM_VALUE.C_PRH0_RDY_WIDTH" spirit:order="4400" spirit:configGroups="2 UnGrouped">0</spirit:value>
+      <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="PARAM_VALUE.C_PRH0_RDY_WIDTH" spirit:order="4400" spirit:configGroups="2 UnGrouped">100000</spirit:value>
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>C_PRH0_RDY_TOUT</spirit:name>
@@ -2886,7 +2886,7 @@
       <spirit:displayName>Peripheral Clock Period</spirit:displayName>
       <spirit:description>Peripheral clock period should be always less than AXI clock period but not less than 24Mhz(41000 ps).If more than one device is synchronous, then the frequency for the peripheral clock (PRH_Clk) should be chosen as the minimum of the operating frequencies of those devices
 </spirit:description>
-      <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="PARAM_VALUE.C_PRH_CLK_PERIOD_PS" spirit:order="1200" spirit:configGroups="1 UnGrouped" spirit:minimum="3333" spirit:maximum="41000">20000</spirit:value>
+      <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="PARAM_VALUE.C_PRH_CLK_PERIOD_PS" spirit:order="1200" spirit:configGroups="1 UnGrouped" spirit:minimum="3333" spirit:maximum="41000">10000</spirit:value>
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>C_S_AXI_CLK_PERIOD_PS</spirit:name>

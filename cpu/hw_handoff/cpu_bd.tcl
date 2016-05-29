@@ -163,7 +163,7 @@ proc create_root_design { parentCell } {
 
   # Create instance: axi_epc_0, and set properties
   set axi_epc_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_epc:2.0 axi_epc_0 ]
-  set_property -dict [ list CONFIG.C_PRH0_SYNC {1}  ] $axi_epc_0
+  set_property -dict [ list CONFIG.C_PRH0_RDY_WIDTH {100000} CONFIG.C_PRH0_SYNC {1} CONFIG.C_PRH_CLK_PERIOD_PS {10000}  ] $axi_epc_0
 
   # Create instance: axi_gpio_0, and set properties
   set axi_gpio_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_gpio:2.0 axi_gpio_0 ]
