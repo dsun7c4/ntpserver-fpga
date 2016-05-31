@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-04-29
--- Last update: 2016-05-15
+-- Last update: 2016-05-30
 -- Platform   : 
 -- Standard   : VHDL'87
 -------------------------------------------------------------------------------
@@ -34,6 +34,7 @@ entity tsc is
       clk               : in    std_logic;
 
       gps_1pps          : in    std_logic;
+      gps_3dfix_d       : in    std_logic;
       tsc_read          : in    std_logic;
       tsc_sync          : in    std_logic;
 

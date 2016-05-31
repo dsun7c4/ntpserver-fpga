@@ -60,4 +60,3 @@ set_property PACKAGE_PIN D18 [get_ports gpio[4]]
 set_property PACKAGE_PIN E17 [get_ports gpio[5]]
 set_property PACKAGE_PIN B20 [get_ports gpio[6]]
 set_property PACKAGE_PIN C20 [get_ports gpio[7]]
-					  

@@ -1,23 +1,39 @@
 -------------------------------------------------------------------------------
 -- Title      : Clock
--- Project    : 
+-- Project    :
 -------------------------------------------------------------------------------
 -- File       : io.vhd
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
--- Company    : 
+-- Company    :
 -- Created    : 2016-05-21
--- Last update: 2016-05-21
--- Platform   : 
+-- Last update: 2016-05-30
+-- Platform   :
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
 -- Description: GPIO tri-state buffer and clock domain transfer
 -------------------------------------------------------------------------------
--- Copyright (c) 2016 
+-- Copyright (c) 2016
 -------------------------------------------------------------------------------
 -- Revisions  :
 -- Date        Version  Author      Description
 -- 2016-05-21  1.0      dcsun88osh  Created
 -------------------------------------------------------------------------------
+--
+--              Address range: 0x412_0000 - 0x4120_0004
+--             |  1        |         0         |
+--             |5|4|3|2|1|0|9|8|7|6|5|4|3|2|1|0|
+--
+-- 0x4120_0000 |     gpio      |d|a| |g| |l|p|o|  Read/Write
+--                              | |   |   | | |
+--                              | |   |   | | OCXO Enable (power) R/W
+--                              | |   |   | PLL reset bar         R/W
+--                              | |   |   PLL Locked              R
+--                              | |   GPS enable (power)          R/W
+--                              | DAC Controller enable           R/W
+--                              Display controller enable         R/w
+--
+-- 0x4120_0004 |               |               |  Tri state control
+--
 
 library IEEE;
 
@@ -128,6 +144,6 @@ begin
     --gpio(5)       <= gpio_o_d(13) when gpio_t_d(13) = '0' else 'Z';
     --gpio(6)       <= gpio_o_d(14) when gpio_t_d(14) = '0' else 'Z';
     --gpio(7)       <= gpio_o_d(15) when gpio_t_d(15) = '0' else 'Z';
-                                                      
+
 
 end rtl;

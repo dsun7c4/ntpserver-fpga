@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    :
 -- Created    : 2016-03-13
--- Last update: 2016-05-22
+-- Last update: 2016-05-30
 -- Platform   :
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -31,7 +31,9 @@
 --
 -- 0x8060_000c |               | 10 h  | 1 h   | 10 m  |  1 m  | 10 s  |  1 s  |
 --
--- 0x8060_0010 |                               |            DAC value          |
+-- 0x8060_0010 | |                             |            DAC value          |
+--              |
+--              GPS 3D Fix
 --
 --
 -- 0x8060_0100 |             MSPR              |               |    Fan pwm    |
@@ -102,6 +104,7 @@ entity regs is
         -- Time stamp counter
         tsc_read          : out   std_logic;
         tsc_sync          : out   std_logic;
+        gps_3dfix_d       : in    std_logic;
         diff_1pps         : in    std_logic_vector(31 downto 0);
         tsc_cnt           : in    std_logic_vector(63 downto 0);
 
@@ -194,8 +197,13 @@ begin
             sram   <= '0';
         elsif (clk'event and clk = '1') then
             if (EPC_INTF_cs_n = '0') then
-                decode(conv_integer(addr(9 downto 8))) <= '1';
-                sram   <= addr(12);
+                if (addr(12) = '1') then
+                    decode <= (others => '0');
+                    sram   <= '1';
+                else
+                    decode(conv_integer(addr(9 downto 8))) <= '1';
+                    sram   <= '0';
+                end if;
             else
                 decode <= (others => '0');
                 sram   <= '0';
@@ -274,10 +282,11 @@ begin
                         fan_regs_mux  <= fan_regs_mux;
                         disp_regs_mux <= disp_regs_mux;
                     when "0100" =>
-                        time_regs_mux <= time_regs_mux;
+                        time_regs_mux <= time_regs(4);
+                        time_regs_mux(31) <= gps_3dfix_d;
                         fan_regs_mux  <= fan_regs_mux;
                         disp_regs_mux <= disp_regs_mux;
-                    when "1000" =>
+                    when "0101" =>
                         time_regs_mux <= time_regs_mux;
                         fan_regs_mux  <= fan_regs_mux;
                         disp_regs_mux <= disp_regs_mux;

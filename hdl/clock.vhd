@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-03-13
--- Last update: 2016-05-21
+-- Last update: 2016-05-30
 -- Platform   : 
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -161,6 +161,7 @@ architecture STRUCTURE of clock is
             -- Time stamp counter
             tsc_read          : out   std_logic;
             tsc_sync          : out   std_logic;
+            gps_3dfix_d       : in    std_logic;
             diff_1pps         : in    std_logic_vector(31 downto 0);
             tsc_cnt           : in    std_logic_vector(63 downto 0);
 
@@ -212,6 +213,7 @@ architecture STRUCTURE of clock is
             clk               : in    std_logic;
 
             gps_1pps          : in    std_logic;
+            gps_3dfix_d       : in    std_logic;
             tsc_read          : in    std_logic;
             tsc_sync          : in    std_logic;
 
@@ -375,6 +377,7 @@ architecture STRUCTURE of clock is
     signal fan_pct         : std_logic_vector(7 downto 0);
     signal fan_mspr        : std_logic_vector(15 downto 0);
 
+    signal gps_3dfix_d     : std_logic;
     signal tsc_read        : std_logic;
     signal tsc_sync        : std_logic;
 
@@ -562,6 +565,8 @@ begin
             );
 
 
+    gps_3dfix_i:  delay_sig generic map (2) port map (rst_n, clk, gps_3dfix,  gps_3dfix_d);
+
     regs_i: regs
         port map (
             rst_n             => rst_n,
@@ -579,6 +584,7 @@ begin
             -- Time stamp counter
             tsc_read          => tsc_read,
             tsc_sync          => tsc_sync,
+            gps_3dfix_d       => gps_3dfix_d,
             diff_1pps         => diff_1pps,
             tsc_cnt           => tsc_cnt,
 
@@ -608,37 +614,38 @@ begin
             );
 
 
-  fan_i: fan
-      port map (
-          rst_n             => rst_n,
-          clk               => clk,
+    fan_i: fan
+        port map (
+            rst_n             => rst_n,
+            clk               => clk,
 
-          tsc_1ppms         => tsc_1ppms,
+            tsc_1ppms         => tsc_1ppms,
 
-          fan_pct           => fan_pct,
-          fan_tach          => fan_tach,
+            fan_pct           => fan_pct,
+            fan_tach          => fan_tach,
 
-          fan_pwm           => fan_pwm,
-          fan_mspr          => fan_mspr
-          );
+            fan_pwm           => fan_pwm,
+            fan_mspr          => fan_mspr
+            );
 
 
-  tsc_i: tsc
-      port map (
-          rst_n             => rst_n,
-          clk               => clk,
+    tsc_i: tsc
+        port map (
+            rst_n             => rst_n,
+            clk               => clk,
 
-          gps_1pps          => gps_1pps,
-          tsc_read          => tsc_read,
-          tsc_sync          => tsc_sync,
+            gps_1pps          => gps_1pps,
+            gps_3dfix_d       => gps_3dfix_d,
+            tsc_read          => tsc_read,
+            tsc_sync          => tsc_sync,
 
-          diff_1pps         => diff_1pps,
+            diff_1pps         => diff_1pps,
 
-          tsc_cnt           => tsc_cnt,
-          tsc_1pps          => tsc_1pps,
-          tsc_1ppms         => tsc_1ppms,
-          tsc_1ppus         => tsc_1ppus
-          );
+            tsc_cnt           => tsc_cnt,
+            tsc_1pps          => tsc_1pps,
+            tsc_1ppms         => tsc_1ppms,
+            tsc_1ppus         => tsc_1ppus
+            );
 
 
     bcdtime_i:  bcdtime
