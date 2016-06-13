@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-03-13
--- Last update: 2016-04-26
+-- Last update: 2016-06-12
 -- Platform   : 
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -49,6 +49,9 @@ entity clock is
       FIXED_IO_ps_clk   : INOUT std_logic;
       FIXED_IO_ps_porb  : INOUT std_logic;
       FIXED_IO_ps_srstb : INOUT std_logic;
+
+      Vp_Vn_v_n         : in    std_logic;
+      Vp_Vn_v_p         : in    std_logic;
 
       rtc_scl           : INOUT std_logic;
       rtc_sda           : INOUT std_logic;

@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    :
 -- Created    : 2016-05-21
--- Last update: 2016-05-30
+-- Last update: 2016-06-02
 -- Platform   :
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -30,7 +30,7 @@
 --                              | |   |   PLL Locked              R
 --                              | |   GPS enable (power)          R/W
 --                              | DAC Controller enable           R/W
---                              Display controller enable         R/w
+--                              Display controller enable         R/W
 --
 -- 0x4120_0004 |               |               |  Tri state control
 --

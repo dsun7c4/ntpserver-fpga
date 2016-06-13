@@ -60,7 +60,9 @@ ENTITY cpu_xlconcat_0_0 IS
   PORT (
     In0 : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
     In1 : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
-    dout : OUT STD_LOGIC_VECTOR(1 DOWNTO 0)
+    In2 : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
+    In3 : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
+    dout : OUT STD_LOGIC_VECTOR(3 DOWNTO 0)
   );
 END cpu_xlconcat_0_0;
 
@@ -138,7 +140,7 @@ ARCHITECTURE cpu_xlconcat_0_0_arch OF cpu_xlconcat_0_0 IS
       In29 : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
       In30 : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
       In31 : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
-      dout : OUT STD_LOGIC_VECTOR(1 DOWNTO 0)
+      dout : OUT STD_LOGIC_VECTOR(3 DOWNTO 0)
     );
   END COMPONENT xlconcat;
 BEGIN
@@ -176,14 +178,14 @@ BEGIN
       IN29_WIDTH => 1,
       IN30_WIDTH => 1,
       IN31_WIDTH => 1,
-      dout_width => 2,
-      NUM_PORTS => 2
+      dout_width => 4,
+      NUM_PORTS => 4
     )
     PORT MAP (
       In0 => In0,
       In1 => In1,
-      In2 => STD_LOGIC_VECTOR(TO_UNSIGNED(0, 1)),
-      In3 => STD_LOGIC_VECTOR(TO_UNSIGNED(0, 1)),
+      In2 => In2,
+      In3 => In3,
       In4 => STD_LOGIC_VECTOR(TO_UNSIGNED(0, 1)),
       In5 => STD_LOGIC_VECTOR(TO_UNSIGNED(0, 1)),
       In6 => STD_LOGIC_VECTOR(TO_UNSIGNED(0, 1)),

@@ -1,7 +1,7 @@
 --Copyright 1986-2014 Xilinx, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------
 --Tool Version: Vivado v.2014.4 (lin64) Build 1071353 Tue Nov 18 16:47:07 MST 2014
---Date        : Sun May 29 14:23:47 2016
+--Date        : Sun Jun 12 15:19:21 2016
 --Host        : graviton running 64-bit Debian GNU/Linux 7.10 (wheezy)
 --Command     : generate_target cpu_wrapper.bd
 --Design      : cpu_wrapper
@@ -53,6 +53,8 @@ entity cpu_wrapper is
     OCXO_RESETN : out STD_LOGIC_VECTOR ( 0 to 0 );
     UART_0_rxd : in STD_LOGIC;
     UART_0_txd : out STD_LOGIC;
+    Vp_Vn_v_n : in STD_LOGIC;
+    Vp_Vn_v_p : in STD_LOGIC;
     epc_intf_data_io : inout STD_LOGIC_VECTOR ( 31 downto 0 );
     gpio_tri_io : inout STD_LOGIC_VECTOR ( 15 downto 0 );
     iic_0_scl_io : inout STD_LOGIC;
@@ -130,7 +132,9 @@ architecture STRUCTURE of cpu_wrapper is
     FCLK_CLK0 : out STD_LOGIC;
     FCLK_RESET0_N : out STD_LOGIC;
     Int0 : in STD_LOGIC_VECTOR ( 0 to 0 );
-    Int1 : in STD_LOGIC_VECTOR ( 0 to 0 )
+    Int1 : in STD_LOGIC_VECTOR ( 0 to 0 );
+    Vp_Vn_v_n : in STD_LOGIC;
+    Vp_Vn_v_p : in STD_LOGIC
   );
   end component cpu;
   component IOBUF is
@@ -555,7 +559,9 @@ cpu_i: component cpu
       OCXO_CLK100 => OCXO_CLK100,
       OCXO_RESETN(0) => OCXO_RESETN(0),
       UART_0_rxd => UART_0_rxd,
-      UART_0_txd => UART_0_txd
+      UART_0_txd => UART_0_txd,
+      Vp_Vn_v_n => Vp_Vn_v_n,
+      Vp_Vn_v_p => Vp_Vn_v_p
     );
 epc_intf_data_iobuf_0: component IOBUF
     port map (

@@ -271,27 +271,25 @@ begin
                         disp_regs_mux <= disp_regs(0);
                     when "0001" =>
                         time_regs_mux <= tsc_cnt(63 downto 32);
-                        fan_regs_mux  <= fan_regs_mux;
+                        fan_regs_mux  <= (others => '0');
                         disp_regs_mux <= disp_regs(1);
                     when "0010" =>
                         time_regs_mux <= diff_1pps;
-                        fan_regs_mux  <= fan_regs_mux;
-                        disp_regs_mux <= disp_regs_mux;
+                        fan_regs_mux  <= (others => '0');
+                        disp_regs_mux <= (others => '0');
                     when "0011" =>
                         time_regs_mux <= time_regs(3);
-                        fan_regs_mux  <= fan_regs_mux;
-                        disp_regs_mux <= disp_regs_mux;
+                        fan_regs_mux  <= (others => '0');
+                        disp_regs_mux <= (others => '0');
                     when "0100" =>
                         time_regs_mux <= time_regs(4);
                         time_regs_mux(31) <= gps_3dfix_d;
-                        fan_regs_mux  <= fan_regs_mux;
-                        disp_regs_mux <= disp_regs_mux;
-                    when "0101" =>
-                        time_regs_mux <= time_regs_mux;
-                        fan_regs_mux  <= fan_regs_mux;
-                        disp_regs_mux <= disp_regs_mux;
+                        fan_regs_mux  <= (others => '0');
+                        disp_regs_mux <= (others => '0');
                     when others =>
-                        null;
+                        time_regs_mux <= (others => '0');
+                        fan_regs_mux  <= (others => '0');
+                        disp_regs_mux <= (others => '0');
                 end case;
             end if;
 

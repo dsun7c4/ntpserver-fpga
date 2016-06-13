@@ -75,25 +75,25 @@ COMPONENT cpu_xbar_0
     s_axi_rresp : OUT STD_LOGIC_VECTOR(1 DOWNTO 0);
     s_axi_rvalid : OUT STD_LOGIC_VECTOR(0 DOWNTO 0);
     s_axi_rready : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
-    m_axi_awaddr : OUT STD_LOGIC_VECTOR(63 DOWNTO 0);
-    m_axi_awprot : OUT STD_LOGIC_VECTOR(5 DOWNTO 0);
-    m_axi_awvalid : OUT STD_LOGIC_VECTOR(1 DOWNTO 0);
-    m_axi_awready : IN STD_LOGIC_VECTOR(1 DOWNTO 0);
-    m_axi_wdata : OUT STD_LOGIC_VECTOR(63 DOWNTO 0);
-    m_axi_wstrb : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
-    m_axi_wvalid : OUT STD_LOGIC_VECTOR(1 DOWNTO 0);
-    m_axi_wready : IN STD_LOGIC_VECTOR(1 DOWNTO 0);
-    m_axi_bresp : IN STD_LOGIC_VECTOR(3 DOWNTO 0);
-    m_axi_bvalid : IN STD_LOGIC_VECTOR(1 DOWNTO 0);
-    m_axi_bready : OUT STD_LOGIC_VECTOR(1 DOWNTO 0);
-    m_axi_araddr : OUT STD_LOGIC_VECTOR(63 DOWNTO 0);
-    m_axi_arprot : OUT STD_LOGIC_VECTOR(5 DOWNTO 0);
-    m_axi_arvalid : OUT STD_LOGIC_VECTOR(1 DOWNTO 0);
-    m_axi_arready : IN STD_LOGIC_VECTOR(1 DOWNTO 0);
-    m_axi_rdata : IN STD_LOGIC_VECTOR(63 DOWNTO 0);
-    m_axi_rresp : IN STD_LOGIC_VECTOR(3 DOWNTO 0);
-    m_axi_rvalid : IN STD_LOGIC_VECTOR(1 DOWNTO 0);
-    m_axi_rready : OUT STD_LOGIC_VECTOR(1 DOWNTO 0)
+    m_axi_awaddr : OUT STD_LOGIC_VECTOR(95 DOWNTO 0);
+    m_axi_awprot : OUT STD_LOGIC_VECTOR(8 DOWNTO 0);
+    m_axi_awvalid : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
+    m_axi_awready : IN STD_LOGIC_VECTOR(2 DOWNTO 0);
+    m_axi_wdata : OUT STD_LOGIC_VECTOR(95 DOWNTO 0);
+    m_axi_wstrb : OUT STD_LOGIC_VECTOR(11 DOWNTO 0);
+    m_axi_wvalid : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
+    m_axi_wready : IN STD_LOGIC_VECTOR(2 DOWNTO 0);
+    m_axi_bresp : IN STD_LOGIC_VECTOR(5 DOWNTO 0);
+    m_axi_bvalid : IN STD_LOGIC_VECTOR(2 DOWNTO 0);
+    m_axi_bready : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
+    m_axi_araddr : OUT STD_LOGIC_VECTOR(95 DOWNTO 0);
+    m_axi_arprot : OUT STD_LOGIC_VECTOR(8 DOWNTO 0);
+    m_axi_arvalid : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
+    m_axi_arready : IN STD_LOGIC_VECTOR(2 DOWNTO 0);
+    m_axi_rdata : IN STD_LOGIC_VECTOR(95 DOWNTO 0);
+    m_axi_rresp : IN STD_LOGIC_VECTOR(5 DOWNTO 0);
+    m_axi_rvalid : IN STD_LOGIC_VECTOR(2 DOWNTO 0);
+    m_axi_rready : OUT STD_LOGIC_VECTOR(2 DOWNTO 0)
   );
 END COMPONENT;
 -- COMP_TAG_END ------ End COMPONENT Declaration ------------

@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-03-22
--- Last update: 2016-05-21
+-- Last update: 2016-06-12
 -- Platform   : 
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -68,6 +68,8 @@ entity cpu is
         FIXED_IO_ps_clk   : inout std_logic;
         FIXED_IO_ps_porb  : inout std_logic;
         FIXED_IO_ps_srstb : inout std_logic;
+        Vp_Vn_v_n         : in    std_logic;
+        Vp_Vn_v_p         : in    std_logic;
         GPIO_tri_i        : in    std_logic_vector (15 downto 0);
         GPIO_tri_o        : out   std_logic_vector (15 downto 0);
         GPIO_tri_t        : out   std_logic_vector (15 downto 0);
@@ -195,6 +197,7 @@ begin
     IIC_sda_o   <= '0';
     IIC_sda_t   <= '0';
     UART_0_txd  <= '0';
+
 
     regw:
     process

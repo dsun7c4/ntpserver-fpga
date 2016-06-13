@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-03-13
--- Last update: 2016-05-30
+-- Last update: 2016-06-12
 -- Platform   : 
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -53,6 +53,8 @@ architecture STRUCTURE of clock is
             FIXED_IO_ps_srstb : inout std_logic;
             FIXED_IO_ps_clk   : inout std_logic;
             FIXED_IO_ps_porb  : inout std_logic;
+            Vp_Vn_v_n         : in    std_logic;
+            Vp_Vn_v_p         : in    std_logic;
             UART_0_txd        : out   std_logic;
             UART_0_rxd        : in    std_logic;
             IIC_0_sda_i       : in    std_logic;
@@ -445,6 +447,9 @@ begin
             FIXED_IO_ps_clk           => FIXED_IO_ps_clk,
             FIXED_IO_ps_porb          => FIXED_IO_ps_porb,
             FIXED_IO_ps_srstb         => FIXED_IO_ps_srstb,
+
+            Vp_Vn_v_n                 => Vp_Vn_v_n,
+            Vp_Vn_v_p                 => Vp_Vn_v_p,
 
             EPC_INTF_addr             => EPC_INTF_addr,
             EPC_INTF_ads              => EPC_INTF_ads,

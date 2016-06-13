@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-03-22
--- Last update: 2016-04-29
+-- Last update: 2016-06-12
 -- Platform   : 
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -75,6 +75,9 @@ architecture STRUCTURE of clock_tb is
             FIXED_IO_ps_porb  : INOUT std_logic;
             FIXED_IO_ps_srstb : INOUT std_logic;
 
+            Vp_Vn_v_n         : in    std_logic;
+            Vp_Vn_v_p         : in    std_logic;
+
             rtc_scl           : INOUT std_logic;
             rtc_sda           : INOUT std_logic;
 
@@ -126,12 +129,15 @@ architecture STRUCTURE of clock_tb is
     SIGNAL DDR_reset_n  : std_logic;
     SIGNAL DDR_we_n     : std_logic;
 
-    SIGNAL FIXED_IO_ddr_vrn: std_logic;
-    SIGNAL FIXED_IO_ddr_vrp: std_logic;
-    SIGNAL FIXED_IO_mio : std_logic_vector (53 DOWNTO 0);
-    SIGNAL FIXED_IO_ps_clk: std_logic;
-    SIGNAL FIXED_IO_ps_porb: std_logic;
-    SIGNAL FIXED_IO_ps_srstb: std_logic;
+    signal FIXED_IO_ddr_vrn  : std_logic;
+    signal FIXED_IO_ddr_vrp  : std_logic;
+    signal FIXED_IO_mio      : std_logic_vector (53 downto 0);
+    signal FIXED_IO_ps_clk   : std_logic;
+    signal FIXED_IO_ps_porb  : std_logic;
+    signal FIXED_IO_ps_srstb : std_logic;
+
+    SIGNAL Vp_Vn_v_n    : std_logic;
+    SIGNAL Vp_Vn_v_p    : std_logic;
 
     SIGNAL rtc_scl      : std_logic;
     SIGNAL rtc_sda      : std_logic;
@@ -191,6 +197,9 @@ begin
             FIXED_IO_ps_clk   => FIXED_IO_ps_clk,
             FIXED_IO_ps_porb  => FIXED_IO_ps_porb,
             FIXED_IO_ps_srstb => FIXED_IO_ps_srstb,
+
+            Vp_Vn_v_n         => Vp_Vn_v_n,
+            Vp_Vn_v_p         => Vp_Vn_v_p,
 
             rtc_scl           => rtc_scl,
             rtc_sda           => rtc_sda,
@@ -253,6 +262,9 @@ begin
     gps_1pps  <= '0';
     gps_3dfix <= '0';
     gps_rxd   <= '0';
+    Vp_Vn_v_n <= '0';
+    Vp_Vn_v_p <= '0';
+
 
 
 end STRUCTURE;
