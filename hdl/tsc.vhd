@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-04-29
--- Last update: 2016-05-30
+-- Last update: 2016-06-28
 -- Platform   : 
 -- Standard   : VHDL'87
 -------------------------------------------------------------------------------
@@ -64,6 +64,11 @@ architecture rtl of tsc is
 
     signal gps_1pps_dly   : std_logic_vector(2 downto 0);
     signal gps_1pps_pulse : std_logic;
+
+    signal tsc_1pps_pulse : std_logic;
+    signal lead           : std_logic;
+    signal lag            : std_logic;
+    signal trig           : std_logic;
 
     signal diff_cnt       : std_logic_vector(31 downto 0);
 
@@ -185,29 +190,97 @@ begin
         end if;
     end process;
 
+
+    -- Delay the ocxo 1pps pulse approximately the same amount as the gps 1pps
+    tsc_pps_i:  delay_sig generic map (3) port map (rst_n, clk, pps_cnt_term, tsc_1pps_pulse);
     
     
+    -- Phase detector
+    tsc_phase:
+    process (rst_n, clk) is
+    begin
+        if (rst_n = '0') then
+            lead <= '0';
+            lag  <= '0';
+            trig <= '0';
+        elsif (clk'event and clk = '1') then
+            trig <= '0';
+
+            -- 0010
+            if (lead = '0' and lag = '0' and
+                tsc_1pps_pulse = '1' and gps_1pps_pulse = '0' ) then
+                lead <= '1';
+            -- 1001
+            elsif (lead = '1' and lag = '0' and
+                   tsc_1pps_pulse = '0' and gps_1pps_pulse = '1' ) then
+                lead <= '0';
+                trig <= '1';
+
+            -- 0001
+            elsif (lead = '0' and lag = '0' and
+                   tsc_1pps_pulse = '0' and gps_1pps_pulse = '1' ) then
+                lag  <= '1';
+            -- 0110
+            elsif (lead = '0' and lag = '1' and
+                   tsc_1pps_pulse = '1' and gps_1pps_pulse = '0' ) then
+                lag  <= '0';
+                trig <= '1';
+
+            -- 0011
+            -- 0111
+            -- 1011
+            -- 1100
+            -- 1101
+            -- 1110
+            -- 1111
+            elsif ((lead = '1' and lag = '1') or 
+                   (tsc_1pps_pulse = '1' and gps_1pps_pulse = '1')) then
+                lead <= '0';
+                lag  <= '0';
+                trig <= '1';
+            end if;
+
+            -- 0000
+            -- 0100  Measure lag
+            -- 0101
+            -- 1000  Measure lead
+            -- 1010
+        end if;
+    end process;
+
+
+
     -- Difference measurement between GPS and OCXO
     tsc_meas:
     process (rst_n, clk) is
-        variable diff_add : std_logic_vector(diff_cnt'left + 1 downto 0);
+        variable diff_add : std_logic_vector(diff_cnt'left downto 0);
+        variable diff_sub : std_logic_vector(diff_cnt'left downto 0);
     begin
         if (rst_n = '0') then
             diff_cnt   <= (others => '0');
             diff_1pps  <= (others => '0');
         elsif (clk'event and clk = '1') then
-            diff_add  := ('0' & diff_cnt) + 1;
+            diff_add  := diff_cnt + 1;
+            diff_sub  := diff_cnt - 1;
 
-            if (gps_1pps_pulse = '1') then
+            if ((lead = '0' and lag = '0') or
+                (tsc_1pps_pulse = '1' and gps_1pps_pulse = '1')) then
                 diff_cnt   <= (others => '0');
             else
-                -- Saturate at 2^32-1
-                if (diff_add(diff_add'left) = '0') then
-                    diff_cnt <= diff_add(diff_cnt'range);
+                if (lag = '1') then
+                    -- Saturate at 2^31-1
+                    if (diff_add(diff_add'left) = '0') then
+                        diff_cnt <= diff_add(diff_cnt'range);
+                    end if;
+                elsif (lead = '1') then
+                    -- Saturate at -2^31
+                    if (diff_sub(diff_sub'left) = '1') then
+                        diff_cnt <= diff_sub(diff_cnt'range);
+                    end if;                        
                 end if;
             end if;
 
-            if (pps_cnt_term = '1') then
+            if (trig = '1') then
                 diff_1pps  <= diff_cnt;
             end if;
         end if;

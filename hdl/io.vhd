@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    :
 -- Created    : 2016-05-21
--- Last update: 2016-06-02
+-- Last update: 2016-07-31
 -- Platform   :
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -22,15 +22,16 @@
 --              Address range: 0x412_0000 - 0x4120_0004
 --             |  1        |         0         |
 --             |5|4|3|2|1|0|9|8|7|6|5|4|3|2|1|0|
+-- default      T T T T T T T T 0 0 T 0 T T 1 0
 --
 -- 0x4120_0000 |     gpio      |d|a| |g| |l|p|o|  Read/Write
 --                              | |   |   | | |
---                              | |   |   | | OCXO Enable (power) R/W
---                              | |   |   | PLL reset bar         R/W
---                              | |   |   PLL Locked              R
---                              | |   GPS enable (power)          R/W
---                              | DAC Controller enable           R/W
---                              Display controller enable         R/W
+--                              | |   |   | | OCXO disable (power) R/W
+--                              | |   |   | PLL reset bar          R/W
+--                              | |   |   PLL Locked               R
+--                              | |   GPS disable (power)          R/W
+--                              | DAC Controller enable            R/W
+--                              Display controller enable          R/W
 --
 -- 0x4120_0004 |               |               |  Tri state control
 --

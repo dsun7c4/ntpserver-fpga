@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-03-22
--- Last update: 2016-06-12
+-- Last update: 2016-06-28
 -- Platform   : 
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -259,7 +259,42 @@ begin
         end loop;
     end process;
 
-    gps_1pps  <= '0';
+
+    process
+    begin
+        gps_1pps  <= '0';
+
+        run_clk(ocxo_clk, 10000);
+
+        loop
+            gps_1pps  <= '1';
+
+            run_clk(ocxo_clk, 1);
+
+            gps_1pps  <= '0';
+
+            run_clk(ocxo_clk, 9999999);
+
+            gps_1pps  <= '1';
+
+            run_clk(ocxo_clk, 1);
+
+            gps_1pps  <= '0';
+
+            run_clk(ocxo_clk, 9999989);
+
+            gps_1pps  <= '1';
+
+            run_clk(ocxo_clk, 1);
+
+            gps_1pps  <= '0';
+
+            run_clk(ocxo_clk, 10000019);
+
+        end loop;
+    end process;
+
+
     gps_3dfix <= '0';
     gps_rxd   <= '0';
     Vp_Vn_v_n <= '0';
