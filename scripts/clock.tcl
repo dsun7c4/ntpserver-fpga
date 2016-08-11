@@ -69,6 +69,11 @@
 #
 #*****************************************************************************************
 
+# get the directory where this script resides
+set thisDir [file dirname [info script]]
+# source common utilities
+source -notrace $thisDir/utils.tcl
+
 # Set the reference directory for source file relative paths (by default the value is script directory path)
 set origin_dir "."
 
@@ -76,7 +81,7 @@ set origin_dir "."
 set orig_proj_dir "[file normalize "$origin_dir/clock"]"
 
 # Create project
-create_project clock ./clock
+create_project -force clock ./clock
 
 # Set the directory path for the new project
 set proj_dir [get_property directory [current_project]]
@@ -459,5 +464,8 @@ set_property "steps.write_bitstream.args.bin_file" "1" $obj
 
 # set the current impl run
 current_run -implementation [get_runs impl_1]
+
+# If successful, "touch" a file so the make utility will know it's done 
+touch {.setup.done}
 
 puts "INFO: Project created:clock"
