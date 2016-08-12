@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-04-28
--- Last update: 2016-04-28
+-- Last update: 2016-08-10
 -- Platform   : 
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -54,6 +54,9 @@ architecture rtl of fan is
     signal pwm_term    : std_logic;
     signal pwm_out     : std_logic;
     
+    signal ppus_cnt       : std_logic_vector(13 downto 0);
+    signal ppus_cnt_term  : std_logic;
+
     signal tach_dly    : std_logic_vector(2 downto 0);
     signal tach_pulse  : std_logic;
     signal tach_meas   : std_logic_vector(15 downto 0);
@@ -127,6 +130,29 @@ begin
     -- Final output register
     fan_oreg: delay_sig generic map (1) port map (rst_n, clk, pwm_out, fan_pwm);
 
+    -- ----------------------------------------------------------------------
+
+    -- Tach measurement reference 100 us
+    fan_100ppus_ctr:
+    process (rst_n, clk) is
+    begin
+        if (rst_n = '0') then
+            ppus_cnt      <= (others => '0');
+            ppus_cnt_term <= '0';
+        elsif (clk'event and clk = '1') then
+            if (ppus_cnt_term = '1' or tsc_1ppms = '1') then
+                ppus_cnt      <= (others => '0');
+            else
+                ppus_cnt      <= ppus_cnt + 1;
+            end if;
+
+            if (ppus_cnt = (10000 - 2) and tsc_1ppms = '0') then
+                ppus_cnt_term <= '1';
+            else
+                ppus_cnt_term <= '0';
+            end if;
+        end if;
+    end process;
 
 
     -- Tach input buffer and rising edge detector
@@ -138,7 +164,7 @@ begin
             tach_pulse  <= '0';
         elsif (clk'event and clk = '1') then
             tach_dly(0) <= fan_tach;  -- input register
-            if (tsc_1ppms = '1') then
+            if (ppus_cnt_term = '1') then
                 tach_dly(1) <= tach_dly(0);
                 tach_dly(2) <= tach_dly(1);
                 tach_pulse  <= not tach_dly(2) and tach_dly(1);
@@ -156,7 +182,7 @@ begin
             tach_meas  <= (others => '0');
             tach_msout <= (others => '0');
         elsif (clk'event and clk = '1') then
-            if (tsc_1ppms = '1') then
+            if (ppus_cnt_term = '1') then
                 if (tach_pulse = '1') then
                     tach_meas    <= (others => '0');
                     tach_meas(0) <= '1';   -- Start measurement at one
@@ -168,7 +194,8 @@ begin
                     end if;
                 end if;
 
-                if (tach_pulse = '1') then
+                -- Output at next pulse or overflow
+                if (tach_pulse = '1' or tach_add(tach_add'left) = '1') then
                     tach_msout <= tach_meas;
                 end if;
 
