@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    :
 -- Created    : 2016-05-05
--- Last update: 2016-05-21
+-- Last update: 2016-08-12
 -- Platform   :
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -71,7 +71,7 @@ begin
     -- Bit                 15    14    ..     1     0
     --
 
-    -- Start triggering
+    -- Start triggering, update DAC once per second
     dac_trig:
     process (rst_n, clk) is
     begin
@@ -79,7 +79,9 @@ begin
             trig <= '0';
         elsif (clk'event and clk = '1') then
             if (tsc_1ppms = '1') then
-                if (tsc_1pps = '1' and dac_ena = '1') then
+                if (dac_ena = '0') then
+                    trig <= '0';
+                elsif (tsc_1pps = '1') then
                     trig <= '1';
                 elsif (finish = '1') then
                     trig <= '0';
@@ -98,18 +100,23 @@ begin
             finish  <= '0';
         elsif (clk'event and clk = '1') then
             if (tsc_1ppms = '1') then
-                if (trig = '0') then
+                if (dac_ena = '0') then
                     bit_cnt <= (others => '0');
+                    finish  <= '0';
                 else
-                    bit_cnt <= bit_cnt + 1;
-                end if;
+                    if (trig = '0') then
+                        bit_cnt <= (others => '0');
+                    else
+                        bit_cnt <= bit_cnt + 1;
+                    end if;
 
-                if (trig = '0') then
-                    finish <= '0';
-                elsif (bit_cnt = 30)  then
-                    finish <= '1';
-                else
-                    finish <= '0';
+                    if (trig = '0') then
+                        finish  <= '0';
+                    elsif (bit_cnt = 30)  then
+                        finish  <= '1';
+                    else
+                        finish  <= '0';
+                    end if;
                 end if;
             end if;
         end if;
@@ -127,7 +134,9 @@ begin
             sin    <= '0';
         elsif (clk'event and clk = '1') then
             if (tsc_1ppms = '1') then
-                if (tsc_1pps = '1') then
+                if (dac_ena = '0') then
+                    bit_sr <= (others => '0');
+                elsif (tsc_1pps = '1') then
                     bit_sr <= dac_val;
                 elsif (bit_cnt(0) = '1') then
                     bit_sr <= bit_sr(bit_sr'left - 1 downto 0) & '0';

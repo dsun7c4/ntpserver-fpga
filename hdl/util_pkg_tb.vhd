@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-08-11
--- Last update: 2016-08-11
+-- Last update: 2016-08-12
 -- Platform   : 
 -- Standard   : VHDL'87
 -------------------------------------------------------------------------------
@@ -70,7 +70,7 @@ begin
         i     <= '0';
         i_vec <= (others => '0');
 
-        run_clk(clk, 1000);
+        run_clk(clk, 200);
 
         i     <= '1';
         i_vec <= x"5555aaaa";
@@ -78,12 +78,22 @@ begin
 
         i     <= '0';
         i_vec <= (others => '0');
-        run_clk(clk, 1);
+        run_clk(clk, 64);
+
+        for j in 0 to 32 loop
+            i     <= '1';
+            i_vec <= x"5555aaaa";
+            run_clk(clk, 1);
+
+            i     <= '0';
+            i_vec <= (others => '0');
+            run_clk(clk, j);
+        end loop;
 
         wait;
     end process;
 
-    -- So the test input lines up with the clock...
+    -- So the test input lines up with the clock edge...
     d_s: delay_sig   generic map (1) port map (rst_n, clk, i,     d);
     d_v: delay_vec   generic map (1) port map (rst_n, clk, i_vec, d_vec);
 

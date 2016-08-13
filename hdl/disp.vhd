@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-05-14
--- Last update: 2016-05-21
+-- Last update: 2016-08-12
 -- Platform   : 
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -114,7 +114,7 @@ architecture rtl of disp is
             rst_n             : in    std_logic;
             clk               : in    std_logic;
 
-            tsc_1ppms         : in    std_logic;
+            tsc_1ppus         : in    std_logic;
 
             disp_pdm          : in    std_logic_vector(7 downto 0);
 
@@ -201,7 +201,7 @@ begin
             rst_n             => rst_n,
             clk               => clk,
 
-            tsc_1ppms         => tsc_1ppms,
+            tsc_1ppus         => tsc_1ppus,
 
             disp_pdm          => disp_pdm,
 

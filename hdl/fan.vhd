@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-04-28
--- Last update: 2016-08-10
+-- Last update: 2016-08-12
 -- Platform   : 
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -65,7 +65,7 @@ architecture rtl of fan is
 begin
 
     -- First divider to generate clock enable for the PWM
-    -- Divide by 13
+    -- Divide by 16
     fan_pwmdiv:
     process (rst_n, clk) is
     begin
@@ -79,7 +79,7 @@ begin
                 pwm_div  <= pwm_div + 1;
             end if;
 
-            if (pwm_div = x"B") then
+            if (pwm_div = x"E") then
                 pwm_ce   <= '1';
             else
                 pwm_ce   <= '0';

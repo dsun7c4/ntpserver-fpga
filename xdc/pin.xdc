@@ -63,3 +63,7 @@ set_property PACKAGE_PIN C20 [get_ports gpio[7]]
 
 set_property PACKAGE_PIN K9  [get_ports Vp_Vn_v_p]
 set_property PACKAGE_PIN L10 [get_ports Vp_Vn_v_n]
+
+# Set properties for CFGBVS warning
+set_property CFGBVS VCCO          [current_design]
+set_property CONFIG_VOLTAGE  3.3  [current_design]

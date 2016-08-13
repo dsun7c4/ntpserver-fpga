@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-05-19
--- Last update: 2016-05-20
+-- Last update: 2016-08-12
 -- Platform   : 
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -49,14 +49,15 @@ architecture STRUCTURE of disp_tb is
             tsc_1ppms         : in    std_logic;
             tsc_1ppus         : in    std_logic;
 
+            disp_ena          : in    std_logic;
             disp_pdm          : in    std_logic_vector(7 downto 0);
+            dp                : in    std_logic_vector(31 downto 0);
 
             -- Display memory
-            dp                : in    std_logic_vector(31 downto 0);
-            cpu_addr          : in    std_logic_vector(9 downto 0);
-            cpu_we            : in    std_logic;
-            cpu_datao         : in    std_logic_vector(31 downto 0);
-            cpu_datai         : out   std_logic_vector(31 downto 0);
+            sram_addr          : in    std_logic_vector(9 downto 0);
+            sram_we            : in    std_logic;
+            sram_datao         : in    std_logic_vector(31 downto 0);
+            sram_datai         : out   std_logic_vector(31 downto 0);
 
             -- Time of day
             t_1ms             : in    std_logic_vector(3 downto 0);
@@ -88,14 +89,15 @@ architecture STRUCTURE of disp_tb is
     SIGNAL tsc_1ppms    : std_logic;
     SIGNAL tsc_1ppus    : std_logic;
 
+    SIGNAL disp_ena     : std_logic;
     SIGNAL disp_pdm     : std_logic_vector(7 downto 0);
+    SIGNAL dp           : std_logic_vector(31 downto 0);
 
       -- Display memory
-    SIGNAL dp           : std_logic_vector(31 downto 0);
-    SIGNAL cpu_addr     : std_logic_vector(9 downto 0);
-    SIGNAL cpu_we       : std_logic;
-    SIGNAL cpu_datao    : std_logic_vector(31 downto 0);
-    SIGNAL cpu_datai    : std_logic_vector(31 downto 0);
+    SIGNAL sram_addr    : std_logic_vector(9 downto 0);
+    SIGNAL sram_we      : std_logic;
+    SIGNAL sram_datao   : std_logic_vector(31 downto 0);
+    SIGNAL sram_datai   : std_logic_vector(31 downto 0);
 
       -- Time of day
     SIGNAL t_1ms        : std_logic_vector(3 downto 0);
@@ -129,14 +131,15 @@ begin
             tsc_1ppms         => tsc_1ppms,
             tsc_1ppus         => tsc_1ppus,
 
+            disp_ena          => disp_ena,
             disp_pdm          => disp_pdm,
+            dp                => dp,
 
             -- Display memory
-            dp                => dp,
-            cpu_addr          => cpu_addr,
-            cpu_we            => cpu_we,
-            cpu_datao         => cpu_datao,
-            cpu_datai         => cpu_datai,
+            sram_addr         => sram_addr,
+            sram_we           => sram_we,
+            sram_datao        => sram_datao,
+            sram_datai        => sram_datai,
 
             -- Time of day
             t_1ms             => t_1ms,
@@ -230,35 +233,47 @@ begin
 
         disp_pdm <= x"aa";
         
-        run_clk(clk, 51200);
+        run_clk(clk, 12800);
 
         disp_pdm <= x"ff";
         
-        run_clk(clk, 512000);
+        run_clk(clk, 12800);
 
         disp_pdm <= x"fe";
         
-        run_clk(clk, 512000);
+        run_clk(clk, 12800);
 
         disp_pdm <= x"fd";
         
-        run_clk(clk, 512000);
+        run_clk(clk, 12800);
+
+        disp_pdm <= x"7f";
+        
+        run_clk(clk, 12800);
 
         disp_pdm <= x"80";
         
-        run_clk(clk, 512000);
+        run_clk(clk, 12800);
+
+        disp_pdm <= x"81";
+        
+        run_clk(clk, 12800);
+
+        disp_pdm <= x"00";
+        
+        run_clk(clk, 12800);
 
         disp_pdm <= x"01";
         
-        run_clk(clk, 512000);
+        run_clk(clk, 12800);
 
         disp_pdm <= x"02";
         
-        run_clk(clk, 512000);
+        run_clk(clk, 12800);
 
         disp_pdm <= x"03";
         
-        run_clk(clk, 512000);
+        run_clk(clk, 12800);
 
         wait;
     end process;
@@ -267,10 +282,11 @@ begin
     -- input
     process
     begin
+        disp_ena       <= '1';
         dp             <= (others => '0');
-        cpu_addr       <= (others => '0');
-        cpu_we         <= '0';
-        cpu_datao      <= (others => '0');
+        sram_addr      <= (others => '0');
+        sram_we        <= '0';
+        sram_datao     <= (others => '0');
 
         t_1ms          <= (others => '0');
         t_10ms         <= (others => '0');

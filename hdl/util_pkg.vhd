@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-04-26
--- Last update: 2016-08-11
+-- Last update: 2016-08-12
 -- Platform   : 
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -36,7 +36,7 @@ package util_pkg is
             signal rst_n : in std_logic;
             signal clk   : in std_logic;
 
-            signal d : in std_logic;
+            signal d : in  std_logic;
             signal q : out std_logic
             );
     end component delay_sig;
@@ -49,7 +49,7 @@ package util_pkg is
             signal rst_n : in std_logic;
             signal clk   : in std_logic;
 
-            signal d : in std_logic_vector;
+            signal d : in  std_logic_vector;
             signal q : out std_logic_vector
             );
     end component delay_vec;
@@ -62,7 +62,7 @@ package util_pkg is
             signal rst_n : in std_logic;
             signal clk   : in std_logic;
 
-            signal d : in std_logic;
+            signal d : in  std_logic;
             signal q : out std_logic
             );
     end component delay_pulse;
@@ -112,7 +112,7 @@ entity delay_sig is
         signal rst_n : in std_logic;
         signal clk   : in std_logic;
 
-        signal d : in std_logic;
+        signal d : in  std_logic;
         signal q : out std_logic
         );
 end delay_sig;
@@ -180,7 +180,7 @@ entity delay_vec is
         signal rst_n : in std_logic;
         signal clk   : in std_logic;
 
-        signal d : in std_logic_vector;
+        signal d : in  std_logic_vector;
         signal q : out std_logic_vector
         );
 end delay_vec;
@@ -253,7 +253,7 @@ entity delay_pulse is
         signal rst_n : in std_logic;
         signal clk   : in std_logic;
 
-        signal d : in std_logic;
+        signal d : in  std_logic;
         signal q : out std_logic
         );
 end delay_pulse;
@@ -262,41 +262,12 @@ end delay_pulse;
 architecture rtl of delay_pulse is
 begin
 
-    zero:
-    if (cycles = 0) generate
-        q <= d;
-    end generate zero;
-
-    one:
-    if (cycles = 1) generate
-        process (rst_n, clk)
-        begin
-            if (rst_n = '0') then
-                q <= '0';
-            elsif (clk'event and clk = '1') then
-                q <= d;
-            end if;
-        end process;
-    end generate;
-
-    gt_one:
-    if (cycles > 1 and cycles <= 3) generate
-        signal dly : std_logic_vector(cycles - 1 downto 0);
+    le_3:
+    if (cycles <= 3) generate
     begin
 
-        process (rst_n, clk)
-        begin
-            if (rst_n = '0') then
-                dly <= (others => '0');
-            elsif (clk'event and clk = '1') then
-                dly(0) <= d;
-                for i in 1 to cycles - 1 loop
-                    dly(i) <= dly(i - 1);
-                end loop;
-            end if;
-        end process;
+        d_s: delay_sig generic map (cycles) port map (rst_n, clk, d, q);
 
-        q <= dly(cycles - 1);
     end generate;
 
 
@@ -318,9 +289,7 @@ begin
                     dly <= dly;
                 end if;
 
-                if (d = '1') then
-                    q <= '0';
-                elsif (dly = 1) then
+                if (dly = 1 and d = '0') then
                     q <= '1';
                 else
                     q <= '0';

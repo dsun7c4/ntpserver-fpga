@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-05-19
--- Last update: 2016-05-21
+-- Last update: 2016-08-12
 -- Platform   : 
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -229,7 +229,7 @@ begin
                 
                 -- Or in dp register bits with lut data
                 if (out_reg = '1') then
-                    disp_sr(conv_integer(cnt)) <= seg;
+                    disp_sr(conv_integer(cnt))    <= seg;
                     disp_sr(conv_integer(cnt))(0) <= seg(0) or dp(conv_integer(cnt));
                 end if;
             end if;

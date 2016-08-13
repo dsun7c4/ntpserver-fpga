@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    :
 -- Created    : 2016-03-13
--- Last update: 2016-05-30
+-- Last update: 2016-08-12
 -- Platform   :
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -356,6 +356,7 @@ begin
             for i in 0 to 0 loop
                 fan_regs(i) <= (others => '0');
             end loop;
+            fan_regs(0)(7 downto 0) <= x"ff";
         elsif (clk'event and clk = '1') then
             if (cs_dp_w = '1' and decode(1) = '1') then
                 case addr(5 downto 2) is
@@ -378,6 +379,7 @@ begin
             for i in 0 to 1 loop
                 disp_regs(i) <= (others => '0');
             end loop;
+            disp_regs(0)(7 downto 0) <= x"ff";
             sram_addr  <= (others => '0');
             sram_we    <= '0';
             sram_datao <= (others => '0');
