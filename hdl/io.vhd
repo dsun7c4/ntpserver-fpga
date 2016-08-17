@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    :
 -- Created    : 2016-05-21
--- Last update: 2016-07-31
+-- Last update: 2016-08-16
 -- Platform   :
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -60,12 +60,14 @@ entity io is
       -- clk
       locked            : in    std_logic;
       dac_ena           : out   std_logic;
+      dac_tri           : out   std_logic;
       disp_ena          : out   std_logic;
 
       -- fclk
       pll_rst_n         : out   std_logic;
-      ocxo_ena          : out   std_logic;
-      gps_ena           : out   std_logic;
+      ocxo_off          : out   std_logic;
+      gps_off           : out   std_logic;
+      gps_tri           : out   std_logic;
       gpio              : inout std_logic_vector (7 DOWNTO 0)
 
   );
@@ -89,6 +91,14 @@ architecture rtl of io is
     signal gpio_t_d        : std_logic_vector (15 downto 0);
     signal reset_n         : std_logic;
 
+    signal ocxo_pwr_on     : std_logic;
+    signal ocxo_pwr_off    : std_logic;
+    signal ocxo_on_ctr     : std_logic_vector(12 downto 0);  -- 25 us turn on
+
+    signal gps_pwr_on      : std_logic;
+    signal gps_pwr_off     : std_logic;
+    signal gps_on_ctr      : std_logic_vector(12 downto 0);
+
 begin
 
     -- Generic gpio interface output register
@@ -98,8 +108,9 @@ begin
 
     -- gpio control interface
     -- gpio(0)
-    ocxo_ena      <= gpio_o_d(0)  when gpio_t_d(0)  = '0' else 'Z';
-    xtal_ena: delay_sig generic map (1) port map (fclk_rst_n, fclk, gpio_o_d(0), GPIO_tri_i(0));
+    ocxo_off      <= gpio_o_d(0)  when gpio_t_d(0)  = '0' else 'Z';
+    xtal_off: delay_sig generic map (1) port map (fclk_rst_n, fclk, gpio_o_d(0), GPIO_tri_i(0));
+    xtal_pwr: delay_sig generic map (2) port map(rst_n, clk, GPIO_tri_o(0), ocxo_pwr_off);
     -- gpio(1)
     reset_n       <= gpio_o_d(1) and fclk_rst_n;
     GPIO_tri_i(1) <= reset_n;
@@ -109,8 +120,9 @@ begin
     -- gpio(3)
     GPIO_tri_i(3) <= '0';
     -- gpio(4)
-    gps_ena       <= gpio_o_d(4)  when gpio_t_d(4)  = '0' else 'Z';
-    loc_ena: delay_sig generic map (1) port map (fclk_rst_n, fclk, gpio_o_d(4), GPIO_tri_i(4));
+    gps_off       <= gpio_o_d(4)  when gpio_t_d(4)  = '0' else 'Z';
+    loc_off: delay_sig generic map (1) port map (fclk_rst_n, fclk, gpio_o_d(4), GPIO_tri_i(4));
+    loc_pwr: delay_sig generic map (1) port map(fclk_rst_n, fclk, GPIO_tri_o(4), gps_pwr_off);
     -- gpio(5)
     GPIO_tri_i(5) <= '0';
     -- gpio(6)
@@ -145,6 +157,72 @@ begin
     --gpio(5)       <= gpio_o_d(13) when gpio_t_d(13) = '0' else 'Z';
     --gpio(6)       <= gpio_o_d(14) when gpio_t_d(14) = '0' else 'Z';
     --gpio(7)       <= gpio_o_d(15) when gpio_t_d(15) = '0' else 'Z';
+
+
+    -- The ocxo dac 50 us tristate enable delay
+    ocxo_tristate:
+    process (rst_n, clk) is
+    begin
+        if (rst_n = '0') then
+            ocxo_on_ctr <= conv_std_logic_vector(5000, ocxo_on_ctr'length);
+            ocxo_pwr_on <= '0';
+            dac_tri     <= '1';
+        elsif (clk'event and clk = '1') then
+            if (ocxo_pwr_on = '1' or ocxo_pwr_off = '1') then
+                ocxo_on_ctr <= conv_std_logic_vector(5000, ocxo_on_ctr'length);
+            else
+                ocxo_on_ctr <= ocxo_on_ctr - 1;
+            end if;
+
+            if (ocxo_pwr_off = '1') then
+                ocxo_pwr_on <= '0';
+            elsif (ocxo_on_ctr = 1) then
+                ocxo_pwr_on <= '1';
+            else
+                ocxo_pwr_on <= '0';
+            end if;
+                
+            if (ocxo_pwr_off = '1') then
+                dac_tri     <= '1';
+            elsif (ocxo_pwr_on = '1') then
+                dac_tri     <= '0';
+            end if;
+                
+        end if;
+    end process;
+
+
+    -- The gps rs232 tx 50 us tristate enable delay
+    gps_tristate:
+    process (fclk_rst_n, fclk) is
+    begin
+        if (fclk_rst_n = '0') then
+            gps_on_ctr <= conv_std_logic_vector(5000, gps_on_ctr'length);
+            gps_pwr_on <= '0';
+            gps_tri    <= '1';
+        elsif (fclk'event and fclk = '1') then
+            if (gps_pwr_on = '1' or gps_pwr_off = '1') then
+                gps_on_ctr <= conv_std_logic_vector(5000, gps_on_ctr'length);
+            else
+                gps_on_ctr <= gps_on_ctr - 1;
+            end if;
+
+            if (gps_pwr_off = '1') then
+                gps_pwr_on <= '0';
+            elsif (gps_on_ctr = 1) then
+                gps_pwr_on <= '1';
+            else
+                gps_pwr_on <= '0';
+            end if;
+                
+            if (gps_pwr_off = '1') then
+                gps_tri    <= '1';
+            elsif (gps_pwr_on = '1') then
+                gps_tri    <= '0';
+            end if;
+                
+        end if;
+    end process;
 
 
 end rtl;

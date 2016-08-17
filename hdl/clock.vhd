@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-03-13
--- Last update: 2016-06-12
+-- Last update: 2016-08-16
 -- Platform   : 
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -117,12 +117,14 @@ architecture STRUCTURE of clock is
             -- clk
             locked            : in    std_logic;
             dac_ena           : out   std_logic;
+            dac_tri           : out   std_logic;
             disp_ena          : out   std_logic;
 
             -- fclk
             pll_rst_n         : out   std_logic;
-            ocxo_ena          : out   std_logic;
-            gps_ena           : out   std_logic;
+            ocxo_off          : out   std_logic;
+            gps_off           : out   std_logic;
+            gps_tri           : out   std_logic;
             gpio              : inout std_logic_vector (7 DOWNTO 0)
 
             );
@@ -178,7 +180,7 @@ architecture STRUCTURE of clock is
             dac_val           : out   std_logic_vector(15 downto 0);
 
             -- Fan ms per revolution, percent speed
-            fan_mspr          : in    std_logic_vector(15 downto 0);
+            fan_uspr          : in    std_logic_vector(19 downto 0);
             fan_pct           : out   std_logic_vector(7 downto 0);
 
             -- Display memory
@@ -199,12 +201,13 @@ architecture STRUCTURE of clock is
             clk               : in    std_logic;
 
             tsc_1ppms         : in    std_logic;
+            tsc_1ppus         : in    std_logic;
 
             fan_pct           : in    std_logic_vector(7 downto 0);
             fan_tach          : in    std_logic;
 
             fan_pwm           : out   std_logic;
-            fan_mspr          : out   std_logic_vector(15 downto 0)
+            fan_uspr          : out   std_logic_vector(19 downto 0)
             );
     end component fan;
 
@@ -342,7 +345,9 @@ architecture STRUCTURE of clock is
     signal GPIO_tri_o      : std_logic_vector (15 downto 0);
     signal GPIO_tri_t      : std_logic_vector (15 downto 0);
     SIGNAL dac_ena         : std_logic;
+    SIGNAL dac_tri         : std_logic;
     SIGNAL disp_ena        : std_logic;
+    SIGNAL gps_tri         : std_logic;
 
     signal iic_0_scl_i     : std_logic;
     signal iic_0_scl_o     : std_logic;
@@ -377,7 +382,7 @@ architecture STRUCTURE of clock is
     signal locked          : std_logic;
 
     signal fan_pct         : std_logic_vector(7 downto 0);
-    signal fan_mspr        : std_logic_vector(15 downto 0);
+    signal fan_uspr        : std_logic_vector(19 downto 0);
 
     signal gps_3dfix_d     : std_logic;
     signal tsc_read        : std_logic;
@@ -538,12 +543,14 @@ begin
             -- clk
             locked            => locked,
             dac_ena           => dac_ena,
+            dac_tri           => dac_tri,
             disp_ena          => disp_ena,
 
             -- fclk
             pll_rst_n         => pll_rst_n,
-            ocxo_ena          => ocxo_ena,
-            gps_ena           => gps_ena,
+            ocxo_off          => ocxo_off,
+            gps_off           => gps_off,
+            gps_tri           => gps_tri,
             gpio              => gpio
             );
 
@@ -604,7 +611,7 @@ begin
             dac_val           => dac_val,
 
             -- Fan ms per revolution, percent speed
-            fan_mspr          => fan_mspr,
+            fan_uspr          => fan_uspr,
             fan_pct           => fan_pct,
 
             -- Display memory
@@ -625,12 +632,13 @@ begin
             clk               => clk,
 
             tsc_1ppms         => tsc_1ppms,
+            tsc_1ppus         => tsc_1ppus,
 
             fan_pct           => fan_pct,
             fan_tach          => fan_tach,
 
             fan_pwm           => fan_pwm,
-            fan_mspr          => fan_mspr
+            fan_uspr          => fan_uspr
             );
 
 

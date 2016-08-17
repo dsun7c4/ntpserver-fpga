@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    :
 -- Created    : 2016-03-13
--- Last update: 2016-08-12
+-- Last update: 2016-08-16
 -- Platform   :
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -36,7 +36,7 @@
 --              GPS 3D Fix
 --
 --
--- 0x8060_0100 |             MSPR              |               |    Fan pwm    |
+-- 0x8060_0100 |             uSPR                      |       |    Fan pwm    |
 --
 --
 -- 0x8060_0200 |                                               |    disp pdm   |
@@ -119,7 +119,7 @@ entity regs is
         dac_val           : out   std_logic_vector(15 downto 0);
 
         -- Fan ms per revolution, percent speed
-        fan_mspr          : in    std_logic_vector(15 downto 0);
+        fan_uspr          : in    std_logic_vector(19 downto 0);
         fan_pct           : out   std_logic_vector(7 downto 0);
 
         -- Display memory
@@ -267,7 +267,7 @@ begin
                     when "0000" =>
                         time_regs_mux <= tsc_cnt(31 downto 0);
                         fan_regs_mux  <= fan_regs(0);
-                        fan_regs_mux(31 downto 16) <= fan_mspr;
+                        fan_regs_mux(31 downto 12) <= fan_uspr;
                         disp_regs_mux <= disp_regs(0);
                     when "0001" =>
                         time_regs_mux <= tsc_cnt(63 downto 32);
