@@ -1,7 +1,7 @@
 --Copyright 1986-2014 Xilinx, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------
 --Tool Version: Vivado v.2014.4 (lin64) Build 1071353 Tue Nov 18 16:47:07 MST 2014
---Date        : Sun Jul 31 22:48:20 2016
+--Date        : Wed Aug 17 20:54:40 2016
 --Host        : graviton running 64-bit Debian GNU/Linux 7.10 (wheezy)
 --Command     : generate_target cpu.bd
 --Design      : cpu
