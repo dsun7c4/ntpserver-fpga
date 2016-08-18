@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-03-22
--- Last update: 2016-08-16
+-- Last update: 2016-08-17
 -- Platform   : 
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -170,20 +170,20 @@ architecture TEST of cpu is
     --SIGNAL ext_reset_in_1: STD_LOGIC;
 
     signal clk   : std_logic;
+    signal fclk  : std_logic;
     signal rst_n : std_logic;
 
 begin
 
-    cpu_ck1:  clk_gen(10 ns, 50, FCLK_CLK0);
+    cpu_ck1:  clk_gen(10 ns, 50, fclk);
     cpu_rst:  rst_n_gen(1 us, fclk_reset0_n);
     ocxo_rst: rst_n_gen(1 us, rst_n);
 
+    FCLK_CLK0      <= fclk;
     clk            <= OCXO_CLK100;
     OCXO_RESETN(0) <= rst_n;
 
     -- Place holder signal assignments
-    GPIO_tri_o <= x"00c2";
-    GPIO_tri_t <= (others => '0');
     IIC_0_scl_o <= '0';
     IIC_0_scl_t <= '0';
     IIC_0_sda_o <= '0';
@@ -198,6 +198,24 @@ begin
     IIC_sda_t   <= '0';
     UART_0_txd  <= '0';
 
+
+    gpio:
+    process
+    begin
+        GPIO_tri_o <= x"00d3";
+        GPIO_tri_t <= (others => '0');
+        run_clk(fclk, 12000);
+
+        GPIO_tri_o <= x"00c2";
+        run_clk(fclk, 12000);
+
+        GPIO_tri_o <= x"00d3";
+        GPIO_tri_t <= (others => '0');
+        run_clk(fclk, 12000);
+
+        wait;
+    end process;
+    
 
     regw:
     process

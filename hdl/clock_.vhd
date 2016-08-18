@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-03-13
--- Last update: 2016-08-16
+-- Last update: 2016-08-17
 -- Platform   : 
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -56,7 +56,7 @@ entity clock is
       rtc_scl           : INOUT std_logic;
       rtc_sda           : INOUT std_logic;
 
-      ocxo_off          : OUT   std_logic;
+      ocxo_ena          : INOUT std_logic;
       ocxo_clk          : IN    std_logic;
       ocxo_scl          : INOUT std_logic;
       ocxo_sda          : INOUT std_logic;
@@ -65,7 +65,7 @@ entity clock is
       dac_cs_n          : OUT   std_logic;
       dac_sin           : OUT   std_logic;
 
-      gps_off           : OUT   std_logic;
+      gps_ena           : INOUT std_logic;
       gps_rxd           : IN    std_logic;
       gps_txd           : OUT   std_logic;
       gps_3dfix         : IN    std_logic;

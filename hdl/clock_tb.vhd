@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-03-22
--- Last update: 2016-08-16
+-- Last update: 2016-08-17
 -- Platform   : 
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -81,7 +81,7 @@ architecture STRUCTURE of clock_tb is
             rtc_scl           : INOUT std_logic;
             rtc_sda           : INOUT std_logic;
 
-            ocxo_off          : OUT   std_logic;
+            ocxo_ena          : INOUT std_logic;
             ocxo_clk          : IN    std_logic;
             ocxo_scl          : INOUT std_logic;
             ocxo_sda          : INOUT std_logic;
@@ -90,7 +90,7 @@ architecture STRUCTURE of clock_tb is
             dac_cs_n          : OUT   std_logic;
             dac_sin           : OUT   std_logic;
 
-            gps_off           : OUT   std_logic;
+            gps_ena           : INOUT std_logic;
             gps_rxd           : IN    std_logic;
             gps_txd           : OUT   std_logic;
             gps_3dfix         : IN    std_logic;
@@ -142,7 +142,7 @@ architecture STRUCTURE of clock_tb is
     SIGNAL rtc_scl      : std_logic;
     SIGNAL rtc_sda      : std_logic;
 
-    SIGNAL ocxo_off     : std_logic;
+    SIGNAL ocxo_ena     : std_logic;
     SIGNAL ocxo_clk     : std_logic;
     SIGNAL ocxo_scl     : std_logic;
     SIGNAL ocxo_sda     : std_logic;
@@ -151,7 +151,7 @@ architecture STRUCTURE of clock_tb is
     SIGNAL dac_cs_n     : std_logic;
     SIGNAL dac_sin      : std_logic;
 
-    SIGNAL gps_off      : std_logic;
+    SIGNAL gps_ena      : std_logic;
     SIGNAL gps_rxd      : std_logic;
     SIGNAL gps_txd      : std_logic;
     SIGNAL gps_3dfix    : std_logic;
@@ -204,7 +204,7 @@ begin
             rtc_scl           => rtc_scl,
             rtc_sda           => rtc_sda,
 
-            ocxo_off          => ocxo_off,
+            ocxo_ena          => ocxo_ena,
             ocxo_clk          => ocxo_clk,
             ocxo_scl          => ocxo_scl,
             ocxo_sda          => ocxo_sda,
@@ -213,7 +213,7 @@ begin
             dac_cs_n          => dac_cs_n,
             dac_sin           => dac_sin,
 
-            gps_off           => gps_off,
+            gps_ena           => gps_ena,
             gps_rxd           => gps_rxd,
             gps_txd           => gps_txd,
             gps_3dfix         => gps_3dfix,

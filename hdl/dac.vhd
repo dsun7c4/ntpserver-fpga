@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    :
 -- Created    : 2016-05-05
--- Last update: 2016-08-12
+-- Last update: 2016-08-17
 -- Platform   :
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -36,6 +36,7 @@ entity dac is
       tsc_1ppms         : in    std_logic;
 
       dac_ena           : in    std_logic;
+      dac_tri           : in    std_logic;
       dac_val           : in    std_logic_vector(15 downto 0);
 
       dac_sclk          : OUT   std_logic;
@@ -57,6 +58,19 @@ architecture rtl of dac is
     signal cs             : std_logic;
     signal sclk           : std_logic;
     signal sin            : std_logic;
+
+    SIGNAL dac_sclk_o     : std_logic;
+    SIGNAL dac_cs_n_o     : std_logic;
+    SIGNAL dac_sin_o      : std_logic;
+
+    SIGNAL dac_sclk_t     : std_logic;
+    SIGNAL dac_cs_n_t     : std_logic;
+    SIGNAL dac_sin_t      : std_logic;
+
+    attribute keep : string;
+    attribute keep of dac_sclk_t : signal is "true";
+    attribute keep of dac_cs_n_t : signal is "true";
+    attribute keep of dac_sin_t  : signal is "true";
 
 begin
 
@@ -150,11 +164,35 @@ begin
     end process;
 
 
-    -- Final output register
-    dac_ocs:   delay_sig generic map (1) port map (rst_n, clk, cs,   dac_cs_n);
-    dac_osclk: delay_sig generic map (1) port map (rst_n, clk, sclk, dac_sclk);
-    dac_osin:  delay_sig generic map (1) port map (rst_n, clk, sin,  dac_sin);
+    -- Tristate IOB register for dac output
+    dac_tri_oreg:
+    process (rst_n, clk) is
+    begin
+        if (rst_n = '0') then
+            dac_sclk_t <= '1';
+            dac_cs_n_t <= '1';
+            dac_sin_t  <= '1';
+        elsif (clk'event and clk = '1') then
+            dac_sclk_t <= dac_tri;
+            dac_cs_n_t <= dac_tri;
+            dac_sin_t  <= dac_tri;
+        end if;
+    end process;
 
+
+    -- Final output register
+    dac_ocs:   delay_sig generic map (1, '1') port map (rst_n, clk, cs,   dac_cs_n_o);
+    dac_osclk: delay_sig generic map (1, '1') port map (rst_n, clk, sclk, dac_sclk_o);
+    dac_osin:  delay_sig generic map (1, '1') port map (rst_n, clk, sin,  dac_sin_o);
+
+    -- Tristate IOB register for dac output
+    --dac_tcs:   delay_sig generic map (1, '1') port map (rst_n, clk, dac_tri, dac_cs_n_t);
+    --dac_tsclk: delay_sig generic map (1, '1') port map (rst_n, clk, dac_tri, dac_sclk_t);
+    --dac_tsin:  delay_sig generic map (1, '1') port map (rst_n, clk, dac_tri, dac_sin_t);
+
+    dac_cs_n  <= dac_cs_n_o when dac_cs_n_t = '0' else 'Z';
+    dac_sclk  <= dac_sclk_o when dac_sclk_t = '0' else 'Z';
+    dac_sin   <= dac_sin_o  when dac_sin_t  = '0' else 'Z';
 
 end rtl;
 

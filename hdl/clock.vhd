@@ -1,4 +1,4 @@
--------------------------------------------------------------------------------
+------------------------------------------------------------------------------
 -- Title      : CLock
 -- Project    : 
 -------------------------------------------------------------------------------
@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-03-13
--- Last update: 2016-08-16
+-- Last update: 2016-08-17
 -- Platform   : 
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -122,8 +122,8 @@ architecture STRUCTURE of clock is
 
             -- fclk
             pll_rst_n         : out   std_logic;
-            ocxo_off          : out   std_logic;
-            gps_off           : out   std_logic;
+            ocxo_ena          : inout std_logic;
+            gps_ena           : inout std_logic;
             gps_tri           : out   std_logic;
             gpio              : inout std_logic_vector (7 DOWNTO 0)
 
@@ -277,6 +277,7 @@ architecture STRUCTURE of clock is
             tsc_1ppms         : in    std_logic;
 
             dac_ena           : in    std_logic;
+            dac_tri           : in    std_logic;
             dac_val           : in    std_logic_vector(15 downto 0);
 
             dac_sclk          : out   std_logic;
@@ -348,6 +349,10 @@ architecture STRUCTURE of clock is
     SIGNAL dac_tri         : std_logic;
     SIGNAL disp_ena        : std_logic;
     SIGNAL gps_tri         : std_logic;
+    SIGNAL gps_uart_rxd    : std_logic;
+    SIGNAL gps_uart_txd    : std_logic;
+    SIGNAL gps_uart_txd_o  : std_logic;
+    SIGNAL gps_uart_txd_t  : std_logic;
 
     signal iic_0_scl_i     : std_logic;
     signal iic_0_scl_o     : std_logic;
@@ -496,8 +501,8 @@ begin
             IIC_sda_o                 => iic_sda_o,
             IIC_sda_t                 => iic_sda_t,
 
-            UART_0_rxd                => gps_rxd,
-            UART_0_txd                => gps_txd,
+            UART_0_rxd                => gps_uart_rxd,
+            UART_0_txd                => gps_uart_txd,
 
             OCXO_CLK100               => clk,
             FCLK_CLK0                 => fclk,
@@ -527,6 +532,12 @@ begin
     temp_sda    <= iic_sda_o when iic_sda_t = '0' else 'Z';
     iic_sda_i   <= temp_sda;
 
+    -- GPS uart IOB and tristate
+    gps_rx_i:  delay_sig generic map (1)      port map (fclk_rst_n, fclk, gps_rxd,      gps_uart_rxd);
+    gps_tx_t:  delay_sig generic map (1, '1') port map (fclk_rst_n, fclk, gps_tri,      gps_uart_txd_t);
+    gps_tx_o:  delay_sig generic map (1, '1') port map (fclk_rst_n, fclk, gps_uart_txd, gps_uart_txd_o);
+    gps_txd     <= gps_uart_txd_o when gps_uart_txd_t = '0' else 'Z';
+
 
     io_i : io
         port map (
@@ -548,8 +559,8 @@ begin
 
             -- fclk
             pll_rst_n         => pll_rst_n,
-            ocxo_off          => ocxo_off,
-            gps_off           => gps_off,
+            ocxo_ena          => ocxo_ena,
+            gps_ena           => gps_ena,
             gps_tri           => gps_tri,
             gpio              => gpio
             );
@@ -704,6 +715,7 @@ begin
             tsc_1ppms         => tsc_1ppms,
 
             dac_ena           => dac_ena,
+            dac_tri           => dac_tri,
             dac_val           => dac_val,
 
             dac_sclk          => dac_sclk,

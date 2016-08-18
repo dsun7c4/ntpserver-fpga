@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-04-26
--- Last update: 2016-08-12
+-- Last update: 2016-08-17
 -- Platform   : 
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -30,7 +30,8 @@ package util_pkg is
 
     component delay_sig
         generic (
-            cycles : in natural := 0
+            cycles : in natural   := 0;
+            init   : in std_logic := '0'
             );
         port (
             signal rst_n : in std_logic;
@@ -106,7 +107,8 @@ use IEEE.STD_LOGIC_ARITH.ALL;
 
 entity delay_sig is
     generic (
-        cycles : in natural := 0
+        cycles : in natural   := 0;
+        init   : in std_logic := '0'
         );
     port (
         signal rst_n : in std_logic;
@@ -131,7 +133,7 @@ begin
         process (rst_n, clk)
         begin
             if (rst_n = '0') then
-                q <= '0';
+                q <= init;
             elsif (clk'event and clk = '1') then
                 q <= d;
             end if;
@@ -146,7 +148,7 @@ begin
         process (rst_n, clk)
         begin
             if (rst_n = '0') then
-                dly <= (others => '0');
+                dly <= (others => init);
             elsif (clk'event and clk = '1') then
                 dly(0) <= d;
                 for i in 1 to cycles - 1 loop
