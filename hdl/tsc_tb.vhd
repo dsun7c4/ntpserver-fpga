@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-06-28
--- Last update: 2016-06-28
+-- Last update: 2016-08-22
 -- Platform   : 
 -- Standard   : VHDL'87
 -------------------------------------------------------------------------------
@@ -49,10 +49,13 @@ architecture STRUCTURE of tsc_tb is
             gps_3dfix_d       : in    std_logic;
             tsc_read          : in    std_logic;
             tsc_sync          : in    std_logic;
+            gps_1pps_d        : out   std_logic;
 
-            diff_1pps         : out   std_logic_vector(31 downto 0);
+            pdiff_1pps        : out   std_logic_vector(31 downto 0);
+            fdiff_1pps        : out   std_logic_vector(31 downto 0);
 
             tsc_cnt           : out   std_logic_vector(63 downto 0);
+            tsc_cnt1          : out   std_logic_vector(63 downto 0);
             tsc_1pps          : out   std_logic;
             tsc_1ppms         : out   std_logic;
             tsc_1ppus         : out   std_logic
@@ -67,10 +70,13 @@ architecture STRUCTURE of tsc_tb is
     SIGNAL gps_3dfix_d  : std_logic;
     SIGNAL tsc_read     : std_logic;
     SIGNAL tsc_sync     : std_logic;
+    SIGNAL gps_1pps_d   : std_logic;
 
-    SIGNAL diff_1pps    : std_logic_vector(31 downto 0);
+    SIGNAL pdiff_1pps   : std_logic_vector(31 downto 0);
+    SIGNAL fdiff_1pps   : std_logic_vector(31 downto 0);
 
     SIGNAL tsc_cnt      : std_logic_vector(63 downto 0);
+    SIGNAL tsc_cnt1     : std_logic_vector(63 downto 0);
     SIGNAL tsc_1pps     : std_logic;
     SIGNAL tsc_1ppms    : std_logic;
     SIGNAL tsc_1ppus    : std_logic;
@@ -88,10 +94,13 @@ begin
             gps_3dfix_d       => gps_3dfix_d,
             tsc_read          => tsc_read,
             tsc_sync          => tsc_sync,
+            gps_1pps_d        => gps_1pps_d,
 
-            diff_1pps         => diff_1pps,
+            pdiff_1pps        => pdiff_1pps,
+            fdiff_1pps        => fdiff_1pps,
 
             tsc_cnt           => tsc_cnt,
+            tsc_cnt1          => tsc_cnt1,
             tsc_1pps          => tsc_1pps,
             tsc_1ppms         => tsc_1ppms,
             tsc_1ppus         => tsc_1ppus

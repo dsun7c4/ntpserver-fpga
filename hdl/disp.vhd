@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-05-14
--- Last update: 2016-08-12
+-- Last update: 2016-08-22
 -- Platform   : 
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -25,8 +25,8 @@ use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
 use IEEE.STD_LOGIC_ARITH.ALL;
 
---library work;
---use work.util_pkg.all;
+library work;
+use work.types_pkg.all;
 
 entity disp is
   port (
@@ -48,18 +48,7 @@ entity disp is
       sram_datai        : out   std_logic_vector(31 downto 0);
 
       -- Time of day
-      t_1ms             : in    std_logic_vector(3 downto 0);
-      t_10ms            : in    std_logic_vector(3 downto 0);
-      t_100ms           : in    std_logic_vector(3 downto 0);
-
-      t_1s              : in    std_logic_vector(3 downto 0);
-      t_10s             : in    std_logic_vector(3 downto 0);
-
-      t_1m              : in    std_logic_vector(3 downto 0);
-      t_10m             : in    std_logic_vector(3 downto 0);
-
-      t_1h              : in    std_logic_vector(3 downto 0);
-      t_10h             : in    std_logic_vector(3 downto 0);
+      cur_time          : in    time_ty;
 
       -- Output to tlc59282 LED driver
       disp_sclk         : OUT   std_logic;
@@ -134,18 +123,7 @@ architecture rtl of disp is
             dp                : in    std_logic_vector(31 downto 0);
 
             -- Time of day
-            t_1ms             : in    std_logic_vector(3 downto 0);
-            t_10ms            : in    std_logic_vector(3 downto 0);
-            t_100ms           : in    std_logic_vector(3 downto 0);
-
-            t_1s              : in    std_logic_vector(3 downto 0);
-            t_10s             : in    std_logic_vector(3 downto 0);
-
-            t_1m              : in    std_logic_vector(3 downto 0);
-            t_10m             : in    std_logic_vector(3 downto 0);
-
-            t_1h              : in    std_logic_vector(3 downto 0);
-            t_10h             : in    std_logic_vector(3 downto 0);
+            cur_time          : in    time_ty;
 
             -- Block memory display buffer and lut
             lut_addr          : out   std_logic_vector(11 downto 0);
@@ -220,18 +198,7 @@ begin
             dp                => dp,
 
             -- Time of day
-            t_1ms             => t_1ms,
-            t_10ms            => t_10ms,
-            t_100ms           => t_100ms,
-
-            t_1s              => t_1s,
-            t_10s             => t_10s,
-
-            t_1m              => t_1m,
-            t_10m             => t_10m,
-
-            t_1h              => t_1h,
-            t_10h             => t_10h,
+            cur_time          => cur_time,
 
             -- Block memory display buffer and lut
             lut_addr          => lut_addr,

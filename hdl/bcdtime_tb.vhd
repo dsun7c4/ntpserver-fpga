@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-05-04
--- Last update: 2016-05-05
+-- Last update: 2016-08-22
 -- Platform   : 
 -- Standard   : VHDL'87
 -------------------------------------------------------------------------------
@@ -35,6 +35,7 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 use IEEE.STD_LOGIC_ARITH.ALL;
 
 library work;
+use work.types_pkg.all;
 use work.tb_pkg.all;
 
 architecture STRUCTURE of bcdtime_tb is
@@ -46,30 +47,11 @@ architecture STRUCTURE of bcdtime_tb is
 
             tsc_1pps          : in    std_logic;
             tsc_1ppms         : in    std_logic;
+
             set               : in    std_logic;
+            set_time          : in    time_ty;
 
-            set_1s            : in    std_logic_vector(3 downto 0);
-            set_10s           : in    std_logic_vector(3 downto 0);
-
-            set_1m            : in    std_logic_vector(3 downto 0);
-            set_10m           : in    std_logic_vector(3 downto 0);
-
-            set_1h            : in    std_logic_vector(3 downto 0);
-            set_10h           : in    std_logic_vector(3 downto 0);
-
-
-            t_1ms             : out   std_logic_vector(3 downto 0);
-            t_10ms            : out   std_logic_vector(3 downto 0);
-            t_100ms           : out   std_logic_vector(3 downto 0);
-
-            t_1s              : out   std_logic_vector(3 downto 0);
-            t_10s             : out   std_logic_vector(3 downto 0);
-
-            t_1m              : out   std_logic_vector(3 downto 0);
-            t_10m             : out   std_logic_vector(3 downto 0);
-
-            t_1h              : out   std_logic_vector(3 downto 0);
-            t_10h             : out   std_logic_vector(3 downto 0)
+            cur_time          : out   time_ty
             );
     end component;
 
@@ -79,30 +61,11 @@ architecture STRUCTURE of bcdtime_tb is
 
     SIGNAL tsc_1pps     : std_logic;
     SIGNAL tsc_1ppms    : std_logic;
+
     SIGNAL set          : std_logic;
+    SIGNAL set_time     : time_ty;
 
-    SIGNAL set_1s       : std_logic_vector(3 downto 0);
-    SIGNAL set_10s      : std_logic_vector(3 downto 0);
-
-    SIGNAL set_1m       : std_logic_vector(3 downto 0);
-    SIGNAL set_10m      : std_logic_vector(3 downto 0);
-
-    SIGNAL set_1h       : std_logic_vector(3 downto 0);
-    SIGNAL set_10h      : std_logic_vector(3 downto 0);
-
-
-    SIGNAL t_1ms        : std_logic_vector(3 downto 0);
-    SIGNAL t_10ms       : std_logic_vector(3 downto 0);
-    SIGNAL t_100ms      : std_logic_vector(3 downto 0);
-
-    SIGNAL t_1s         : std_logic_vector(3 downto 0);
-    SIGNAL t_10s        : std_logic_vector(3 downto 0);
-
-    SIGNAL t_1m         : std_logic_vector(3 downto 0);
-    SIGNAL t_10m        : std_logic_vector(3 downto 0);
-
-    SIGNAL t_1h         : std_logic_vector(3 downto 0);
-    SIGNAL t_10h        : std_logic_vector(3 downto 0);
+    SIGNAL cur_time     : time_ty;
 
 begin
 
@@ -114,30 +77,11 @@ begin
 
             tsc_1pps          => tsc_1pps,
             tsc_1ppms         => tsc_1ppms,
+
             set               => set,
+            set_time          => set_time,
 
-            set_1s            => set_1s,
-            set_10s           => set_10s,
-
-            set_1m            => set_1m,
-            set_10m           => set_10m,
-
-            set_1h            => set_1h,
-            set_10h           => set_10h,
-
-
-            t_1ms             => t_1ms,
-            t_10ms            => t_10ms,
-            t_100ms           => t_100ms,
-
-            t_1s              => t_1s,
-            t_10s             => t_10s,
-
-            t_1m              => t_1m,
-            t_10m             => t_10m,
-
-            t_1h              => t_1h,
-            t_10h             => t_10h
+            cur_time          => cur_time
             );
 
 
@@ -180,13 +124,16 @@ begin
         end loop;
     end process;
 
-    set       <= '0';
-    set_1s    <= (others =>'0');
-    set_10s   <= (others =>'0');
-    set_1m    <= (others =>'0');
-    set_10m   <= (others =>'0');
-    set_1h    <= (others =>'0');
-    set_10h   <= (others =>'0');
+    set              <= '0';
+    set_time.t_1ms   <= (others => '0');
+    set_time.t_10ms  <= (others => '0');
+    set_time.t_100ms <= (others => '0');
+    set_time.t_1s    <= (others => '0');
+    set_time.t_10s   <= (others => '0');
+    set_time.t_1m    <= (others => '0');
+    set_time.t_10m   <= (others => '0');
+    set_time.t_1h    <= (others => '0');
+    set_time.t_10h   <= (others => '0');
 
 
 end STRUCTURE;

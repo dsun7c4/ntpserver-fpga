@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-03-13
--- Last update: 2016-08-17
+-- Last update: 2016-08-22
 -- Platform   : 
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -27,6 +27,7 @@ use IEEE.STD_LOGIC_ARITH.ALL;
 
 library work;
 use work.util_pkg.all;
+use work.types_pkg.all;
 
 architecture STRUCTURE of clock is
 
@@ -163,20 +164,21 @@ architecture STRUCTURE of clock is
             EPC_INTF_rnw      : in    std_logic;  -- Write when '0'
 
             -- Time stamp counter
-            tsc_read          : out   std_logic;
-            tsc_sync          : out   std_logic;
-            gps_3dfix_d       : in    std_logic;
-            diff_1pps         : in    std_logic_vector(31 downto 0);
             tsc_cnt           : in    std_logic_vector(63 downto 0);
+            tsc_cnt1          : in    std_logic_vector(63 downto 0);
+            tsc_read          : out   std_logic;
 
             -- Time setting
+            cur_time          : in    time_ty;
             set               : out   std_logic;
-            set_1s            : out   std_logic_vector(3 downto 0);
-            set_10s           : out   std_logic_vector(3 downto 0);
-            set_1m            : out   std_logic_vector(3 downto 0);
-            set_10m           : out   std_logic_vector(3 downto 0);
-            set_1h            : out   std_logic_vector(3 downto 0);
-            set_10h           : out   std_logic_vector(3 downto 0);
+            set_time          : out   time_ty;
+
+            -- PLL control
+            gps_3dfix_d       : in    std_logic;
+            gps_1pps_d        : in    std_logic;
+            pdiff_1pps        : in    std_logic_vector(31 downto 0);
+            fdiff_1pps        : in    std_logic_vector(31 downto 0);
+            tsc_sync          : out   std_logic;
             dac_val           : out   std_logic_vector(15 downto 0);
 
             -- Fan ms per revolution, percent speed
@@ -221,10 +223,13 @@ architecture STRUCTURE of clock is
             gps_3dfix_d       : in    std_logic;
             tsc_read          : in    std_logic;
             tsc_sync          : in    std_logic;
+            gps_1pps_d        : out   std_logic;
 
-            diff_1pps         : out   std_logic_vector(31 downto 0);
+            pdiff_1pps        : out   std_logic_vector(31 downto 0);
+            fdiff_1pps        : out   std_logic_vector(31 downto 0);
 
             tsc_cnt           : out   std_logic_vector(63 downto 0);
+            tsc_cnt1          : out   std_logic_vector(63 downto 0);
             tsc_1pps          : out   std_logic;
             tsc_1ppms         : out   std_logic;
             tsc_1ppus         : out   std_logic
@@ -240,30 +245,11 @@ architecture STRUCTURE of clock is
 
             tsc_1pps          : in    std_logic;
             tsc_1ppms         : in    std_logic;
+
             set               : in    std_logic;
+            set_time          : in    time_ty;
 
-            set_1s            : in    std_logic_vector(3 downto 0);
-            set_10s           : in    std_logic_vector(3 downto 0);
-
-            set_1m            : in    std_logic_vector(3 downto 0);
-            set_10m           : in    std_logic_vector(3 downto 0);
-
-            set_1h            : in    std_logic_vector(3 downto 0);
-            set_10h           : in    std_logic_vector(3 downto 0);
-
-
-            t_1ms             : out   std_logic_vector(3 downto 0);
-            t_10ms            : out   std_logic_vector(3 downto 0);
-            t_100ms           : out   std_logic_vector(3 downto 0);
-
-            t_1s              : out   std_logic_vector(3 downto 0);
-            t_10s             : out   std_logic_vector(3 downto 0);
-
-            t_1m              : out   std_logic_vector(3 downto 0);
-            t_10m             : out   std_logic_vector(3 downto 0);
-
-            t_1h              : out   std_logic_vector(3 downto 0);
-            t_10h             : out   std_logic_vector(3 downto 0)
+            cur_time          : out   time_ty
             );
     end component;
 
@@ -307,18 +293,7 @@ architecture STRUCTURE of clock is
             sram_datai        : out   std_logic_vector(31 downto 0);
 
             -- Time of day
-            t_1ms             : in    std_logic_vector(3 downto 0);
-            t_10ms            : in    std_logic_vector(3 downto 0);
-            t_100ms           : in    std_logic_vector(3 downto 0);
-
-            t_1s              : in    std_logic_vector(3 downto 0);
-            t_10s             : in    std_logic_vector(3 downto 0);
-
-            t_1m              : in    std_logic_vector(3 downto 0);
-            t_10m             : in    std_logic_vector(3 downto 0);
-
-            t_1h              : in    std_logic_vector(3 downto 0);
-            t_10h             : in    std_logic_vector(3 downto 0);
+            cur_time          : in    time_ty;
 
             -- Output to tlc59282 LED driver
             disp_sclk         : out   std_logic;
@@ -392,35 +367,23 @@ architecture STRUCTURE of clock is
     signal gps_3dfix_d     : std_logic;
     signal tsc_read        : std_logic;
     signal tsc_sync        : std_logic;
+    signal gps_1pps_d      : std_logic;
 
-    signal diff_1pps       : std_logic_vector(31 downto 0);
+    SIGNAL pdiff_1pps      : std_logic_vector(31 downto 0);
+    SIGNAL fdiff_1pps      : std_logic_vector(31 downto 0);
 
     signal tsc_cnt         : std_logic_vector(63 downto 0);
+    SIGNAL tsc_cnt1        : std_logic_vector(63 downto 0);
     signal tsc_1pps        : std_logic;
     signal tsc_1ppms       : std_logic;
     signal tsc_1ppus       : std_logic;
 
     signal set             : std_logic;
-    signal set_1s          : std_logic_vector(3 downto 0);
-    signal set_10s         : std_logic_vector(3 downto 0);
-    signal set_1m          : std_logic_vector(3 downto 0);
-    signal set_10m         : std_logic_vector(3 downto 0);
-    signal set_1h          : std_logic_vector(3 downto 0);
-    signal set_10h         : std_logic_vector(3 downto 0);
+    signal set_time        : time_ty;
+
     signal dac_val         : std_logic_vector(15 downto 0);
 
-    signal t_1ms           : std_logic_vector(3 downto 0);
-    signal t_10ms          : std_logic_vector(3 downto 0);
-    signal t_100ms         : std_logic_vector(3 downto 0);
-
-    signal t_1s            : std_logic_vector(3 downto 0);
-    signal t_10s           : std_logic_vector(3 downto 0);
-
-    signal t_1m            : std_logic_vector(3 downto 0);
-    signal t_10m           : std_logic_vector(3 downto 0);
-
-    signal t_1h            : std_logic_vector(3 downto 0);
-    signal t_10h           : std_logic_vector(3 downto 0);
+    SIGNAL cur_time        : time_ty;
 
     signal sram_addr       : std_logic_vector(9 downto 0);
     signal sram_we         : std_logic;
@@ -605,20 +568,21 @@ begin
             EPC_INTF_rnw      => EPC_INTF_rnw,
 
             -- Time stamp counter
-            tsc_read          => tsc_read,
-            tsc_sync          => tsc_sync,
-            gps_3dfix_d       => gps_3dfix_d,
-            diff_1pps         => diff_1pps,
             tsc_cnt           => tsc_cnt,
+            tsc_cnt1          => tsc_cnt1,
+            tsc_read          => tsc_read,
 
             -- Time setting
+            cur_time          => cur_time,
             set               => set,
-            set_1s            => set_1s,
-            set_10s           => set_10s,
-            set_1m            => set_1m,
-            set_10m           => set_10m,
-            set_1h            => set_1h,
-            set_10h           => set_10h,
+            set_time          => set_time,
+
+            -- PLL control
+            gps_3dfix_d       => gps_3dfix_d,
+            gps_1pps_d        => gps_1pps_d,
+            pdiff_1pps        => pdiff_1pps,
+            fdiff_1pps        => fdiff_1pps,
+            tsc_sync          => tsc_sync,
             dac_val           => dac_val,
 
             -- Fan ms per revolution, percent speed
@@ -662,10 +626,13 @@ begin
             gps_3dfix_d       => gps_3dfix_d,
             tsc_read          => tsc_read,
             tsc_sync          => tsc_sync,
+            gps_1pps_d        => gps_1pps_d,
 
-            diff_1pps         => diff_1pps,
+            pdiff_1pps        => pdiff_1pps,
+            fdiff_1pps        => fdiff_1pps,
 
             tsc_cnt           => tsc_cnt,
+            tsc_cnt1          => tsc_cnt1,
             tsc_1pps          => tsc_1pps,
             tsc_1ppms         => tsc_1ppms,
             tsc_1ppus         => tsc_1ppus
@@ -679,30 +646,11 @@ begin
 
             tsc_1pps          => tsc_1pps,
             tsc_1ppms         => tsc_1ppms,
+
             set               => set,
+            set_time          => set_time,
 
-            set_1s            => set_1s,
-            set_10s           => set_10s,
-
-            set_1m            => set_1m,
-            set_10m           => set_10m,
-
-            set_1h            => set_1h,
-            set_10h           => set_10h,
-
-
-            t_1ms             => t_1ms,
-            t_10ms            => t_10ms,
-            t_100ms           => t_100ms,
-
-            t_1s              => t_1s,
-            t_10s             => t_10s,
-
-            t_1m              => t_1m,
-            t_10m             => t_10m,
-
-            t_1h              => t_1h,
-            t_10h             => t_10h
+            cur_time          => cur_time
             );
 
 
@@ -744,18 +692,7 @@ begin
             sram_datai        => sram_datai,
 
             -- Time of day
-            t_1ms             => t_1ms,
-            t_10ms            => t_10ms,
-            t_100ms           => t_100ms,
-
-            t_1s              => t_1s,
-            t_10s             => t_10s,
-
-            t_1m              => t_1m,
-            t_10m             => t_10m,
-
-            t_1h              => t_1h,
-            t_10h             => t_10h,
+            cur_time          => cur_time,
 
             -- Output to tlc59282 LED driver
             disp_sclk         => disp_sclk,

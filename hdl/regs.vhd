@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    :
 -- Created    : 2016-03-13
--- Last update: 2016-08-16
+-- Last update: 2016-08-23
 -- Platform   :
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -27,13 +27,23 @@
 --
 -- 0x8060_0004 |                            TSC MSB                            |
 --
--- 0x8060_0008 |                           1PPS Difference                     |
+-- 0x8060_0008 |                     TSC LSB @ last second                     |
 --
--- 0x8060_000c |               | 10 h  | 1 h   | 10 m  |  1 m  | 10 s  |  1 s  |
+-- 0x8060_000c |                     TSC MSB @ last second                     |
 --
--- 0x8060_0010 | |                             |            DAC value          |
---              |
---              GPS 3D Fix
+-- 0x8060_0010 |                        1PPS Phase Error                       |
+--
+-- 0x8060_0014 |                        1PPS Frequency Error                   |
+--
+-- 0x8060_0018 |                         GPS 1PPS Copunt                       |
+--
+-- 0x8060_001c | 10 h  | 1 h   | 10 m  |  1 m  | 10 s  |  1 s  | 100 ms| 10 ms |
+--
+-- 0x8060_0020 |               | 10 h  | 1 h   | 10 m  |  1 m  | 10 s  |  1 s  |
+--
+-- 0x8060_0024 | |                   | |       |            DAC value          |
+--              |                     |
+--              GPS 3D Fix            Sync PFD and PLL
 --
 --
 -- 0x8060_0100 |             uSPR                      |       |    Fan pwm    |
@@ -87,6 +97,8 @@ use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
 use IEEE.STD_LOGIC_ARITH.ALL;
 
+use work.types_pkg.all;
+
 entity regs is
     port (
         rst_n             : in    std_logic;
@@ -102,20 +114,21 @@ entity regs is
         EPC_INTF_rnw      : in    std_logic;  -- Write when '0'
 
         -- Time stamp counter
-        tsc_read          : out   std_logic;
-        tsc_sync          : out   std_logic;
-        gps_3dfix_d       : in    std_logic;
-        diff_1pps         : in    std_logic_vector(31 downto 0);
         tsc_cnt           : in    std_logic_vector(63 downto 0);
+        tsc_cnt1          : in    std_logic_vector(63 downto 0);
+        tsc_read          : out   std_logic;
 
         -- Time setting
+        cur_time          : in    time_ty;
         set               : out   std_logic;
-        set_1s            : out   std_logic_vector(3 downto 0);
-        set_10s           : out   std_logic_vector(3 downto 0);
-        set_1m            : out   std_logic_vector(3 downto 0);
-        set_10m           : out   std_logic_vector(3 downto 0);
-        set_1h            : out   std_logic_vector(3 downto 0);
-        set_10h           : out   std_logic_vector(3 downto 0);
+        set_time          : out   time_ty;
+
+        -- PLL control
+        gps_3dfix_d       : in    std_logic;
+        gps_1pps_d        : in    std_logic;
+        pdiff_1pps        : in    std_logic_vector(31 downto 0);
+        fdiff_1pps        : in    std_logic_vector(31 downto 0);
+        tsc_sync          : out   std_logic;
         dac_val           : out   std_logic_vector(15 downto 0);
 
         -- Fan ms per revolution, percent speed
@@ -139,7 +152,7 @@ architecture rtl of regs is
 
     type reg_arr is array (natural range <>) of std_logic_vector(31 downto 0);
 
-    signal time_regs      : reg_arr(4 downto 0);
+    signal time_regs      : reg_arr(9 downto 0);
     signal fan_regs       : reg_arr(0 downto 0);
     signal disp_regs      : reg_arr(1 downto 0);
 
@@ -156,6 +169,8 @@ architecture rtl of regs is
 
     signal decode         : std_logic_vector(3 downto 0);
     signal sram           : std_logic;
+
+    SIGNAL gps_1pps_cnt   : std_logic_vector(31 downto 0);
 
     signal time_regs_mux  : std_logic_vector(31 downto 0);
     signal fan_regs_mux   : std_logic_vector(31 downto 0);
@@ -180,22 +195,15 @@ begin
             cs_n_d  <= '1';
             cs_dp_r <= '0';
             cs_dp_w <= '0';
+            decode  <= (others => '0');
+            sram    <= '0';
         elsif (clk'event and clk = '1') then
             rnw       <= not EPC_INTF_rnw;
             cs_n_d    <= EPC_INTF_cs_n;
             cs_dp_r   <= not EPC_INTF_cs_n and cs_n_d and     EPC_INTF_rnw;
             cs_dp_w   <= not EPC_INTF_cs_n and cs_n_d and not EPC_INTF_rnw;
-        end if;
-    end process;
 
-
-    -- First level decode
-    process (rst_n, clk) is
-    begin
-        if (rst_n = '0') then
-            decode <= (others => '0');
-            sram   <= '0';
-        elsif (clk'event and clk = '1') then
+            -- First level decode
             if (EPC_INTF_cs_n = '0') then
                 if (addr(12) = '1') then
                     decode <= (others => '0');
@@ -274,15 +282,38 @@ begin
                         fan_regs_mux  <= (others => '0');
                         disp_regs_mux <= disp_regs(1);
                     when "0010" =>
-                        time_regs_mux <= diff_1pps;
+                        time_regs_mux <= tsc_cnt1(31 downto 0);
                         fan_regs_mux  <= (others => '0');
                         disp_regs_mux <= (others => '0');
                     when "0011" =>
-                        time_regs_mux <= time_regs(3);
+                        time_regs_mux <= tsc_cnt1(63 downto 32);
                         fan_regs_mux  <= (others => '0');
                         disp_regs_mux <= (others => '0');
                     when "0100" =>
-                        time_regs_mux <= time_regs(4);
+                        time_regs_mux <= pdiff_1pps;
+                        fan_regs_mux  <= (others => '0');
+                        disp_regs_mux <= (others => '0');
+                    when "0101" =>
+                        time_regs_mux <= fdiff_1pps;
+                        fan_regs_mux  <= (others => '0');
+                        disp_regs_mux <= (others => '0');
+                    when "0110" =>
+                        time_regs_mux <= gps_1pps_cnt;
+                        fan_regs_mux  <= (others => '0');
+                        disp_regs_mux <= (others => '0');
+                    when "0111" =>
+                        time_regs_mux <= cur_time.t_10h   & cur_time.t_1h   & 
+                                         cur_time.t_10m   & cur_time.t_1m   &
+                                         cur_time.t_10s   & cur_time.t_1s   &
+                                         cur_time.t_100ms & cur_time.t_10ms;
+                        fan_regs_mux  <= (others => '0');
+                        disp_regs_mux <= (others => '0');
+                    when "1000" =>
+                        time_regs_mux <= time_regs(8);
+                        fan_regs_mux  <= (others => '0');
+                        disp_regs_mux <= (others => '0');
+                    when "1001" =>
+                        time_regs_mux <= time_regs(9);
                         time_regs_mux(31) <= gps_3dfix_d;
                         fan_regs_mux  <= (others => '0');
                         disp_regs_mux <= (others => '0');
@@ -308,11 +339,11 @@ begin
     process (rst_n, clk) is
     begin
         if (rst_n = '0') then
-            for i in 0 to 4 loop
+            for i in time_regs'range loop
                 time_regs(i) <= (others => '0');
             end loop;
-            set <= '0';
-            time_regs(4)(15 downto 0) <= x"8000";
+            set      <= '0';
+            time_regs(9)(15 downto 0) <= x"8000";
         elsif (clk'event and clk = '1') then
             if (cs_dp_w = '1' and decode(0) = '1') then
                 case addr(5 downto 2) is
@@ -326,27 +357,47 @@ begin
                         time_regs(3) <= data_o;
                     when "0100" =>
                         time_regs(4) <= data_o;
+                    when "0101" =>
+                        time_regs(5) <= data_o;
+                    when "0110" =>
+                        time_regs(6) <= data_o;
+                    when "0111" =>
+                        time_regs(7) <= data_o;
+                    when "1000" =>
+                        time_regs(8) <= data_o;
+                    when "1001" =>
+                        time_regs(9) <= data_o;
                     when others =>
                         null;
                 end case;
             end if;
 
             -- Trigger time set
-            if (cs_dp_w = '1' and decode(0) = '1' and addr(5 downto 2) = "0011") then
+            if (cs_dp_w = '1' and decode(0) = '1' and addr(5 downto 2) = "1000") then
                 set          <= '1';
             else
                 set          <= '0';
             end if;
+
+            -- Clear the sync flag after its done
+            if (gps_1pps_d = '1' and time_regs(9)(20) = '1') then
+                time_regs(9)(20) <= '0';
+            end if;
         end if;
     end process;
 
-    set_1s  <= time_regs(3)(3 downto 0);
-    set_10s <= time_regs(3)(7 downto 4);
-    set_1m  <= time_regs(3)(11 downto 8);
-    set_10m <= time_regs(3)(15 downto 12);
-    set_1h  <= time_regs(3)(19 downto 16);
-    set_10h <= time_regs(3)(23 downto 20);
-    dac_val <= time_regs(4)(15 downto 0);
+    set_time.t_1ms   <= (others => '0');
+    set_time.t_10ms  <= (others => '0');
+    set_time.t_100ms <= (others => '0');
+    set_time.t_1s    <= time_regs(8)(3 downto 0);
+    set_time.t_10s   <= time_regs(8)(7 downto 4);
+    set_time.t_1m    <= time_regs(8)(11 downto 8);
+    set_time.t_10m   <= time_regs(8)(15 downto 12);
+    set_time.t_1h    <= time_regs(8)(19 downto 16);
+    set_time.t_10h   <= time_regs(8)(23 downto 20);
+
+    dac_val  <= time_regs(9)(15 downto 0);
+    tsc_sync <= time_regs(9)(20);
 
 
     -- Fan control registers
@@ -402,6 +453,19 @@ begin
 
     disp_pdm <= disp_regs(0)(7 downto 0);
     dp       <= disp_regs(1);
+
+
+    -- GPS 1pps count register
+    process (rst_n, clk) is
+    begin
+        if (rst_n = '0') then
+            gps_1pps_cnt <= (others => '0');
+        elsif (clk'event and clk = '1') then
+            if (gps_1pps_d = '1') then
+                gps_1pps_cnt <= gps_1pps_cnt + 1;
+            end if;
+        end if;
+    end process;
 
 
 end rtl;

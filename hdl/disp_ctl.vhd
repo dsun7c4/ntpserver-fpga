@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-05-19
--- Last update: 2016-08-12
+-- Last update: 2016-08-22
 -- Platform   : 
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -25,8 +25,8 @@ use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
 use IEEE.STD_LOGIC_ARITH.ALL;
 
---library work;
---use work.util_pkg.all;
+library work;
+use work.types_pkg.all;
 
 entity disp_ctl is
   port (
@@ -39,18 +39,7 @@ entity disp_ctl is
       dp                : in    std_logic_vector(31 downto 0);
 
       -- Time of day
-      t_1ms             : in    std_logic_vector(3 downto 0);
-      t_10ms            : in    std_logic_vector(3 downto 0);
-      t_100ms           : in    std_logic_vector(3 downto 0);
-
-      t_1s              : in    std_logic_vector(3 downto 0);
-      t_10s             : in    std_logic_vector(3 downto 0);
-
-      t_1m              : in    std_logic_vector(3 downto 0);
-      t_10m             : in    std_logic_vector(3 downto 0);
-
-      t_1h              : in    std_logic_vector(3 downto 0);
-      t_10h             : in    std_logic_vector(3 downto 0);
+      cur_time          : in    time_ty;
 
       -- Block memory display buffer and lut
       lut_addr          : out   std_logic_vector(11 downto 0);
@@ -163,23 +152,23 @@ begin
 
                 case char(3 downto 0) is
                     when "0000" =>
-                        digit := t_1ms;
+                        digit := cur_time.t_1ms;
                     when "0001" =>
-                        digit := t_10ms;
+                        digit := cur_time.t_10ms;
                     when "0010" =>
-                        digit := t_100ms;
+                        digit := cur_time.t_100ms;
                     when "0011" =>
-                        digit := t_1s;
+                        digit := cur_time.t_1s;
                     when "0100" =>
-                        digit := t_10s;
+                        digit := cur_time.t_10s;
                     when "0101" =>
-                        digit := t_1m;
+                        digit := cur_time.t_1m;
                     when "0110" =>
-                        digit := t_10m;
+                        digit := cur_time.t_10m;
                     when "0111" =>
-                        digit := t_1h;
+                        digit := cur_time.t_1h;
                     when "1000" =>
-                        digit := t_10h;
+                        digit := cur_time.t_10h;
                     when others =>
                         digit := (others => '0');
                 end case;

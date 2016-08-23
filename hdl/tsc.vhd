@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-04-29
--- Last update: 2016-06-28
+-- Last update: 2016-08-22
 -- Platform   : 
 -- Standard   : VHDL'87
 -------------------------------------------------------------------------------
@@ -37,10 +37,13 @@ entity tsc is
       gps_3dfix_d       : in    std_logic;
       tsc_read          : in    std_logic;
       tsc_sync          : in    std_logic;
+      gps_1pps_d        : out   std_logic;
 
-      diff_1pps         : out   std_logic_vector(31 downto 0);
+      pdiff_1pps        : out   std_logic_vector(31 downto 0);
+      fdiff_1pps        : out   std_logic_vector(31 downto 0);
 
       tsc_cnt           : out   std_logic_vector(63 downto 0);
+      tsc_cnt1          : out   std_logic_vector(63 downto 0);
       tsc_1pps          : out   std_logic;
       tsc_1ppms         : out   std_logic;
       tsc_1ppus         : out   std_logic
@@ -71,6 +74,8 @@ architecture rtl of tsc is
     signal trig           : std_logic;
 
     signal diff_cnt       : std_logic_vector(31 downto 0);
+    signal pdiff          : std_logic_vector(31 downto 0);
+    signal fdiff          : std_logic_vector(31 downto 0);
 
 begin
 
@@ -87,18 +92,26 @@ begin
 
 
     -- Output read sample register
+    -- Output count at one second
     tsc_oreg:
     process (rst_n, clk) is
     begin
         if (rst_n = '0') then
-            tsc_cnt <= (others => '0');
+            tsc_cnt  <= (others => '0');
+            tsc_cnt1 <= (others => '0');
         elsif (clk'event and clk = '1') then
             if (tsc_read = '1') then
-                tsc_cnt <= counter;
+                tsc_cnt  <= counter;
+            end if;
+            if (pps_cnt_term = '1') then
+                tsc_cnt1 <= counter;
             end if;
         end if;
     end process;
 
+
+    -- ----------------------------------------------------------------------
+    
     
     -- One pulse pulse per second
     tsc_1pps_ctr:
@@ -175,6 +188,9 @@ begin
     tsc_1ppus <= ppus_cnt_term;
 
     
+    -- ----------------------------------------------------------------------
+
+
     -- GPS 1 pulse per second input register
     tsc_gps_ireg:
     process (rst_n, clk) is
@@ -191,6 +207,9 @@ begin
     end process;
 
 
+    gps_1pps_d <= gps_1pps_pulse;
+    
+
     -- Delay the ocxo 1pps pulse approximately the same amount as the gps 1pps
     tsc_pps_i:  delay_sig generic map (3) port map (rst_n, clk, pps_cnt_term, tsc_1pps_pulse);
     
@@ -206,6 +225,7 @@ begin
         elsif (clk'event and clk = '1') then
             trig <= '0';
 
+            -- (lead & lag & tsc_1pps_pulse & gps_1pps_pulse)
             -- 0010
             if (lead = '0' and lag = '0' and
                 tsc_1pps_pulse = '1' and gps_1pps_pulse = '0' ) then
@@ -257,34 +277,40 @@ begin
         variable diff_sub : std_logic_vector(diff_cnt'left downto 0);
     begin
         if (rst_n = '0') then
-            diff_cnt   <= (others => '0');
-            diff_1pps  <= (others => '0');
+            diff_cnt    <= (others => '0');
+            pdiff       <= (others => '0');
+            fdiff       <= (others => '0');
         elsif (clk'event and clk = '1') then
             diff_add  := diff_cnt + 1;
             diff_sub  := diff_cnt - 1;
 
             if ((lead = '0' and lag = '0') or
                 (tsc_1pps_pulse = '1' and gps_1pps_pulse = '1')) then
-                diff_cnt   <= (others => '0');
+                diff_cnt    <= (others => '0');
             else
                 if (lag = '1') then
                     -- Saturate at 2^31-1
                     if (diff_add(diff_add'left) = '0') then
-                        diff_cnt <= diff_add(diff_cnt'range);
+                        diff_cnt    <= diff_add(diff_cnt'range);
                     end if;
                 elsif (lead = '1') then
                     -- Saturate at -2^31
                     if (diff_sub(diff_sub'left) = '1') then
-                        diff_cnt <= diff_sub(diff_cnt'range);
+                        diff_cnt    <= diff_sub(diff_cnt'range);
                     end if;                        
                 end if;
             end if;
 
             if (trig = '1') then
-                diff_1pps  <= diff_cnt;
+                pdiff       <= diff_cnt;
+                fdiff       <= diff_cnt - pdiff;
             end if;
         end if;
     end process;
 
 
+    pdiff_1pps <= pdiff;
+    fdiff_1pps <= fdiff;
+
+    
 end rtl;

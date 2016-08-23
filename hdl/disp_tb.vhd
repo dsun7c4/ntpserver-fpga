@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-05-19
--- Last update: 2016-08-12
+-- Last update: 2016-08-22
 -- Platform   : 
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -36,6 +36,7 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 use IEEE.STD_LOGIC_ARITH.ALL;
 
 library work;
+use work.types_pkg.all;
 use work.tb_pkg.all;
 
 architecture STRUCTURE of disp_tb is
@@ -60,18 +61,7 @@ architecture STRUCTURE of disp_tb is
             sram_datai         : out   std_logic_vector(31 downto 0);
 
             -- Time of day
-            t_1ms             : in    std_logic_vector(3 downto 0);
-            t_10ms            : in    std_logic_vector(3 downto 0);
-            t_100ms           : in    std_logic_vector(3 downto 0);
-
-            t_1s              : in    std_logic_vector(3 downto 0);
-            t_10s             : in    std_logic_vector(3 downto 0);
-
-            t_1m              : in    std_logic_vector(3 downto 0);
-            t_10m             : in    std_logic_vector(3 downto 0);
-
-            t_1h              : in    std_logic_vector(3 downto 0);
-            t_10h             : in    std_logic_vector(3 downto 0);
+            cur_time          : in    time_ty;
 
             -- Output to tlc59282 LED driver
             disp_sclk         : OUT   std_logic;
@@ -100,18 +90,7 @@ architecture STRUCTURE of disp_tb is
     SIGNAL sram_datai   : std_logic_vector(31 downto 0);
 
       -- Time of day
-    SIGNAL t_1ms        : std_logic_vector(3 downto 0);
-    SIGNAL t_10ms       : std_logic_vector(3 downto 0);
-    SIGNAL t_100ms      : std_logic_vector(3 downto 0);
-
-    SIGNAL t_1s         : std_logic_vector(3 downto 0);
-    SIGNAL t_10s        : std_logic_vector(3 downto 0);
-
-    SIGNAL t_1m         : std_logic_vector(3 downto 0);
-    SIGNAL t_10m        : std_logic_vector(3 downto 0);
-
-    SIGNAL t_1h         : std_logic_vector(3 downto 0);
-    SIGNAL t_10h        : std_logic_vector(3 downto 0);
+    SIGNAL cur_time     : time_ty;
 
       -- Output to tlc59282 LED driver
     SIGNAL disp_sclk    : std_logic;
@@ -142,18 +121,7 @@ begin
             sram_datai        => sram_datai,
 
             -- Time of day
-            t_1ms             => t_1ms,
-            t_10ms            => t_10ms,
-            t_100ms           => t_100ms,
-
-            t_1s              => t_1s,
-            t_10s             => t_10s,
-
-            t_1m              => t_1m,
-            t_10m             => t_10m,
-
-            t_1h              => t_1h,
-            t_10h             => t_10h,
+            cur_time          => cur_time,
 
             -- Output to tlc59282 LED driver
             disp_sclk         => disp_sclk,
@@ -288,15 +256,15 @@ begin
         sram_we        <= '0';
         sram_datao     <= (others => '0');
 
-        t_1ms          <= (others => '0');
-        t_10ms         <= (others => '0');
-        t_100ms        <= (others => '0');
-        t_1s           <= (others => '0');
-        t_10s          <= (others => '0');
-        t_1m           <= (others => '0');
-        t_10m          <= (others => '0');
-        t_1h           <= (others => '0');
-        t_10h          <= (others => '0');
+        cur_time.t_1ms          <= (others => '0');
+        cur_time.t_10ms         <= (others => '0');
+        cur_time.t_100ms        <= (others => '0');
+        cur_time.t_1s           <= (others => '0');
+        cur_time.t_10s          <= (others => '0');
+        cur_time.t_1m           <= (others => '0');
+        cur_time.t_10m          <= (others => '0');
+        cur_time.t_1h           <= (others => '0');
+        cur_time.t_10h          <= (others => '0');
 
         run_clk(clk, 2000);
 

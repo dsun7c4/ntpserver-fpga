@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-05-04
--- Last update: 2016-05-04
+-- Last update: 2016-08-22
 -- Platform   : 
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -24,8 +24,8 @@ use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
 use IEEE.STD_LOGIC_ARITH.ALL;
 
---library work;
---use work.util_pkg.all;
+library work;
+use work.types_pkg.all;
 
 entity bcdtime is
   port (
@@ -34,30 +34,11 @@ entity bcdtime is
 
       tsc_1pps          : in    std_logic;
       tsc_1ppms         : in    std_logic;
+
       set               : in    std_logic;
+      set_time          : in    time_ty;
 
-      set_1s            : in    std_logic_vector(3 downto 0);
-      set_10s           : in    std_logic_vector(3 downto 0);
-
-      set_1m            : in    std_logic_vector(3 downto 0);
-      set_10m           : in    std_logic_vector(3 downto 0);
-
-      set_1h            : in    std_logic_vector(3 downto 0);
-      set_10h           : in    std_logic_vector(3 downto 0);
-
-
-      t_1ms             : out   std_logic_vector(3 downto 0);
-      t_10ms            : out   std_logic_vector(3 downto 0);
-      t_100ms           : out   std_logic_vector(3 downto 0);
-
-      t_1s              : out   std_logic_vector(3 downto 0);
-      t_10s             : out   std_logic_vector(3 downto 0);
-
-      t_1m              : out   std_logic_vector(3 downto 0);
-      t_10m             : out   std_logic_vector(3 downto 0);
-
-      t_1h              : out   std_logic_vector(3 downto 0);
-      t_10h             : out   std_logic_vector(3 downto 0)
+      cur_time          : out   time_ty
   );
 end bcdtime;
 
@@ -163,8 +144,8 @@ begin
             s_carry  <= '0';
         elsif (clk'event and clk = '1') then
             if (sync_time = '1' and tsc_1pps = '1') then
-                dig_1s   <= set_1s;
-                dig_10s  <= set_10s;
+                dig_1s   <= set_time.t_1s;
+                dig_10s  <= set_time.t_10s;
                 s_carry  <= '0';
             elsif (tsc_1ppms = '1' and ms_carry = '1') then
                 if (dig_1s = 9) then 
@@ -203,8 +184,8 @@ begin
             m_carry  <= '0';
         elsif (clk'event and clk = '1') then
             if (sync_time = '1' and tsc_1pps = '1') then
-                dig_1m   <= set_1m;
-                dig_10m  <= set_10m;
+                dig_1m   <= set_time.t_1m;
+                dig_10m  <= set_time.t_10m;
                 m_carry  <= '0';
             elsif (tsc_1ppms = '1' and s_carry = '1' and ms_carry ='1') then
                 if (dig_1m = 9) then 
@@ -243,8 +224,8 @@ begin
             h_carry  <= '0';
         elsif (clk'event and clk = '1') then
             if (sync_time = '1' and tsc_1pps = '1') then
-                dig_1h   <= set_1h;
-                dig_10h  <= set_10h;
+                dig_1h   <= set_time.t_1h;
+                dig_10h  <= set_time.t_10h;
                 h_carry  <= '0';
             elsif (tsc_1ppms = '1' and m_carry = '1' and s_carry = '1' and ms_carry = '1') then
                 if (dig_1h = 9 or (dig_1h = 3 and dig_10h = 2)) then 
@@ -272,16 +253,15 @@ begin
     end process;
 
 
-    t_1ms   <= dig_1ms;
-    t_10ms  <= dig_10ms;
-    t_100ms <= dig_100ms;
-    t_1s    <= dig_1s;
-    t_10s   <= dig_10s;
-    t_1m    <= dig_1m;
-    t_10m   <= dig_10m;
-    t_1h    <= dig_1h;
-    t_10h   <= dig_10h;
-
+    cur_time.t_1ms   <= dig_1ms;
+    cur_time.t_10ms  <= dig_10ms;
+    cur_time.t_100ms <= dig_100ms;
+    cur_time.t_1s    <= dig_1s;
+    cur_time.t_10s   <= dig_10s;
+    cur_time.t_1m    <= dig_1m;
+    cur_time.t_10m   <= dig_10m;
+    cur_time.t_1h    <= dig_1h;
+    cur_time.t_10h   <= dig_10h;
 
 end rtl;
 
