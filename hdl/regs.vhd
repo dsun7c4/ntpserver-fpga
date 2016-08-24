@@ -23,36 +23,57 @@
 --             | 3 |         2         |         1         |         0         |
 --             |1|0|9|8|7|6|5|4|3|2|1|0|9|8|7|6|5|4|3|2|1|0|9|8|7|6|5|4|3|2|1|0|
 --
--- 0x8060_0000 |                            TSC LSB                            |
+-- 0x8060_0000 |                GIT Abbreviated Commit Hash                    |
 --
--- 0x8060_0004 |                            TSC MSB                            |
+-- 0x8060_0004 | Year  |  Mon  | Day 10| Day 1 | Hr 10 | Hr 1  | Min 10| Min 1 |
 --
--- 0x8060_0008 |                     TSC LSB @ last second                     |
 --
--- 0x8060_000c |                     TSC MSB @ last second                     |
+-- -----------------------------------------------------------------------------
+--             | 3 |         2         |         1         |         0         |
+--             |1|0|9|8|7|6|5|4|3|2|1|0|9|8|7|6|5|4|3|2|1|0|9|8|7|6|5|4|3|2|1|0|
 --
--- 0x8060_0010 |                        1PPS Phase Error                       |
+-- 0x8060_0100 |                            TSC LSB                            |
 --
--- 0x8060_0014 |                        1PPS Frequency Error                   |
+-- 0x8060_0104 |                            TSC MSB                            |
 --
--- 0x8060_0018 |                         GPS 1PPS Copunt                       |
+-- 0x8060_0108 |                     TSC LSB @ last second                     |
 --
--- 0x8060_001c | 10 h  | 1 h   | 10 m  |  1 m  | 10 s  |  1 s  | 100 ms| 10 ms |
+-- 0x8060_010c |                     TSC MSB @ last second                     |
 --
--- 0x8060_0020 |               | 10 h  | 1 h   | 10 m  |  1 m  | 10 s  |  1 s  |
+-- 0x8060_0110 |                        1PPS Phase Error                       |
 --
--- 0x8060_0024 | |                   | |       |            DAC value          |
+-- 0x8060_0114 |                        1PPS Frequency Error                   |
+--
+-- 0x8060_0118 |                         GPS 1PPS Copunt                       |
+--
+-- 0x8060_011c | 10 h  | 1 h   | 10 m  |  1 m  | 10 s  |  1 s  | 100 ms| 10 ms |
+--
+-- 0x8060_0120 |               | 10 h  | 1 h   | 10 m  |  1 m  | 10 s  |  1 s  |
+--
+-- 0x8060_0124 | |                   | |       |            DAC value          |
 --              |                     |
 --              GPS 3D Fix            Sync PFD and PLL
 --
 --
--- 0x8060_0100 |             uSPR                      |       |    Fan pwm    |
+-- -----------------------------------------------------------------------------
+--             | 3 |         2         |         1         |         0         |
+--             |1|0|9|8|7|6|5|4|3|2|1|0|9|8|7|6|5|4|3|2|1|0|9|8|7|6|5|4|3|2|1|0|
+--
+-- 0x8060_0200 |             uSPR                      |       |    Fan pwm    |
 --
 --
--- 0x8060_0200 |                                               |    disp pdm   |
+-- -----------------------------------------------------------------------------
+--             | 3 |         2         |         1         |         0         |
+--             |1|0|9|8|7|6|5|4|3|2|1|0|9|8|7|6|5|4|3|2|1|0|9|8|7|6|5|4|3|2|1|0|
 --
--- 0x8060_0204 |      Decimal point      ...    f e d c b a 9 8 7 6 5 4 3 2 1 0|
+-- 0x8060_0300 |                                               |    disp pdm   |
 --
+-- 0x8060_0304 |      Decimal point      ...    f e d c b a 9 8 7 6 5 4 3 2 1 0|
+--
+--
+-- -----------------------------------------------------------------------------
+--             | 3 |         2         |         1         |         0         |
+--             |1|0|9|8|7|6|5|4|3|2|1|0|9|8|7|6|5|4|3|2|1|0|9|8|7|6|5|4|3|2|1|0|
 --
 -- 0x8060_1000 |    digit 3    |    digit 2    |    digit 1    |    digit 0    |
 --
@@ -97,7 +118,9 @@ use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
 use IEEE.STD_LOGIC_ARITH.ALL;
 
+library work;
 use work.types_pkg.all;
+use work.version_pkg.all;
 
 entity regs is
     port (
@@ -172,6 +195,7 @@ architecture rtl of regs is
 
     SIGNAL gps_1pps_cnt   : std_logic_vector(31 downto 0);
 
+    signal ver_regs_mux   : std_logic_vector(31 downto 0);
     signal time_regs_mux  : std_logic_vector(31 downto 0);
     signal fan_regs_mux   : std_logic_vector(31 downto 0);
     signal disp_regs_mux  : std_logic_vector(31 downto 0);
@@ -249,10 +273,12 @@ begin
             if (sram = '1') then
                 data_i <= sram_regs_mux;
             elsif (decode(0) = '1') then
-                data_i <= time_regs_mux;
+                data_i <= ver_regs_mux;
             elsif (decode(1) = '1') then
-                data_i <= fan_regs_mux;
+                data_i <= time_regs_mux;
             elsif (decode(2) = '1') then
+                data_i <= fan_regs_mux;
+            elsif (decode(3) = '1') then
                 data_i <= disp_regs_mux;
             end if;
         end if;
@@ -263,6 +289,7 @@ begin
     process (rst_n, clk) is
     begin
         if (rst_n = '0') then
+            ver_regs_mux  <= (others => '0');
             time_regs_mux <= (others => '0');
             fan_regs_mux  <= (others => '0');
             disp_regs_mux <= (others => '0');
@@ -273,35 +300,43 @@ begin
                 sram_regs_mux <= sram_datai;
                 case addr(5 downto 2) is
                     when "0000" =>
+                        ver_regs_mux  <= GIT_COMMIT;
                         time_regs_mux <= tsc_cnt(31 downto 0);
                         fan_regs_mux  <= fan_regs(0);
                         fan_regs_mux(31 downto 12) <= fan_uspr;
                         disp_regs_mux <= disp_regs(0);
                     when "0001" =>
+                        ver_regs_mux  <= DATE_CODE;
                         time_regs_mux <= tsc_cnt(63 downto 32);
                         fan_regs_mux  <= (others => '0');
                         disp_regs_mux <= disp_regs(1);
                     when "0010" =>
+                        ver_regs_mux  <= (others => '0');
                         time_regs_mux <= tsc_cnt1(31 downto 0);
                         fan_regs_mux  <= (others => '0');
                         disp_regs_mux <= (others => '0');
                     when "0011" =>
+                        ver_regs_mux  <= (others => '0');
                         time_regs_mux <= tsc_cnt1(63 downto 32);
                         fan_regs_mux  <= (others => '0');
                         disp_regs_mux <= (others => '0');
                     when "0100" =>
+                        ver_regs_mux  <= (others => '0');
                         time_regs_mux <= pdiff_1pps;
                         fan_regs_mux  <= (others => '0');
                         disp_regs_mux <= (others => '0');
                     when "0101" =>
+                        ver_regs_mux  <= (others => '0');
                         time_regs_mux <= fdiff_1pps;
                         fan_regs_mux  <= (others => '0');
                         disp_regs_mux <= (others => '0');
                     when "0110" =>
+                        ver_regs_mux  <= (others => '0');
                         time_regs_mux <= gps_1pps_cnt;
                         fan_regs_mux  <= (others => '0');
                         disp_regs_mux <= (others => '0');
                     when "0111" =>
+                        ver_regs_mux  <= (others => '0');
                         time_regs_mux <= cur_time.t_10h   & cur_time.t_1h   & 
                                          cur_time.t_10m   & cur_time.t_1m   &
                                          cur_time.t_10s   & cur_time.t_1s   &
@@ -309,15 +344,18 @@ begin
                         fan_regs_mux  <= (others => '0');
                         disp_regs_mux <= (others => '0');
                     when "1000" =>
+                        ver_regs_mux  <= (others => '0');
                         time_regs_mux <= time_regs(8);
                         fan_regs_mux  <= (others => '0');
                         disp_regs_mux <= (others => '0');
                     when "1001" =>
+                        ver_regs_mux  <= (others => '0');
                         time_regs_mux <= time_regs(9);
                         time_regs_mux(31) <= gps_3dfix_d;
                         fan_regs_mux  <= (others => '0');
                         disp_regs_mux <= (others => '0');
                     when others =>
+                        ver_regs_mux  <= (others => '0');
                         time_regs_mux <= (others => '0');
                         fan_regs_mux  <= (others => '0');
                         disp_regs_mux <= (others => '0');
@@ -325,7 +363,7 @@ begin
             end if;
 
             -- Hold tsc value on LSW read
-            if (cs_dp_r = '1' and decode(0) = '1' and addr(5 downto 2) = "0000") then
+            if (cs_dp_r = '1' and decode(1) = '1' and addr(5 downto 2) = "0000") then
                 tsc_read      <= '1';
             else
                 tsc_read      <= '0';
@@ -345,7 +383,7 @@ begin
             set      <= '0';
             time_regs(9)(15 downto 0) <= x"8000";
         elsif (clk'event and clk = '1') then
-            if (cs_dp_w = '1' and decode(0) = '1') then
+            if (cs_dp_w = '1' and decode(1) = '1') then
                 case addr(5 downto 2) is
                     when "0000" =>
                         time_regs(0) <= data_o;
@@ -373,7 +411,7 @@ begin
             end if;
 
             -- Trigger time set
-            if (cs_dp_w = '1' and decode(0) = '1' and addr(5 downto 2) = "1000") then
+            if (cs_dp_w = '1' and decode(1) = '1' and addr(5 downto 2) = "1000") then
                 set          <= '1';
             else
                 set          <= '0';
@@ -409,7 +447,7 @@ begin
             end loop;
             fan_regs(0)(7 downto 0) <= x"ff";
         elsif (clk'event and clk = '1') then
-            if (cs_dp_w = '1' and decode(1) = '1') then
+            if (cs_dp_w = '1' and decode(2) = '1') then
                 case addr(5 downto 2) is
                     when "0000" =>
                         fan_regs(0) <= data_o;
@@ -435,7 +473,7 @@ begin
             sram_we    <= '0';
             sram_datao <= (others => '0');
         elsif (clk'event and clk = '1') then
-            if (cs_dp_w = '1' and decode(2) = '1') then
+            if (cs_dp_w = '1' and decode(3) = '1') then
                 case addr(5 downto 2) is
                     when "0000" =>
                         disp_regs(0) <= data_o;

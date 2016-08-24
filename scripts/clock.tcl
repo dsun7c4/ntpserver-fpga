@@ -29,6 +29,7 @@
 #
 #    "/home/guest/cae/fpga/ntpserver/hdl/util_pkg.vhd"
 #    "/home/guest/cae/fpga/ntpserver/hdl/types_pkg.vhd"
+#    "/home/guest/cae/fpga/ntpserver/hdl/version_pkg.vhd"
 #    "/home/guest/cae/fpga/ntpserver/hdl/disp_ctl.vhd"
 #    "/home/guest/cae/fpga/ntpserver/hdl/disp_lut.vhd"
 #    "/home/guest/cae/fpga/ntpserver/hdl/disp_dark.vhd"
@@ -50,6 +51,7 @@
 #    "/home/guest/cae/fpga/ntpserver/ip/ocxo_clk_pll/ocxo_clk_pll_clk_wiz.vhd"
 #    "/home/guest/cae/fpga/ntpserver/hdl/util_pkg.vhd"
 #    "/home/guest/cae/fpga/ntpserver/hdl/types_pkg.vhd"
+#    "/home/guest/cae/fpga/ntpserver/hdl/version_pkg.vhd"
 #    "/home/guest/cae/fpga/ntpserver/ip/ocxo_clk_pll/ocxo_clk_pll.vhd"
 #    "/home/guest/cae/fpga/ntpserver/hdl/disp_ctl.vhd"
 #    "/home/guest/cae/fpga/ntpserver/hdl/disp_lut.vhd"
@@ -105,6 +107,7 @@ set obj [get_filesets sources_1]
 set files [list \
  "[file normalize "$origin_dir/hdl/util_pkg.vhd"]"\
  "[file normalize "$origin_dir/hdl/types_pkg.vhd"]"\
+ "[file normalize "$origin_dir/hdl/version_pkg.vhd"]"\
  "[file normalize "$origin_dir/hdl/disp_ctl.vhd"]"\
  "[file normalize "$origin_dir/hdl/disp_lut.vhd"]"\
  "[file normalize "$origin_dir/hdl/disp_dark.vhd"]"\
@@ -131,6 +134,12 @@ set_property "file_type" "VHDL" $file_obj
 set_property "library" "work" $file_obj
 
 set file "$origin_dir/hdl/types_pkg.vhd"
+set file [file normalize $file]
+set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
+set_property "file_type" "VHDL" $file_obj
+set_property "library" "work" $file_obj
+
+set file "$origin_dir/hdl/version_pkg.vhd"
 set file [file normalize $file]
 set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
 set_property "file_type" "VHDL" $file_obj
@@ -297,6 +306,7 @@ set files [list \
  "[file normalize "$origin_dir/ip/ocxo_clk_pll/ocxo_clk_pll_clk_wiz.vhd"]"\
  "[file normalize "$origin_dir/hdl/util_pkg.vhd"]"\
  "[file normalize "$origin_dir/hdl/types_pkg.vhd"]"\
+ "[file normalize "$origin_dir/hdl/version_pkg.vhd"]"\
  "[file normalize "$origin_dir/ip/ocxo_clk_pll/ocxo_clk_pll.vhd"]"\
  "[file normalize "$origin_dir/hdl/disp_ctl.vhd"]"\
  "[file normalize "$origin_dir/hdl/disp_lut.vhd"]"\
@@ -332,6 +342,12 @@ set_property "file_type" "VHDL" $file_obj
 set_property "library" "work" $file_obj
 
 set file "$origin_dir/hdl/types_pkg.vhd"
+set file [file normalize $file]
+set file_obj [get_files -of_objects [get_filesets sim_1] [list "*$file"]]
+set_property "file_type" "VHDL" $file_obj
+set_property "library" "work" $file_obj
+
+set file "$origin_dir/hdl/version_pkg.vhd"
 set file [file normalize $file]
 set file_obj [get_files -of_objects [get_filesets sim_1] [list "*$file"]]
 set_property "file_type" "VHDL" $file_obj

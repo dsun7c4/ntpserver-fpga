@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-06-28
--- Last update: 2016-08-22
+-- Last update: 2016-08-23
 -- Platform   : 
 -- Standard   : VHDL'87
 -------------------------------------------------------------------------------
@@ -112,49 +112,51 @@ begin
 
     gps_3dfix_d <= '0';
     tsc_read    <= '0';
-    tsc_sync    <= '0';
 
 
     process
     begin
         gps_1pps <= '0';
+        tsc_sync <= '0';
 
         run_clk(clk, 100001099);
 
+        gps_1pps <= '1';                
+        run_clk(clk, 1);
+        gps_1pps <= '0';
+        run_clk(clk, 99997999);
+
+        gps_1pps <= '1';
+        run_clk(clk, 1);
+        gps_1pps <= '0';
+        run_clk(clk, 100000999);
+
+        gps_1pps <= '1';
+        run_clk(clk, 1);
+        gps_1pps <= '0';
+        run_clk(clk, 100000999);
+
+        gps_1pps <= '1';
+        run_clk(clk, 1);
+        gps_1pps <= '0';
+        run_clk(clk, 49999999);
+        tsc_sync <= '1';
+        run_clk(clk, 50000000);
+
+        gps_1pps <= '1';
+        run_clk(clk, 1);
+        gps_1pps <= '0';
+        run_clk(clk, 4);
+        tsc_sync <= '0';
+        run_clk(clk, 99999995);
+
         loop
             gps_1pps <= '1';
-
             run_clk(clk, 1);
-
             gps_1pps <= '0';
-
-            run_clk(clk, 99997999);
-
-            gps_1pps <= '1';
-
-            run_clk(clk, 1);
-
-            gps_1pps <= '0';
-
-            run_clk(clk, 100000999);
-
-            gps_1pps <= '1';
-
-            run_clk(clk, 1);
-
-            gps_1pps <= '0';
-
-            run_clk(clk, 100000999);
-
-            gps_1pps <= '1';
-
-            run_clk(clk, 1);
-
-            gps_1pps <= '0';
-
             run_clk(clk, 99999999);
-
         end loop;
+        
     end process;
 
 

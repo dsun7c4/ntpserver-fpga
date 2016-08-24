@@ -13,6 +13,7 @@ VHDL_SRC =								   \
 	syspll.vhd							   \
 	tsc.vhd								   \
 	util_pkg.vhd							   \
+	types_pkg.vhd							   \
 	clock.vhd							   \
 	clock_.vhd							   \
 
@@ -29,12 +30,17 @@ XDC = $(addprefix xdc/,							   \
 	timing.xdc							   \
 	)
 
+
 # These are all the compilation targets, starting with "all"
 all : setup compile
 
+
+include scripts/version.rules
+
+
 # This setups up the top level project
 setup : .setup.done
-.setup.done : $(addprefix hdl/, $(VHDL_SRC) $(VHDL_SIM)) $(XDC)
+.setup.done : $(addprefix hdl/, $(VHDL_SRC) $(VHDL_SIM)) $(XDC) $(VERSION_PKG)
 	vivado -mode batch -source scripts/clock.tcl -log setup.log -jou setup.jou
 
 compile : .compile.done

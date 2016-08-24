@@ -1,0 +1,46 @@
+# Generate a package containing version information and build date to
+# be used in FPGA registers.
+
+GIT_COMMIT  = $(shell git log -n 1 --pretty=format:0%h)
+
+DATE        = $(shell date +%y%m%d%H%M | sed 's/./& /g')
+DATE_Y10    = $(word  1, $(DATE))
+DATE_Y1     = $(word  2, $(DATE))
+DATE_M10    = $(word  3, $(DATE))
+DATE_M1     = $(word  4, $(DATE))
+DATE_D10    = $(word  5, $(DATE))
+DATE_D1     = $(word  6, $(DATE))
+DATE_H10    = $(word  7, $(DATE))
+DATE_H1     = $(word  8, $(DATE))
+DATE_m10    = $(word  9, $(DATE))
+DATE_m1     = $(word 10, $(DATE))
+
+PACKAGE     = version_pkg.vhd
+PKG_NAME    = version_pkg
+
+VERSION_PKG = $(addprefix hdl/, $(PACKAGE))
+
+
+version: $(VERSION_PKG)
+
+$(VERSION_PKG): $(addprefix hdl/, $(VHDL_SRC)) $(XDC)
+	@echo "library IEEE;"  > $@
+	@echo "use IEEE.STD_LOGIC_1164.ALL;" >> $@
+	@echo "use IEEE.STD_LOGIC_UNSIGNED.ALL;" >> $@
+	@echo "use IEEE.STD_LOGIC_ARITH.ALL;\n\n" >> $@
+	@echo "package $(PKG_NAME) is\n" >> $@
+	@echo "    constant GIT_COMMIT : std_logic_vector(31 downto 0) := x\"$(GIT_COMMIT)\";" >> $@
+	@echo "    constant DATE_CODE  : std_logic_vector(31 downto 0) :=" >> $@
+	@echo "        conv_std_logic_vector($(DATE_Y10)$(DATE_Y1), 4) &  -- Year" >> $@
+	@echo "        conv_std_logic_vector($(DATE_M10)$(DATE_M1), 4) &  -- Month" >> $@
+	@echo "        conv_std_logic_vector( $(DATE_D10), 4) &  -- Day 10" >> $@
+	@echo "        conv_std_logic_vector( $(DATE_D1), 4) &  -- Day 1" >> $@
+	@echo "        conv_std_logic_vector( $(DATE_H10), 4) &  -- Hour 10" >> $@
+	@echo "        conv_std_logic_vector( $(DATE_H1), 4) &  -- Hour 1" >> $@
+	@echo "        conv_std_logic_vector( $(DATE_m10), 4) &  -- Min 10" >> $@
+	@echo "        conv_std_logic_vector( $(DATE_m1), 4);   -- Min 1\n" >> $@
+	@echo "end package $(PKG_NAME);\n" >> $@
+	@echo "package body $(PKG_NAME) is\n" >> $@
+	@echo "end package body $(PKG_NAME);" >> $@
+	@echo GIT_COMMIT = $(GIT_COMMIT)
+	@echo DATE       = $(DATE)
