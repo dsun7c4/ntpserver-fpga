@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-04-29
--- Last update: 2016-08-23
+-- Last update: 2016-08-24
 -- Platform   : 
 -- Standard   : VHDL'87
 -------------------------------------------------------------------------------
@@ -68,8 +68,8 @@ architecture rtl of tsc is
     signal gps_1pps_dly   : std_logic_vector(2 downto 0);
     signal gps_1pps_pulse : std_logic;
 
+    signal pps_rst        : std_logic;
     signal pfd_rst        : std_logic;
-    signal pfd_rst_d      : std_logic;
     signal tsc_1pps_pulse : std_logic;
     signal lead           : std_logic;
     signal lag            : std_logic;
@@ -115,6 +115,18 @@ begin
     -- ----------------------------------------------------------------------
     
     
+    -- Reset signal register for pulse per s, ms, us counters and PFD
+    tsc_1pps_rst:
+    process (rst_n, clk) is
+    begin
+        if (rst_n = '0') then
+            pps_rst <= '0';
+        elsif (clk'event and clk = '1') then
+            pps_rst <= tsc_sync and gps_1pps_pulse;
+        end if;
+    end process;
+
+
     -- One pulse pulse per second
     tsc_1pps_ctr:
     process (rst_n, clk) is
@@ -123,13 +135,15 @@ begin
             pps_cnt      <= (others => '0');
             pps_cnt_term <= '0';
         elsif (clk'event and clk = '1') then
-            if (pps_cnt_term = '1' or (tsc_sync = '1' and gps_1pps_pulse = '1')) then
+            if (pps_cnt_term = '1' or pps_rst = '1') then
                 pps_cnt      <= (others => '0');
             else
                 pps_cnt <= pps_cnt + 1;
             end if;
-            --if (pps_cnt = x"5F5E0FE") then
-            if (pps_cnt = (100000000 - 2) or (tsc_sync = '1' and gps_1pps_pulse = '1')) then
+
+            if (pps_rst = '1') then
+                pps_cnt_term <= '0';
+            elsif (pps_cnt = (100000000 - 2)) then
                 pps_cnt_term <= '1';
             else
                 pps_cnt_term <= '0';
@@ -148,13 +162,15 @@ begin
             ppms_cnt      <= (others => '0');
             ppms_cnt_term <= '0';
         elsif (clk'event and clk = '1') then
-            if (ppms_cnt_term = '1' or pps_cnt_term = '1') then
+            if (ppms_cnt_term = '1' or pps_cnt_term = '1' or pps_rst = '1') then
                 ppms_cnt      <= (others => '0');
             else
                 ppms_cnt      <= ppms_cnt + 1;
             end if;
 
-            if (ppms_cnt = (100000 - 2) and pps_cnt_term = '0') then
+            if (pps_cnt_term = '1' or pps_rst = '1') then
+                ppms_cnt_term <= '0';
+            elsif (ppms_cnt = (100000 - 2)) then
                 ppms_cnt_term <= '1';
             else
                 ppms_cnt_term <= '0';
@@ -173,13 +189,15 @@ begin
             ppus_cnt      <= (others => '0');
             ppus_cnt_term <= '0';
         elsif (clk'event and clk = '1') then
-            if (ppus_cnt_term = '1' or pps_cnt_term = '1') then
+            if (ppus_cnt_term = '1' or pps_cnt_term = '1' or pps_rst = '1') then
                 ppus_cnt      <= (others => '0');
             else
                 ppus_cnt      <= ppus_cnt + 1;
             end if;
 
-            if (ppus_cnt = (100 - 2) and pps_cnt_term = '0') then
+            if (pps_cnt_term = '1' or pps_rst = '1') then
+                ppus_cnt_term <= '0';
+            elsif (ppus_cnt = (100 - 2)) then
                 ppus_cnt_term <= '1';
             else
                 ppus_cnt_term <= '0';
@@ -214,8 +232,7 @@ begin
 
     -- Delay the ocxo 1pps pulse approximately the same amount as the gps 1pps
     tsc_pps_i:  delay_sig generic map (3) port map (rst_n, clk, pps_cnt_term, tsc_1pps_pulse);
-    pfd_rst <= tsc_sync and gps_1pps_pulse;
-    tsc_pfd_rst_i:  delay_pulse generic map (10) port map (rst_n, clk, pfd_rst, pfd_rst_d);
+    tsc_pfd_rst_i:  delay_pulse generic map (10) port map (rst_n, clk, pps_rst, pfd_rst);
     
     
     -- Phase detector
@@ -230,7 +247,7 @@ begin
             trig <= '0';
 
             -- Reset phase detector on sync
-            if (pfd_rst_d = '1') then
+            if (pfd_rst = '1') then
                 lead <= '0';
                 lag  <= '0';
                 trig <= '0';

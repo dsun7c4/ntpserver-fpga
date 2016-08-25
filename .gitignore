@@ -1,3 +1,5 @@
 # Temporary files from emacs
 *~
 
+# Autogeneratec code
+version_pkg.vhd
