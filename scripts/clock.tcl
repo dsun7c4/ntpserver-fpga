@@ -97,145 +97,37 @@ set_property "default_lib" "work" $obj
 set_property "simulator_language" "Mixed" $obj
 set_property "target_language" "VHDL" $obj
 
+source "$origin_dir/scripts/files.tcl"
+
 # Create 'sources_1' fileset (if not found)
 if {[string equal [get_filesets -quiet sources_1] ""]} {
   create_fileset -srcset sources_1
 }
 
+
 # Set 'sources_1' fileset object
 set obj [get_filesets sources_1]
-set files [list \
- "[file normalize "$origin_dir/hdl/util_pkg.vhd"]"\
- "[file normalize "$origin_dir/hdl/types_pkg.vhd"]"\
- "[file normalize "$origin_dir/hdl/version_pkg.vhd"]"\
- "[file normalize "$origin_dir/hdl/disp_ctl.vhd"]"\
- "[file normalize "$origin_dir/hdl/disp_lut.vhd"]"\
- "[file normalize "$origin_dir/hdl/disp_dark.vhd"]"\
- "[file normalize "$origin_dir/hdl/disp_sr.vhd"]"\
- "[file normalize "$origin_dir/hdl/io.vhd"]"\
- "[file normalize "$origin_dir/cpu/cpu.bd"]"\
- "[file normalize "$origin_dir/hdl/regs.vhd"]"\
- "[file normalize "$origin_dir/hdl/dac.vhd"]"\
- "[file normalize "$origin_dir/hdl/fan.vhd"]"\
- "[file normalize "$origin_dir/hdl/clock_.vhd"]"\
- "[file normalize "$origin_dir/hdl/tsc.vhd"]"\
- "[file normalize "$origin_dir/hdl/bcdtime.vhd"]"\
- "[file normalize "$origin_dir/hdl/syspll.vhd"]"\
- "[file normalize "$origin_dir/hdl/disp.vhd"]"\
- "[file normalize "$origin_dir/hdl/clock.vhd"]"\
-]
-add_files -norecurse -fileset $obj $files
+add_files -norecurse -fileset $obj $vhdl_src
 
 # Set 'sources_1' fileset file properties for remote files
-set file "$origin_dir/hdl/util_pkg.vhd"
-set file [file normalize $file]
-set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
-set_property "file_type" "VHDL" $file_obj
-set_property "library" "work" $file_obj
-
-set file "$origin_dir/hdl/types_pkg.vhd"
-set file [file normalize $file]
-set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
-set_property "file_type" "VHDL" $file_obj
-set_property "library" "work" $file_obj
-
-set file "$origin_dir/hdl/version_pkg.vhd"
-set file [file normalize $file]
-set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
-set_property "file_type" "VHDL" $file_obj
-set_property "library" "work" $file_obj
-
-set file "$origin_dir/hdl/disp_ctl.vhd"
-set file [file normalize $file]
-set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
-set_property "file_type" "VHDL" $file_obj
-set_property "library" "work" $file_obj
-
-set file "$origin_dir/hdl/disp_lut.vhd"
-set file [file normalize $file]
-set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
-set_property "file_type" "VHDL" $file_obj
-set_property "library" "work" $file_obj
-
-set file "$origin_dir/hdl/disp_dark.vhd"
-set file [file normalize $file]
-set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
-set_property "file_type" "VHDL" $file_obj
-set_property "library" "work" $file_obj
-
-set file "$origin_dir/hdl/disp_sr.vhd"
-set file [file normalize $file]
-set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
-set_property "file_type" "VHDL" $file_obj
-set_property "library" "work" $file_obj
-
-set file "$origin_dir/hdl/io.vhd"
-set file [file normalize $file]
-set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
-set_property "file_type" "VHDL" $file_obj
-set_property "library" "work" $file_obj
-
-set file "$origin_dir/cpu/cpu.bd"
-set file [file normalize $file]
-set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
-if { ![get_property "is_locked" $file_obj] } {
-  set_property "generate_synth_checkpoint" "0" $file_obj
+foreach file $vhdl_src {
+    set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
+    set_property "file_type" "VHDL" $file_obj
+    set_property "library" "work" $file_obj
 }
-set_property "library" "work" $file_obj
 
-set file "$origin_dir/hdl/regs.vhd"
-set file [file normalize $file]
-set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
-set_property "file_type" "VHDL" $file_obj
-set_property "library" "work" $file_obj
+# Set 'sources_1' fileset object
+set obj [get_filesets sources_1]
+add_files -norecurse -fileset $obj $xlx_blk
 
-set file "$origin_dir/hdl/dac.vhd"
-set file [file normalize $file]
-set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
-set_property "file_type" "VHDL" $file_obj
-set_property "library" "work" $file_obj
-
-set file "$origin_dir/hdl/fan.vhd"
-set file [file normalize $file]
-set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
-set_property "file_type" "VHDL" $file_obj
-set_property "library" "work" $file_obj
-
-set file "$origin_dir/hdl/clock_.vhd"
-set file [file normalize $file]
-set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
-set_property "file_type" "VHDL" $file_obj
-set_property "library" "work" $file_obj
-
-set file "$origin_dir/hdl/tsc.vhd"
-set file [file normalize $file]
-set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
-set_property "file_type" "VHDL" $file_obj
-set_property "library" "work" $file_obj
-
-set file "$origin_dir/hdl/bcdtime.vhd"
-set file [file normalize $file]
-set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
-set_property "file_type" "VHDL" $file_obj
-set_property "library" "work" $file_obj
-
-set file "$origin_dir/hdl/syspll.vhd"
-set file [file normalize $file]
-set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
-set_property "file_type" "VHDL" $file_obj
-set_property "library" "work" $file_obj
-
-set file "$origin_dir/hdl/disp.vhd"
-set file [file normalize $file]
-set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
-set_property "file_type" "VHDL" $file_obj
-set_property "library" "work" $file_obj
-
-set file "$origin_dir/hdl/clock.vhd"
-set file [file normalize $file]
-set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
-set_property "file_type" "VHDL" $file_obj
-set_property "library" "work" $file_obj
+# Set 'sources_1' fileset file properties for remote files
+foreach file $xlx_blk {
+    set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
+    if { ![get_property "is_locked" $file_obj] } {
+	set_property "generate_synth_checkpoint" "0" $file_obj
+    }
+    set_property "library" "work" $file_obj
+}
 
 
 # Set 'sources_1' fileset file properties for local files
@@ -247,18 +139,15 @@ set_property "top" "clock" $obj
 
 # Set 'sources_1' fileset object
 set obj [get_filesets sources_1]
-set files [list \
- "[file normalize "$origin_dir/ip/ocxo_clk_pll/ocxo_clk_pll.xci"]"\
-]
-add_files -norecurse -fileset $obj $files
+add_files -norecurse -fileset $obj $xlx_ip
 
 # Set 'sources_1' fileset file properties for remote files
-set file "$origin_dir/ip/ocxo_clk_pll/ocxo_clk_pll.xci"
-set file [file normalize $file]
-set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
-set_property "library" "work" $file_obj
-if { ![get_property "is_locked" $file_obj] } {
-  set_property "synth_checkpoint_mode" "Singular" $file_obj
+foreach file $xlx_ip {
+    set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
+    set_property "library" "work" $file_obj
+    if { ![get_property "is_locked" $file_obj] } {
+	set_property "synth_checkpoint_mode" "Singular" $file_obj
+    }
 }
 
 
@@ -274,26 +163,16 @@ if {[string equal [get_filesets -quiet constrs_1] ""]} {
 set obj [get_filesets constrs_1]
 
 # Add/Import constrs file and set constrs file properties
-set file "[file normalize "$origin_dir/xdc/pin.xdc"]"
-set file_added [add_files -norecurse -fileset $obj $file]
-set file "$origin_dir/xdc/pin.xdc"
-set file [file normalize $file]
-set file_obj [get_files -of_objects [get_filesets constrs_1] [list "*$file"]]
-set_property "file_type" "XDC" $file_obj
-set_property "library" "work" $file_obj
-
-# Add/Import constrs file and set constrs file properties
-set file "[file normalize "$origin_dir/xdc/timing.xdc"]"
-set file_added [add_files -norecurse -fileset $obj $file]
-set file "$origin_dir/xdc/timing.xdc"
-set file [file normalize $file]
-set file_obj [get_files -of_objects [get_filesets constrs_1] [list "*$file"]]
-set_property "file_type" "XDC" $file_obj
-set_property "library" "work" $file_obj
+foreach file $xlx_xdc {
+    set file_added [add_files -norecurse -fileset $obj $file]
+    set file_obj [get_files -of_objects [get_filesets constrs_1] [list "*$file"]]
+    set_property "file_type" "XDC" $file_obj
+    set_property "library" "work" $file_obj
+}
 
 # Set 'constrs_1' fileset properties
-set obj [get_filesets constrs_1]
-set_property "target_constrs_file" "[file normalize "$origin_dir/xdc/pin.xdc"]" $obj
+#set obj [get_filesets constrs_1]
+#set_property "target_constrs_file" "[file normalize "$origin_dir/xdc/pin.xdc"]" $obj
 
 # Create 'sim_1' fileset (if not found)
 if {[string equal [get_filesets -quiet sim_1] ""]} {
@@ -302,164 +181,15 @@ if {[string equal [get_filesets -quiet sim_1] ""]} {
 
 # Set 'sim_1' fileset object
 set obj [get_filesets sim_1]
-set files [list \
- "[file normalize "$origin_dir/ip/ocxo_clk_pll/ocxo_clk_pll_clk_wiz.vhd"]"\
- "[file normalize "$origin_dir/hdl/util_pkg.vhd"]"\
- "[file normalize "$origin_dir/hdl/types_pkg.vhd"]"\
- "[file normalize "$origin_dir/hdl/version_pkg.vhd"]"\
- "[file normalize "$origin_dir/ip/ocxo_clk_pll/ocxo_clk_pll.vhd"]"\
- "[file normalize "$origin_dir/hdl/disp_ctl.vhd"]"\
- "[file normalize "$origin_dir/hdl/disp_lut.vhd"]"\
- "[file normalize "$origin_dir/hdl/disp_dark.vhd"]"\
- "[file normalize "$origin_dir/hdl/disp_sr.vhd"]"\
- "[file normalize "$origin_dir/hdl/tb_pkg.vhd"]"\
- "[file normalize "$origin_dir/hdl/io.vhd"]"\
- "[file normalize "$origin_dir/hdl/cpu_test.vhd"]"\
- "[file normalize "$origin_dir/hdl/regs.vhd"]"\
- "[file normalize "$origin_dir/hdl/fan.vhd"]"\
- "[file normalize "$origin_dir/hdl/clock_.vhd"]"\
- "[file normalize "$origin_dir/hdl/tsc.vhd"]"\
- "[file normalize "$origin_dir/hdl/bcdtime.vhd"]"\
- "[file normalize "$origin_dir/hdl/dac.vhd"]"\
- "[file normalize "$origin_dir/hdl/syspll.vhd"]"\
- "[file normalize "$origin_dir/hdl/disp.vhd"]"\
- "[file normalize "$origin_dir/hdl/clock.vhd"]"\
- "[file normalize "$origin_dir/hdl/clock_tb.vhd"]"\
-]
-add_files -norecurse -fileset $obj $files
+add_files -norecurse -fileset $obj $vhdl_sim
 
 # Set 'sim_1' fileset file properties for remote files
-set file "$origin_dir/ip/ocxo_clk_pll/ocxo_clk_pll_clk_wiz.vhd"
-set file [file normalize $file]
-set file_obj [get_files -of_objects [get_filesets sim_1] [list "*$file"]]
-set_property "file_type" "VHDL" $file_obj
-set_property "library" "work" $file_obj
+foreach file $vhdl_sim {
+    set file_obj [get_files -of_objects [get_filesets sim_1] [list "*$file"]]
+    set_property "file_type" "VHDL" $file_obj
+    set_property "library" "work" $file_obj
+}
 
-set file "$origin_dir/hdl/util_pkg.vhd"
-set file [file normalize $file]
-set file_obj [get_files -of_objects [get_filesets sim_1] [list "*$file"]]
-set_property "file_type" "VHDL" $file_obj
-set_property "library" "work" $file_obj
-
-set file "$origin_dir/hdl/types_pkg.vhd"
-set file [file normalize $file]
-set file_obj [get_files -of_objects [get_filesets sim_1] [list "*$file"]]
-set_property "file_type" "VHDL" $file_obj
-set_property "library" "work" $file_obj
-
-set file "$origin_dir/hdl/version_pkg.vhd"
-set file [file normalize $file]
-set file_obj [get_files -of_objects [get_filesets sim_1] [list "*$file"]]
-set_property "file_type" "VHDL" $file_obj
-set_property "library" "work" $file_obj
-
-set file "$origin_dir/ip/ocxo_clk_pll/ocxo_clk_pll.vhd"
-set file [file normalize $file]
-set file_obj [get_files -of_objects [get_filesets sim_1] [list "*$file"]]
-set_property "file_type" "VHDL" $file_obj
-set_property "library" "work" $file_obj
-
-set file "$origin_dir/hdl/disp_ctl.vhd"
-set file [file normalize $file]
-set file_obj [get_files -of_objects [get_filesets sim_1] [list "*$file"]]
-set_property "file_type" "VHDL" $file_obj
-set_property "library" "work" $file_obj
-
-set file "$origin_dir/hdl/disp_lut.vhd"
-set file [file normalize $file]
-set file_obj [get_files -of_objects [get_filesets sim_1] [list "*$file"]]
-set_property "file_type" "VHDL" $file_obj
-set_property "library" "work" $file_obj
-
-set file "$origin_dir/hdl/disp_dark.vhd"
-set file [file normalize $file]
-set file_obj [get_files -of_objects [get_filesets sim_1] [list "*$file"]]
-set_property "file_type" "VHDL" $file_obj
-set_property "library" "work" $file_obj
-
-set file "$origin_dir/hdl/disp_sr.vhd"
-set file [file normalize $file]
-set file_obj [get_files -of_objects [get_filesets sim_1] [list "*$file"]]
-set_property "file_type" "VHDL" $file_obj
-set_property "library" "work" $file_obj
-
-set file "$origin_dir/hdl/tb_pkg.vhd"
-set file [file normalize $file]
-set file_obj [get_files -of_objects [get_filesets sim_1] [list "*$file"]]
-set_property "file_type" "VHDL" $file_obj
-set_property "library" "work" $file_obj
-
-set file "$origin_dir/hdl/io.vhd"
-set file [file normalize $file]
-set file_obj [get_files -of_objects [get_filesets sim_1] [list "*$file"]]
-set_property "file_type" "VHDL" $file_obj
-set_property "library" "work" $file_obj
-
-set file "$origin_dir/hdl/cpu_test.vhd"
-set file [file normalize $file]
-set file_obj [get_files -of_objects [get_filesets sim_1] [list "*$file"]]
-set_property "file_type" "VHDL" $file_obj
-set_property "library" "work" $file_obj
-
-set file "$origin_dir/hdl/regs.vhd"
-set file [file normalize $file]
-set file_obj [get_files -of_objects [get_filesets sim_1] [list "*$file"]]
-set_property "file_type" "VHDL" $file_obj
-set_property "library" "work" $file_obj
-
-set file "$origin_dir/hdl/fan.vhd"
-set file [file normalize $file]
-set file_obj [get_files -of_objects [get_filesets sim_1] [list "*$file"]]
-set_property "file_type" "VHDL" $file_obj
-set_property "library" "work" $file_obj
-
-set file "$origin_dir/hdl/clock_.vhd"
-set file [file normalize $file]
-set file_obj [get_files -of_objects [get_filesets sim_1] [list "*$file"]]
-set_property "file_type" "VHDL" $file_obj
-set_property "library" "work" $file_obj
-
-set file "$origin_dir/hdl/tsc.vhd"
-set file [file normalize $file]
-set file_obj [get_files -of_objects [get_filesets sim_1] [list "*$file"]]
-set_property "file_type" "VHDL" $file_obj
-set_property "library" "work" $file_obj
-
-set file "$origin_dir/hdl/bcdtime.vhd"
-set file [file normalize $file]
-set file_obj [get_files -of_objects [get_filesets sim_1] [list "*$file"]]
-set_property "file_type" "VHDL" $file_obj
-set_property "library" "work" $file_obj
-
-set file "$origin_dir/hdl/dac.vhd"
-set file [file normalize $file]
-set file_obj [get_files -of_objects [get_filesets sim_1] [list "*$file"]]
-set_property "file_type" "VHDL" $file_obj
-set_property "library" "work" $file_obj
-
-set file "$origin_dir/hdl/syspll.vhd"
-set file [file normalize $file]
-set file_obj [get_files -of_objects [get_filesets sim_1] [list "*$file"]]
-set_property "file_type" "VHDL" $file_obj
-set_property "library" "work" $file_obj
-
-set file "$origin_dir/hdl/disp.vhd"
-set file [file normalize $file]
-set file_obj [get_files -of_objects [get_filesets sim_1] [list "*$file"]]
-set_property "file_type" "VHDL" $file_obj
-set_property "library" "work" $file_obj
-
-set file "$origin_dir/hdl/clock.vhd"
-set file [file normalize $file]
-set file_obj [get_files -of_objects [get_filesets sim_1] [list "*$file"]]
-set_property "file_type" "VHDL" $file_obj
-set_property "library" "work" $file_obj
-
-set file "$origin_dir/hdl/clock_tb.vhd"
-set file [file normalize $file]
-set file_obj [get_files -of_objects [get_filesets sim_1] [list "*$file"]]
-set_property "file_type" "VHDL" $file_obj
-set_property "library" "work" $file_obj
 
 
 # Set 'sim_1' fileset file properties for local files

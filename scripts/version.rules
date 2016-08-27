@@ -15,15 +15,11 @@ DATE_H1     = $(word  8, $(DATE))
 DATE_m10    = $(word  9, $(DATE))
 DATE_m1     = $(word 10, $(DATE))
 
-PACKAGE     = version_pkg.vhd
 PKG_NAME    = version_pkg
 
-VERSION_PKG = $(addprefix hdl/, $(PACKAGE))
+version: $(VER_SRC)
 
-
-version: $(VERSION_PKG)
-
-$(VERSION_PKG): $(addprefix hdl/, $(VHDL_SRC)) $(XDC)
+$(VER_SRC): $(VHDL_SRC) $(XDC)
 	@echo "library IEEE;"  > $@
 	@echo "use IEEE.STD_LOGIC_1164.ALL;" >> $@
 	@echo "use IEEE.STD_LOGIC_UNSIGNED.ALL;" >> $@
