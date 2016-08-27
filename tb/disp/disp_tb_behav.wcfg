@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="disp_tb_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="disp_tb" />
+            <top_module name="tb_pkg" />
+            <top_module name="util_pkg" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <WVObjectSize size="42" />
+   <wvobject db_ref_id="1" type="logic" fp_name="/disp_tb/rst_n">
+      <obj_property name="ElementShortName">rst_n</obj_property>
+      <obj_property name="ObjectShortName">rst_n</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/disp_tb/clk">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/disp_tb/tsc_1pps">
+      <obj_property name="ElementShortName">tsc_1pps</obj_property>
+      <obj_property name="ObjectShortName">tsc_1pps</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/disp_tb/tsc_1ppms">
+      <obj_property name="ElementShortName">tsc_1ppms</obj_property>
+      <obj_property name="ObjectShortName">tsc_1ppms</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/disp_tb/tsc_1ppus">
+      <obj_property name="ElementShortName">tsc_1ppus</obj_property>
+      <obj_property name="ObjectShortName">tsc_1ppus</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="array" fp_name="/disp_tb/dp">
+      <obj_property name="ElementShortName">dp[31:0]</obj_property>
+      <obj_property name="ObjectShortName">dp[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="array" fp_name="/disp_tb/t_1ms">
+      <obj_property name="ElementShortName">t_1ms[3:0]</obj_property>
+      <obj_property name="ObjectShortName">t_1ms[3:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="array" fp_name="/disp_tb/t_10ms">
+      <obj_property name="ElementShortName">t_10ms[3:0]</obj_property>
+      <obj_property name="ObjectShortName">t_10ms[3:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="array" fp_name="/disp_tb/t_100ms">
+      <obj_property name="ElementShortName">t_100ms[3:0]</obj_property>
+      <obj_property name="ObjectShortName">t_100ms[3:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="array" fp_name="/disp_tb/t_1s">
+      <obj_property name="ElementShortName">t_1s[3:0]</obj_property>
+      <obj_property name="ObjectShortName">t_1s[3:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="array" fp_name="/disp_tb/t_10s">
+      <obj_property name="ElementShortName">t_10s[3:0]</obj_property>
+      <obj_property name="ObjectShortName">t_10s[3:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="array" fp_name="/disp_tb/t_1m">
+      <obj_property name="ElementShortName">t_1m[3:0]</obj_property>
+      <obj_property name="ObjectShortName">t_1m[3:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="array" fp_name="/disp_tb/t_10m">
+      <obj_property name="ElementShortName">t_10m[3:0]</obj_property>
+      <obj_property name="ObjectShortName">t_10m[3:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="array" fp_name="/disp_tb/t_1h">
+      <obj_property name="ElementShortName">t_1h[3:0]</obj_property>
+      <obj_property name="ObjectShortName">t_1h[3:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="array" fp_name="/disp_tb/t_10h">
+      <obj_property name="ElementShortName">t_10h[3:0]</obj_property>
+      <obj_property name="ObjectShortName">t_10h[3:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/disp_tb/disp_sclk">
+      <obj_property name="ElementShortName">disp_sclk</obj_property>
+      <obj_property name="ObjectShortName">disp_sclk</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/disp_tb/disp_blank">
+      <obj_property name="ElementShortName">disp_blank</obj_property>
+      <obj_property name="ObjectShortName">disp_blank</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/disp_tb/disp_lat">
+      <obj_property name="ElementShortName">disp_lat</obj_property>
+      <obj_property name="ObjectShortName">disp_lat</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/disp_tb/disp_sin">
+      <obj_property name="ElementShortName">disp_sin</obj_property>
+      <obj_property name="ObjectShortName">disp_sin</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="array" fp_name="/disp_tb/disp_i/disp_data">
+      <obj_property name="ElementShortName">disp_data[255:0]</obj_property>
+      <obj_property name="ObjectShortName">disp_data[255:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="array" fp_name="/disp_tb/disp_i/disp_ctl_i/lut_addr">
+      <obj_property name="ElementShortName">lut_addr[11:0]</obj_property>
+      <obj_property name="ObjectShortName">lut_addr[11:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="array" fp_name="/disp_tb/disp_i/disp_ctl_i/lut_data">
+      <obj_property name="ElementShortName">lut_data[7:0]</obj_property>
+      <obj_property name="ObjectShortName">lut_data[7:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/disp_tb/disp_i/disp_ctl_i/ce">
+      <obj_property name="ElementShortName">ce</obj_property>
+      <obj_property name="ObjectShortName">ce</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="array" fp_name="/disp_tb/disp_i/disp_ctl_i/cnt">
+      <obj_property name="ElementShortName">cnt[4:0]</obj_property>
+      <obj_property name="ObjectShortName">cnt[4:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/disp_tb/disp_i/disp_ctl_i/cnt_term">
+      <obj_property name="ElementShortName">cnt_term</obj_property>
+      <obj_property name="ObjectShortName">cnt_term</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="array" fp_name="/disp_tb/disp_i/disp_ctl_i/char">
+      <obj_property name="ElementShortName">char[7:0]</obj_property>
+      <obj_property name="ObjectShortName">char[7:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="array" fp_name="/disp_tb/disp_i/disp_ctl_i/dchar">
+      <obj_property name="ElementShortName">dchar[7:0]</obj_property>
+      <obj_property name="ObjectShortName">dchar[7:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="array" fp_name="/disp_tb/disp_i/disp_ctl_i/seg">
+      <obj_property name="ElementShortName">seg[7:0]</obj_property>
+      <obj_property name="ObjectShortName">seg[7:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="array" fp_name="/disp_tb/disp_i/disp_ctl_i/disp_sr">
+      <obj_property name="ElementShortName">disp_sr[31:0][7:0]</obj_property>
+      <obj_property name="ObjectShortName">disp_sr[31:0][7:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/disp_tb/disp_i/disp_ctl_i/rst_addr">
+      <obj_property name="ElementShortName">rst_addr</obj_property>
+      <obj_property name="ObjectShortName">rst_addr</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/disp_tb/disp_i/disp_ctl_i/inc_addr">
+      <obj_property name="ElementShortName">inc_addr</obj_property>
+      <obj_property name="ObjectShortName">inc_addr</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/disp_tb/disp_i/disp_ctl_i/disp_mem">
+      <obj_property name="ElementShortName">disp_mem</obj_property>
+      <obj_property name="ObjectShortName">disp_mem</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/disp_tb/disp_i/disp_ctl_i/data_val">
+      <obj_property name="ElementShortName">data_val</obj_property>
+      <obj_property name="ObjectShortName">data_val</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/disp_tb/disp_i/disp_ctl_i/lut_val">
+      <obj_property name="ElementShortName">lut_val</obj_property>
+      <obj_property name="ObjectShortName">lut_val</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/disp_tb/disp_i/disp_ctl_i/out_reg">
+      <obj_property name="ElementShortName">out_reg</obj_property>
+      <obj_property name="ObjectShortName">out_reg</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="other" fp_name="/disp_tb/disp_i/disp_ctl_i/curr_state">
+      <obj_property name="ElementShortName">curr_state</obj_property>
+      <obj_property name="ObjectShortName">curr_state</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="other" fp_name="/disp_tb/disp_i/disp_ctl_i/next_state">
+      <obj_property name="ElementShortName">next_state</obj_property>
+      <obj_property name="ObjectShortName">next_state</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="array" fp_name="/disp_tb/disp_pdm">
+      <obj_property name="ElementShortName">disp_pdm[7:0]</obj_property>
+      <obj_property name="ObjectShortName">disp_pdm[7:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/disp_tb/disp_i/disp_dark_i/pdm_on">
+      <obj_property name="ElementShortName">pdm_on</obj_property>
+      <obj_property name="ObjectShortName">pdm_on</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/disp_tb/disp_i/disp_dark_i/pdm_ce">
+      <obj_property name="ElementShortName">pdm_ce</obj_property>
+      <obj_property name="ObjectShortName">pdm_ce</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="array" fp_name="/disp_tb/disp_i/disp_dark_i/pdm_cnt">
+      <obj_property name="ElementShortName">pdm_cnt[7:0]</obj_property>
+      <obj_property name="ObjectShortName">pdm_cnt[7:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/disp_tb/disp_i/disp_dark_i/pdm_term">
+      <obj_property name="ElementShortName">pdm_term</obj_property>
+      <obj_property name="ObjectShortName">pdm_term</obj_property>
+   </wvobject>
+</wave_config>

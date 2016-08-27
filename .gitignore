@@ -3,3 +3,9 @@
 
 # Autogeneratec code
 version_pkg.vhd
+files.tcl
+
+# Vivado generated directories
+*.cache/
+*.runs/
+*.sim/
