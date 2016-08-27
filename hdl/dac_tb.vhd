@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-05-05
--- Last update: 2016-05-15
+-- Last update: 2016-08-26
 -- Platform   : 
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -47,6 +47,8 @@ architecture STRUCTURE of dac_tb is
             tsc_1pps          : in    std_logic;
             tsc_1ppms         : in    std_logic;
 
+            dac_ena           : in    std_logic;
+            dac_tri           : in    std_logic;
             dac_val           : in    std_logic_vector(15 downto 0);
 
             dac_sclk          : OUT   std_logic;
@@ -61,6 +63,8 @@ architecture STRUCTURE of dac_tb is
 
     SIGNAL tsc_1pps     : std_logic;
     SIGNAL tsc_1ppms    : std_logic;
+    SIGNAL dac_ena      : std_logic;
+    SIGNAL dac_tri      : std_logic;
     SIGNAL dac_val      : std_logic_vector(15 downto 0);
 
     SIGNAL dac_sclk     : std_logic;
@@ -78,6 +82,8 @@ begin
             tsc_1pps          => tsc_1pps,
             tsc_1ppms         => tsc_1ppms,
 
+            dac_ena           => dac_ena,
+            dac_tri           => dac_tri,
             dac_val           => dac_val,
 
             dac_sclk          => dac_sclk,
@@ -88,6 +94,9 @@ begin
 
     clk_100MHZ: clk_gen(10 ns, 50, clk);
     reset:      rst_n_gen(1 us, rst_n);
+
+    dac_ena <= '1';
+    dac_tri <= '0';
 
     process
     begin

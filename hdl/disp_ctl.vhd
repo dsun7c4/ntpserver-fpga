@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-05-19
--- Last update: 2016-08-22
+-- Last update: 2016-08-26
 -- Platform   : 
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -245,7 +245,7 @@ begin
     -- For now just a shift register, use a state machine in case a more
     -- complex sequence is needed.
     disp_ctl_next:
-    process (curr_state, tsc_1ppms, cnt_term) is
+    process (curr_state, tsc_1ppms, cnt_term, disp_ena) is
     begin
         -- outputs
         rst_addr <= '0';
