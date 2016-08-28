@@ -99,101 +99,32 @@ set_property "target_language" "VHDL" $obj
 
 source "$origin_dir/scripts/files.tcl"
 
-# Create 'sources_1' fileset (if not found)
-if {[string equal [get_filesets -quiet sources_1] ""]} {
-  create_fileset -srcset sources_1
-}
+# Add the VHDL design sources
+add_source_files sources_1 $vhdl_src "VHDL"
+
+# Block design sources
+add_source_files    sources_1 $xlx_blk
+set_source_property sources_1 $xlx_blk "generate_synth_checkpoint" "0"
+
+# IP sources
+add_source_files    sources_1 $xlx_ip
+set_source_property sources_1 $xlx_ip "synth_checkpoint_mode" "Singular"
 
 
-# Set 'sources_1' fileset object
-set obj [get_filesets sources_1]
-add_files -norecurse -fileset $obj $vhdl_src
-
-# Set 'sources_1' fileset file properties for remote files
-foreach file $vhdl_src {
-    set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
-    set_property "file_type" "VHDL" $file_obj
-    set_property "library" "work" $file_obj
-}
-
-# Set 'sources_1' fileset object
-set obj [get_filesets sources_1]
-add_files -norecurse -fileset $obj $xlx_blk
-
-# Set 'sources_1' fileset file properties for remote files
-foreach file $xlx_blk {
-    set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
-    if { ![get_property "is_locked" $file_obj] } {
-	set_property "generate_synth_checkpoint" "0" $file_obj
-    }
-    set_property "library" "work" $file_obj
-}
-
-
-# Set 'sources_1' fileset file properties for local files
-# None
-
-# Set 'sources_1' fileset properties
+# Top level component name
 set obj [get_filesets sources_1]
 set_property "top" "clock" $obj
 
-# Set 'sources_1' fileset object
-set obj [get_filesets sources_1]
-add_files -norecurse -fileset $obj $xlx_ip
 
-# Set 'sources_1' fileset file properties for remote files
-foreach file $xlx_ip {
-    set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
-    set_property "library" "work" $file_obj
-    if { ![get_property "is_locked" $file_obj] } {
-	set_property "synth_checkpoint_mode" "Singular" $file_obj
-    }
-}
+# Add the design constraints
+add_source_files constrs_1 $xlx_xdc "XDC"
 
-
-# Set 'sources_1' fileset file properties for local files
-# None
-
-# Create 'constrs_1' fileset (if not found)
-if {[string equal [get_filesets -quiet constrs_1] ""]} {
-  create_fileset -constrset constrs_1
-}
-
-# Set 'constrs_1' fileset object
-set obj [get_filesets constrs_1]
-
-# Add/Import constrs file and set constrs file properties
-foreach file $xlx_xdc {
-    set file_added [add_files -norecurse -fileset $obj $file]
-    set file_obj [get_files -of_objects [get_filesets constrs_1] [list "*$file"]]
-    set_property "file_type" "XDC" $file_obj
-    set_property "library" "work" $file_obj
-}
-
-# Set 'constrs_1' fileset properties
 #set obj [get_filesets constrs_1]
 #set_property "target_constrs_file" "[file normalize "$origin_dir/xdc/pin.xdc"]" $obj
 
-# Create 'sim_1' fileset (if not found)
-if {[string equal [get_filesets -quiet sim_1] ""]} {
-  create_fileset -simset sim_1
-}
 
-# Set 'sim_1' fileset object
-set obj [get_filesets sim_1]
-add_files -norecurse -fileset $obj $vhdl_sim
-
-# Set 'sim_1' fileset file properties for remote files
-foreach file $vhdl_sim {
-    set file_obj [get_files -of_objects [get_filesets sim_1] [list "*$file"]]
-    set_property "file_type" "VHDL" $file_obj
-    set_property "library" "work" $file_obj
-}
-
-
-
-# Set 'sim_1' fileset file properties for local files
-# None
+# Add the VHDL simulation sources
+add_source_files sim_1 $vhdl_sim "VHDL"
 
 # Set 'sim_1' fileset properties
 set obj [get_filesets sim_1]
@@ -201,6 +132,7 @@ set_property "runtime" "100us" $obj
 set_property "source_set" "" $obj
 set_property "top" "clock_tb" $obj
 set_property "xsim.simulate.runtime" "100us" $obj
+
 
 # Create 'synth_1' run (if not found)
 if {[string equal [get_runs -quiet synth_1] ""]} {
@@ -214,6 +146,7 @@ set obj [get_runs synth_1]
 # set the current synth run
 current_run -synthesis [get_runs synth_1]
 
+
 # Create 'impl_1' run (if not found)
 if {[string equal [get_runs -quiet impl_1] ""]} {
   create_run -name impl_1 -part xc7z010clg400-1 -flow {Vivado Implementation 2014} -strategy "Vivado Implementation Defaults" -constrset constrs_1 -parent_run synth_1
@@ -226,6 +159,7 @@ set_property "steps.write_bitstream.args.bin_file" "1" $obj
 
 # set the current impl run
 current_run -implementation [get_runs impl_1]
+
 
 # If successful, "touch" a file so the make utility will know it's done 
 touch {.setup.done}
