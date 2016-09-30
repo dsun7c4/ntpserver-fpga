@@ -1,7 +1,7 @@
 --Copyright 1986-2014 Xilinx, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------
 --Tool Version: Vivado v.2014.4 (lin64) Build 1071353 Tue Nov 18 16:47:07 MST 2014
---Date        : Wed Aug 17 20:54:40 2016
+--Date        : Fri Sep 30 18:09:05 2016
 --Host        : graviton running 64-bit Debian GNU/Linux 7.10 (wheezy)
 --Command     : generate_target cpu.bd
 --Design      : cpu
@@ -1946,6 +1946,8 @@ entity cpu is
     IIC_sda_t : out STD_LOGIC;
     Int0 : in STD_LOGIC_VECTOR ( 0 to 0 );
     Int1 : in STD_LOGIC_VECTOR ( 0 to 0 );
+    Int2 : in STD_LOGIC_VECTOR ( 0 to 0 );
+    Int3 : in STD_LOGIC_VECTOR ( 0 to 0 );
     OCXO_CLK100 : in STD_LOGIC;
     OCXO_RESETN : out STD_LOGIC_VECTOR ( 0 to 0 );
     UART_0_rxd : in STD_LOGIC;
@@ -2066,7 +2068,7 @@ architecture STRUCTURE of cpu is
     M_AXI_GP1_BRESP : in STD_LOGIC_VECTOR ( 1 downto 0 );
     M_AXI_GP1_RRESP : in STD_LOGIC_VECTOR ( 1 downto 0 );
     M_AXI_GP1_RDATA : in STD_LOGIC_VECTOR ( 31 downto 0 );
-    IRQ_F2P : in STD_LOGIC_VECTOR ( 3 downto 0 );
+    IRQ_F2P : in STD_LOGIC_VECTOR ( 5 downto 0 );
     FCLK_CLK0 : out STD_LOGIC;
     FCLK_RESET0_N : out STD_LOGIC;
     MIO : inout STD_LOGIC_VECTOR ( 53 downto 0 );
@@ -2220,7 +2222,9 @@ architecture STRUCTURE of cpu is
     In1 : in STD_LOGIC_VECTOR ( 0 to 0 );
     In2 : in STD_LOGIC_VECTOR ( 0 to 0 );
     In3 : in STD_LOGIC_VECTOR ( 0 to 0 );
-    dout : out STD_LOGIC_VECTOR ( 3 downto 0 )
+    In4 : in STD_LOGIC_VECTOR ( 0 to 0 );
+    In5 : in STD_LOGIC_VECTOR ( 0 to 0 );
+    dout : out STD_LOGIC_VECTOR ( 5 downto 0 )
   );
   end component cpu_xlconcat_0_0;
   component cpu_xadc_wiz_0_0 is
@@ -2262,6 +2266,8 @@ architecture STRUCTURE of cpu is
   );
   end component cpu_xadc_wiz_0_0;
   signal GND_1 : STD_LOGIC;
+  signal In4_1 : STD_LOGIC_VECTOR ( 0 to 0 );
+  signal In5_1 : STD_LOGIC_VECTOR ( 0 to 0 );
   signal Int0_1 : STD_LOGIC_VECTOR ( 0 to 0 );
   signal Int1_1 : STD_LOGIC_VECTOR ( 0 to 0 );
   signal M_AXI_GP0_ACLK_1 : STD_LOGIC;
@@ -2478,7 +2484,7 @@ architecture STRUCTURE of cpu is
   signal rst_processing_system7_0_100M_interconnect_aresetn : STD_LOGIC_VECTOR ( 0 to 0 );
   signal rst_processing_system7_0_100M_peripheral_aresetn : STD_LOGIC_VECTOR ( 0 to 0 );
   signal xadc_wiz_0_ip2intc_irpt : STD_LOGIC;
-  signal xlconcat_0_dout : STD_LOGIC_VECTOR ( 3 downto 0 );
+  signal xlconcat_0_dout : STD_LOGIC_VECTOR ( 5 downto 0 );
   signal NLW_axi_iic_0_gpo_UNCONNECTED : STD_LOGIC_VECTOR ( 0 to 0 );
   signal NLW_processing_system7_0_ENET0_PTP_DELAY_REQ_RX_UNCONNECTED : STD_LOGIC;
   signal NLW_processing_system7_0_ENET0_PTP_DELAY_REQ_TX_UNCONNECTED : STD_LOGIC;
@@ -2540,6 +2546,8 @@ begin
   IIC_scl_t <= axi_iic_0_IIC_SCL_T;
   IIC_sda_o <= axi_iic_0_IIC_SDA_O;
   IIC_sda_t <= axi_iic_0_IIC_SDA_T;
+  In4_1(0) <= Int2(0);
+  In5_1(0) <= Int3(0);
   Int0_1(0) <= Int0(0);
   Int1_1(0) <= Int1(0);
   M_AXI_GP1_ACLK_1 <= OCXO_CLK100;
@@ -2701,7 +2709,7 @@ processing_system7_0: component cpu_processing_system7_0_0
       I2C1_SDA_I => processing_system7_0_IIC_1_SDA_I,
       I2C1_SDA_O => processing_system7_0_IIC_1_SDA_O,
       I2C1_SDA_T => processing_system7_0_IIC_1_SDA_T,
-      IRQ_F2P(3 downto 0) => xlconcat_0_dout(3 downto 0),
+      IRQ_F2P(5 downto 0) => xlconcat_0_dout(5 downto 0),
       MIO(53 downto 0) => FIXED_IO_mio(53 downto 0),
       M_AXI_GP0_ACLK => M_AXI_GP0_ACLK_1,
       M_AXI_GP0_ARADDR(31 downto 0) => processing_system7_0_M_AXI_GP0_ARADDR(31 downto 0),
@@ -3028,6 +3036,8 @@ xlconcat_0: component cpu_xlconcat_0_0
       In1(0) => xadc_wiz_0_ip2intc_irpt,
       In2(0) => Int0_1(0),
       In3(0) => Int1_1(0),
-      dout(3 downto 0) => xlconcat_0_dout(3 downto 0)
+      In4(0) => In4_1(0),
+      In5(0) => In5_1(0),
+      dout(5 downto 0) => xlconcat_0_dout(5 downto 0)
     );
 end STRUCTURE;

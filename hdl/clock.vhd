@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-03-13
--- Last update: 2016-08-22
+-- Last update: 2016-09-30
 -- Platform   : 
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -98,7 +98,9 @@ architecture STRUCTURE of clock is
             FCLK_RESET0_N     : out   std_logic;
             OCXO_RESETN       : out   std_logic_vector (0 to 0);
             Int0              : in    std_logic_vector (0 to 0);
-            Int1              : in    std_logic_vector (0 to 0)
+            Int1              : in    std_logic_vector (0 to 0);
+            Int2              : in    std_logic_vector (0 to 0);
+            Int3              : in    std_logic_vector (0 to 0)
             );
     end component cpu;
 
@@ -350,7 +352,7 @@ architecture STRUCTURE of clock is
     signal iic_sda_o       : std_logic;
     signal iic_sda_t       : std_logic;
 
-    signal int             : std_logic_vector (1 downto 0);
+    signal int             : std_logic_vector (3 downto 0);
 
     signal fclk            : std_logic;
     signal fclk_rst_n      : std_logic;
@@ -472,7 +474,9 @@ begin
             FCLK_RESET0_N             => fclk_rst_n,
             OCXO_RESETN(0)            => rst_n,
             Int0(0)                   => int(0),
-            Int1(0)                   => int(1)
+            Int1(0)                   => int(1),
+            Int2(0)                   => int(2),
+            Int3(0)                   => int(3)
             );
 
 
@@ -532,6 +536,8 @@ begin
     -- Interrupts
     int(0) <= '0';
     int(1) <= '0';
+    int(2) <= '0';
+    int(3) <= '0';
 
     clk_sel <= '0';
 

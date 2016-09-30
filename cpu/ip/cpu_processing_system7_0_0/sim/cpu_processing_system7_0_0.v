@@ -297,7 +297,7 @@ input [11 : 0] M_AXI_GP1_RID;
 input [1 : 0] M_AXI_GP1_BRESP;
 input [1 : 0] M_AXI_GP1_RRESP;
 input [31 : 0] M_AXI_GP1_RDATA;
-input [3 : 0] IRQ_F2P;
+input [5 : 0] IRQ_F2P;
 output FCLK_CLK0;
 output FCLK_RESET0_N;
 input [53 : 0] MIO;

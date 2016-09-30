@@ -159,6 +159,8 @@ proc create_root_design { parentCell } {
   set FCLK_RESET0_N [ create_bd_port -dir O -type rst FCLK_RESET0_N ]
   set Int0 [ create_bd_port -dir I -from 0 -to 0 Int0 ]
   set Int1 [ create_bd_port -dir I -from 0 -to 0 Int1 ]
+  set Int2 [ create_bd_port -dir I -from 0 -to 0 Int2 ]
+  set Int3 [ create_bd_port -dir I -from 0 -to 0 Int3 ]
   set OCXO_CLK100 [ create_bd_port -dir I -type clk OCXO_CLK100 ]
   set OCXO_RESETN [ create_bd_port -dir O -from 0 -to 0 OCXO_RESETN ]
 
@@ -295,7 +297,7 @@ CONFIG.preset {Default*}  ] $processing_system7_0
 
   # Create instance: xlconcat_0, and set properties
   set xlconcat_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:xlconcat:2.1 xlconcat_0 ]
-  set_property -dict [ list CONFIG.NUM_PORTS {4}  ] $xlconcat_0
+  set_property -dict [ list CONFIG.NUM_PORTS {6}  ] $xlconcat_0
 
   # Create interface connections
   connect_bd_intf_net -intf_net Vp_Vn_1 [get_bd_intf_ports Vp_Vn] [get_bd_intf_pins xadc_wiz_0/Vp_Vn]
@@ -315,6 +317,8 @@ CONFIG.preset {Default*}  ] $processing_system7_0
   connect_bd_intf_net -intf_net processing_system7_0_axi_periph_M02_AXI [get_bd_intf_pins processing_system7_0_axi_periph/M02_AXI] [get_bd_intf_pins xadc_wiz_0/s_axi_lite]
 
   # Create port connections
+  connect_bd_net -net In4_1 [get_bd_ports Int2] [get_bd_pins xlconcat_0/In4]
+  connect_bd_net -net In5_1 [get_bd_ports Int3] [get_bd_pins xlconcat_0/In5]
   connect_bd_net -net Int0_1 [get_bd_ports Int0] [get_bd_pins xlconcat_0/In2]
   connect_bd_net -net Int1_1 [get_bd_ports Int1] [get_bd_pins xlconcat_0/In3]
   connect_bd_net -net M_AXI_GP0_ACLK_1 [get_bd_ports FCLK_CLK0] [get_bd_pins axi_gpio_0/s_axi_aclk] [get_bd_pins axi_iic_0/s_axi_aclk] [get_bd_pins processing_system7_0/FCLK_CLK0] [get_bd_pins processing_system7_0/M_AXI_GP0_ACLK] [get_bd_pins processing_system7_0_axi_periph/ACLK] [get_bd_pins processing_system7_0_axi_periph/M00_ACLK] [get_bd_pins processing_system7_0_axi_periph/M01_ACLK] [get_bd_pins processing_system7_0_axi_periph/M02_ACLK] [get_bd_pins processing_system7_0_axi_periph/S00_ACLK] [get_bd_pins rst_processing_system7_0_100M/slowest_sync_clk] [get_bd_pins xadc_wiz_0/s_axi_aclk]

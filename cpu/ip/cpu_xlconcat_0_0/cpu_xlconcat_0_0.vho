@@ -58,7 +58,9 @@ COMPONENT cpu_xlconcat_0_0
     In1 : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
     In2 : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
     In3 : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
-    dout : OUT STD_LOGIC_VECTOR(3 DOWNTO 0)
+    In4 : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
+    In5 : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
+    dout : OUT STD_LOGIC_VECTOR(5 DOWNTO 0)
   );
 END COMPONENT;
 -- COMP_TAG_END ------ End COMPONENT Declaration ------------
@@ -73,6 +75,8 @@ your_instance_name : cpu_xlconcat_0_0
     In1 => In1,
     In2 => In2,
     In3 => In3,
+    In4 => In4,
+    In5 => In5,
     dout => dout
   );
 -- INST_TAG_END ------ End INSTANTIATION Template ---------

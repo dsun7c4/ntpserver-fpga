@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-03-22
--- Last update: 2016-08-23
+-- Last update: 2016-09-30
 -- Platform   : 
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -96,7 +96,9 @@ entity cpu is
         OCXO_CLK100       : in    std_logic;
         OCXO_RESETN       : out   std_logic_vector (0 to 0);
         Int0              : in    std_logic_vector (0 to 0);
-        Int1              : in    std_logic_vector (0 to 0)
+        Int1              : in    std_logic_vector (0 to 0);
+        Int2              : in    std_logic_vector (0 to 0);
+        Int3              : in    std_logic_vector (0 to 0)
         );
 end cpu;
 

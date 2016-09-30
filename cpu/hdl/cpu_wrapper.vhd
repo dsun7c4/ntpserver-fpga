@@ -1,7 +1,7 @@
 --Copyright 1986-2014 Xilinx, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------
 --Tool Version: Vivado v.2014.4 (lin64) Build 1071353 Tue Nov 18 16:47:07 MST 2014
---Date        : Wed Aug 17 20:54:40 2016
+--Date        : Fri Sep 30 18:09:05 2016
 --Host        : graviton running 64-bit Debian GNU/Linux 7.10 (wheezy)
 --Command     : generate_target cpu_wrapper.bd
 --Design      : cpu_wrapper
@@ -49,6 +49,8 @@ entity cpu_wrapper is
     FIXED_IO_ps_srstb : inout STD_LOGIC;
     Int0 : in STD_LOGIC_VECTOR ( 0 to 0 );
     Int1 : in STD_LOGIC_VECTOR ( 0 to 0 );
+    Int2 : in STD_LOGIC_VECTOR ( 0 to 0 );
+    Int3 : in STD_LOGIC_VECTOR ( 0 to 0 );
     OCXO_CLK100 : in STD_LOGIC;
     OCXO_RESETN : out STD_LOGIC_VECTOR ( 0 to 0 );
     UART_0_rxd : in STD_LOGIC;
@@ -134,7 +136,9 @@ architecture STRUCTURE of cpu_wrapper is
     FCLK_CLK0 : out STD_LOGIC;
     FCLK_RESET0_N : out STD_LOGIC;
     Int0 : in STD_LOGIC_VECTOR ( 0 to 0 );
-    Int1 : in STD_LOGIC_VECTOR ( 0 to 0 )
+    Int1 : in STD_LOGIC_VECTOR ( 0 to 0 );
+    Int2 : in STD_LOGIC_VECTOR ( 0 to 0 );
+    Int3 : in STD_LOGIC_VECTOR ( 0 to 0 )
   );
   end component cpu;
   component IOBUF is
@@ -556,6 +560,8 @@ cpu_i: component cpu
       IIC_sda_t => iic_sda_t,
       Int0(0) => Int0(0),
       Int1(0) => Int1(0),
+      Int2(0) => Int2(0),
+      Int3(0) => Int3(0),
       OCXO_CLK100 => OCXO_CLK100,
       OCXO_RESETN(0) => OCXO_RESETN(0),
       UART_0_rxd => UART_0_rxd,

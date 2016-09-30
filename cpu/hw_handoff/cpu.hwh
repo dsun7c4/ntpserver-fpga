@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
-<EDKSYSTEM EDWVERSION="1.2" TIMESTAMP="Wed Aug 17 20:54:37 2016" VIVADOVERSION="2014.4">
+<EDKSYSTEM EDWVERSION="1.2" TIMESTAMP="Fri Sep 30 18:09:01 2016" VIVADOVERSION="2014.4">
 
   <SYSTEMINFO ARCH="zynq" BOARD="em.avnet.com:microzed_7010:part0:1.0" DEVICE="7z010" NAME="cpu_imp" PACKAGE="clg400" SPEEDGRADE="-1"/>
 
@@ -95,6 +95,16 @@
       </CONNECTIONS>
     </PORT>
     <PORT DIR="I" IRQID="64" LEFT="0" NAME="Int1" RIGHT="0" SIGIS="undef" SIGNAME="External_Ports_Int1">
+      <CONNECTIONS>
+        <CONNECTION INSTANCE="ps7_scugic_0" PORT="IRQ_F2P"/>
+      </CONNECTIONS>
+    </PORT>
+    <PORT DIR="I" IRQID="65" LEFT="0" NAME="Int2" RIGHT="0" SIGIS="undef" SIGNAME="External_Ports_Int2">
+      <CONNECTIONS>
+        <CONNECTION INSTANCE="ps7_scugic_0" PORT="IRQ_F2P"/>
+      </CONNECTIONS>
+    </PORT>
+    <PORT DIR="I" IRQID="66" LEFT="0" NAME="Int3" RIGHT="0" SIGIS="undef" SIGNAME="External_Ports_Int3">
       <CONNECTIONS>
         <CONNECTION INSTANCE="ps7_scugic_0" PORT="IRQ_F2P"/>
       </CONNECTIONS>
@@ -8855,8 +8865,10 @@
             <CONNECTION INSTANCE="ps7_ethernet_0" PORT="IRQ_ENET_WAKE0"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="I" IRQID="61:62:63:64:65:66:67:68:84:85:86:87:88:89:90:91" NAME="IRQ_F2P" SENSITIVITY="LEVEL_HIGH" SIGIS="INTERRUPT" SIGNAME="External_Ports_Int1 &amp; External_Ports_Int0 &amp; xadc_wiz_0_ip2intc_irpt &amp; axi_iic_0_iic2intc_irpt">
+        <PORT DIR="I" IRQID="61:62:63:64:65:66:67:68:84:85:86:87:88:89:90:91" NAME="IRQ_F2P" SENSITIVITY="LEVEL_HIGH" SIGIS="INTERRUPT" SIGNAME="External_Ports_Int3 &amp; External_Ports_Int2 &amp; External_Ports_Int1 &amp; External_Ports_Int0 &amp; xadc_wiz_0_ip2intc_irpt &amp; axi_iic_0_iic2intc_irpt">
           <CONNECTIONS>
+            <CONNECTION INSTANCE="External_Ports" PORT="Int3"/>
+            <CONNECTION INSTANCE="External_Ports" PORT="Int2"/>
             <CONNECTION INSTANCE="External_Ports" PORT="Int1"/>
             <CONNECTION INSTANCE="External_Ports" PORT="Int0"/>
             <CONNECTION INSTANCE="xadc_wiz_0" PORT="ip2intc_irpt"/>
