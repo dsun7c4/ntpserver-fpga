@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    :
 -- Created    : 2016-03-13
--- Last update: 2016-08-23
+-- Last update: 2016-12-15
 -- Platform   :
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -25,7 +25,9 @@
 --
 -- 0x8060_0000 |                GIT Abbreviated Commit Hash                    |
 --
--- 0x8060_0004 | Year  |  Mon  | Day 10| Day 1 | Hr 10 | Hr 1  | Min 10| Min 1 |
+-- 0x8060_0004 | Hr 10 | Hr 1  | Min 10| Min 1 |         Build                 |
+--
+-- 0x8060_0008 | Year  | Year  | Year  | Year  | Mon 10| Mon 1 | Day 10| Day 1 |
 --
 --
 -- -----------------------------------------------------------------------------
@@ -306,12 +308,12 @@ begin
                         fan_regs_mux(31 downto 12) <= fan_uspr;
                         disp_regs_mux <= disp_regs(0);
                     when "0001" =>
-                        ver_regs_mux  <= DATE_CODE;
+                        ver_regs_mux  <= TIME_CODE;
                         time_regs_mux <= tsc_cnt(63 downto 32);
                         fan_regs_mux  <= (others => '0');
                         disp_regs_mux <= disp_regs(1);
                     when "0010" =>
-                        ver_regs_mux  <= (others => '0');
+                        ver_regs_mux  <= DATE_CODE;
                         time_regs_mux <= tsc_cnt1(31 downto 0);
                         fan_regs_mux  <= (others => '0');
                         disp_regs_mux <= (others => '0');

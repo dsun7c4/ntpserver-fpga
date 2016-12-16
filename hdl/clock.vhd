@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-03-13
--- Last update: 2016-09-30
+-- Last update: 2016-11-14
 -- Platform   : 
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -534,10 +534,10 @@ begin
 
 
     -- Interrupts
-    int(0) <= '0';
-    int(1) <= '0';
-    int(2) <= '0';
-    int(3) <= '0';
+    int(0) <= '0';    -- RTC
+    int(1) <= '0';    -- 1pps
+    int(2) <= '0';    -- PLL
+    int(3) <= '0';    -- Spare
 
     clk_sel <= '0';
 
