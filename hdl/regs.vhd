@@ -364,8 +364,8 @@ begin
                 end case;
             end if;
 
-            -- Hold tsc value on LSW read
-            if (cs_dp_r = '1' and decode(1) = '1' and addr(5 downto 2) = "0000") then
+            -- Latch tsc value on MSW or LSW read
+            if (cs_dp_r = '1' and decode(1) = '1' and addr(5 downto 3) = "000") then
                 tsc_read      <= '1';
             else
                 tsc_read      <= '0';
