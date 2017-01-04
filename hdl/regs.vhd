@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    :
 -- Created    : 2016-03-13
--- Last update: 2016-12-15
+-- Last update: 2017-01-03
 -- Platform   :
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -46,7 +46,7 @@
 --
 -- 0x8060_0114 |                        1PPS Frequency Error                   |
 --
--- 0x8060_0118 |                         GPS 1PPS Copunt                       |
+-- 0x8060_0118 |                         GPS 1PPS Count                        |
 --
 -- 0x8060_011c | 10 h  | 1 h   | 10 m  |  1 m  | 10 s  |  1 s  | 100 ms| 10 ms |
 --
@@ -55,6 +55,28 @@
 -- 0x8060_0124 | |                   | |       |            DAC value          |
 --              |                     |
 --              GPS 3D Fix            Sync PFD and PLL
+--
+-- 0x8060_0128 |                                                           | | |
+--                                                                          | |
+--                                                            GPS PPS IRQ ENA |
+--                                                              TSC PPS IRQ ENA
+--
+-- 0x8060_012c | |                                                       | | | |
+--              |                                                           | |
+--              PPS IRQ Status                                    GPS PPS IRQ |
+--                                                                  TSC PPS IRQ
+--
+-- 0x8060_0130 |                                                         | | | |
+--                                                                        | | |
+--                                                      PFD trigger IRQ ENA | |
+--                                                        PFD GPS PPS IRQ ENA |
+--                                                          PFD TSC PPS IRQ ENA
+--
+-- 0x8060_0134 | |                                                       | | | |
+--              |                                                         | | |
+--              PLL IRQ Status                              PFD trigger IRQ | |
+--                                                            PFD GPS PPS IRQ |
+--                                                              PFD TSC PPS IRQ
 --
 --
 -- -----------------------------------------------------------------------------
@@ -151,12 +173,16 @@ entity regs is
         -- PLL control
         gps_3dfix_d       : in    std_logic;
         gps_1pps_d        : in    std_logic;
+        tsc_1pps_d        : in    std_logic;
+        pll_trig          : in    std_logic;
         pdiff_1pps        : in    std_logic_vector(31 downto 0);
         fdiff_1pps        : in    std_logic_vector(31 downto 0);
         tsc_sync          : out   std_logic;
         dac_val           : out   std_logic_vector(15 downto 0);
+        pps_irq           : out   std_logic;
+        pll_irq           : out   std_logic;
 
-        -- Fan ms per revolution, percent speed
+        -- Fan us per revolution, percent speed
         fan_uspr          : in    std_logic_vector(19 downto 0);
         fan_pct           : out   std_logic_vector(7 downto 0);
 
@@ -177,7 +203,7 @@ architecture rtl of regs is
 
     type reg_arr is array (natural range <>) of std_logic_vector(31 downto 0);
 
-    signal time_regs      : reg_arr(9 downto 0);
+    signal time_regs      : reg_arr(13 downto 0);
     signal fan_regs       : reg_arr(0 downto 0);
     signal disp_regs      : reg_arr(1 downto 0);
 
@@ -292,75 +318,79 @@ begin
     begin
         if (rst_n = '0') then
             ver_regs_mux  <= (others => '0');
-            time_regs_mux <= (others => '0');
             fan_regs_mux  <= (others => '0');
             disp_regs_mux <= (others => '0');
             sram_regs_mux <= (others => '0');
-            tsc_read      <= '0';
         elsif (clk'event and clk = '1') then
             if (cs_n_d = '0') then
                 sram_regs_mux <= sram_datai;
                 case addr(5 downto 2) is
                     when "0000" =>
                         ver_regs_mux  <= GIT_COMMIT;
-                        time_regs_mux <= tsc_cnt(31 downto 0);
                         fan_regs_mux  <= fan_regs(0);
                         fan_regs_mux(31 downto 12) <= fan_uspr;
                         disp_regs_mux <= disp_regs(0);
                     when "0001" =>
                         ver_regs_mux  <= TIME_CODE;
-                        time_regs_mux <= tsc_cnt(63 downto 32);
                         fan_regs_mux  <= (others => '0');
                         disp_regs_mux <= disp_regs(1);
                     when "0010" =>
                         ver_regs_mux  <= DATE_CODE;
-                        time_regs_mux <= tsc_cnt1(31 downto 0);
-                        fan_regs_mux  <= (others => '0');
-                        disp_regs_mux <= (others => '0');
-                    when "0011" =>
-                        ver_regs_mux  <= (others => '0');
-                        time_regs_mux <= tsc_cnt1(63 downto 32);
-                        fan_regs_mux  <= (others => '0');
-                        disp_regs_mux <= (others => '0');
-                    when "0100" =>
-                        ver_regs_mux  <= (others => '0');
-                        time_regs_mux <= pdiff_1pps;
-                        fan_regs_mux  <= (others => '0');
-                        disp_regs_mux <= (others => '0');
-                    when "0101" =>
-                        ver_regs_mux  <= (others => '0');
-                        time_regs_mux <= fdiff_1pps;
-                        fan_regs_mux  <= (others => '0');
-                        disp_regs_mux <= (others => '0');
-                    when "0110" =>
-                        ver_regs_mux  <= (others => '0');
-                        time_regs_mux <= gps_1pps_cnt;
-                        fan_regs_mux  <= (others => '0');
-                        disp_regs_mux <= (others => '0');
-                    when "0111" =>
-                        ver_regs_mux  <= (others => '0');
-                        time_regs_mux <= cur_time.t_10h   & cur_time.t_1h   & 
-                                         cur_time.t_10m   & cur_time.t_1m   &
-                                         cur_time.t_10s   & cur_time.t_1s   &
-                                         cur_time.t_100ms & cur_time.t_10ms;
-                        fan_regs_mux  <= (others => '0');
-                        disp_regs_mux <= (others => '0');
-                    when "1000" =>
-                        ver_regs_mux  <= (others => '0');
-                        time_regs_mux <= time_regs(8);
-                        fan_regs_mux  <= (others => '0');
-                        disp_regs_mux <= (others => '0');
-                    when "1001" =>
-                        ver_regs_mux  <= (others => '0');
-                        time_regs_mux <= time_regs(9);
-                        time_regs_mux(31) <= gps_3dfix_d;
                         fan_regs_mux  <= (others => '0');
                         disp_regs_mux <= (others => '0');
                     when others =>
                         ver_regs_mux  <= (others => '0');
-                        time_regs_mux <= (others => '0');
                         fan_regs_mux  <= (others => '0');
                         disp_regs_mux <= (others => '0');
+                end case;
+            end if;
+        end if;
+    end process;
+
+
+    -- Read Mux (time_regs)
+    process (rst_n, clk) is
+    begin
+        if (rst_n = '0') then
+            time_regs_mux <= (others => '0');
+            tsc_read      <= '0';
+        elsif (clk'event and clk = '1') then
+            if (cs_n_d = '0') then
+                case addr(5 downto 2) is
+                    when "0000" =>
+                        time_regs_mux <= tsc_cnt(31 downto 0);
+                    when "0001" =>
+                        time_regs_mux <= tsc_cnt(63 downto 32);
+                    when "0010" =>
+                        time_regs_mux <= tsc_cnt1(31 downto 0);
+                    when "0011" =>
+                        time_regs_mux <= tsc_cnt1(63 downto 32);
+                    when "0100" =>
+                        time_regs_mux <= pdiff_1pps;
+                    when "0101" =>
+                        time_regs_mux <= fdiff_1pps;
+                    when "0110" =>
+                        time_regs_mux <= gps_1pps_cnt;
+                    when "0111" =>
+                        time_regs_mux <= cur_time.t_10h   & cur_time.t_1h   &
+                                         cur_time.t_10m   & cur_time.t_1m   &
+                                         cur_time.t_10s   & cur_time.t_1s   &
+                                         cur_time.t_100ms & cur_time.t_10ms;
+                    when "1000" =>
+                        time_regs_mux <= time_regs(8);
+                    when "1001" =>
+                        time_regs_mux <= time_regs(9);
+                        time_regs_mux(31) <= gps_3dfix_d;
+                    when "1010" =>
+                        time_regs_mux <= time_regs(10);
+                    when "1011" =>
+                        time_regs_mux <= time_regs(11);
+                    when "1100" =>
+                        time_regs_mux <= time_regs(12);
+                    when "1101" =>
+                        time_regs_mux <= time_regs(13);
+                    when others =>
+                        time_regs_mux <= (others => '0');
                 end case;
             end if;
 
@@ -377,12 +407,16 @@ begin
 
     -- time control registers
     process (rst_n, clk) is
+        variable pps_irq_status : std_logic;
+        variable pll_irq_status : std_logic;
     begin
         if (rst_n = '0') then
             for i in time_regs'range loop
                 time_regs(i) <= (others => '0');
             end loop;
-            set      <= '0';
+            pps_irq <= '0';
+            pll_irq <= '0';
+            set     <= '0';
             time_regs(9)(15 downto 0) <= x"8000";
         elsif (clk'event and clk = '1') then
             if (cs_dp_w = '1' and decode(1) = '1') then
@@ -407,16 +441,71 @@ begin
                         time_regs(8) <= data_o;
                     when "1001" =>
                         time_regs(9) <= data_o;
+                    when "1010" =>
+                        time_regs(10) <= data_o;
+                    when "1011" =>
+                        time_regs(11)(30 downto 2) <= data_o(30 downto 2);
+                        -- Clear interrupt with 1 is written back
+                        if (data_o(1) = '1') then
+                            time_regs(11)(1) <= '0';
+                        end if;
+                        if (data_o(0) = '1') then
+                            time_regs(11)(0) <= '0';
+                        end if;
+                    when "1100" =>
+                        time_regs(12) <= data_o;
+                    when "1101" =>
+                        time_regs(13)(30 downto 3) <= data_o(30 downto 3);
+                        -- Clear interrupt with 1 is written back
+                        if (data_o(2) = '1') then
+                            time_regs(13)(2) <= '0';
+                        end if;
+                        if (data_o(1) = '1') then
+                            time_regs(13)(1) <= '0';
+                        end if;
+                        if (data_o(0) = '1') then
+                            time_regs(13)(0) <= '0';
+                        end if;
                     when others =>
                         null;
                 end case;
             end if;
 
+            pps_irq_status    := (time_regs(10)(1) and time_regs(11)(1)) or
+                                 (time_regs(10)(0) and time_regs(11)(0));
+            pps_irq           <= pps_irq_status;
+            time_regs(11)(31) <= pps_irq_status;
+            -- Set interrupt on incoming pps pulses
+            -- Higher priority than clear (above)
+            if (gps_1pps_d = '1') then
+                time_regs(11)(1) <= '1';
+            end if;
+            if (tsc_1pps_d = '1') then
+                time_regs(11)(0) <= '1';
+            end if;
+            
+            pll_irq_status    := (time_regs(12)(2) and time_regs(13)(2)) or
+                                 (time_regs(12)(1) and time_regs(13)(1)) or
+                                 (time_regs(12)(0) and time_regs(13)(0));
+            pll_irq           <= pll_irq_status;
+            time_regs(13)(31) <= pll_irq_status;
+            -- Set interrupt on incoming pps pulses and pll trigger
+            -- Higher priority than clear (above)
+            if (pll_trig = '1') then
+                time_regs(13)(2) <= '1';
+            end if;
+            if (gps_1pps_d = '1') then
+                time_regs(13)(1) <= '1';
+            end if;
+            if (tsc_1pps_d = '1') then
+                time_regs(13)(0) <= '1';
+            end if;
+            
             -- Trigger time set
             if (cs_dp_w = '1' and decode(1) = '1' and addr(5 downto 2) = "1000") then
-                set          <= '1';
+                set <= '1';
             else
-                set          <= '0';
+                set <= '0';
             end if;
 
             -- Clear the sync flag after its done

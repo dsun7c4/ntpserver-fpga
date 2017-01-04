@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-06-28
--- Last update: 2016-08-23
+-- Last update: 2017-01-03
 -- Platform   : 
 -- Standard   : VHDL'87
 -------------------------------------------------------------------------------
@@ -50,6 +50,8 @@ architecture STRUCTURE of tsc_tb is
             tsc_read          : in    std_logic;
             tsc_sync          : in    std_logic;
             gps_1pps_d        : out   std_logic;
+            tsc_1pps_d        : out   std_logic;
+            pll_trig          : out   std_logic;
 
             pdiff_1pps        : out   std_logic_vector(31 downto 0);
             fdiff_1pps        : out   std_logic_vector(31 downto 0);
@@ -71,6 +73,8 @@ architecture STRUCTURE of tsc_tb is
     SIGNAL tsc_read     : std_logic;
     SIGNAL tsc_sync     : std_logic;
     SIGNAL gps_1pps_d   : std_logic;
+    SIGNAL tsc_1pps_d   : std_logic;
+    SIGNAL pll_trig     : std_logic;
 
     SIGNAL pdiff_1pps   : std_logic_vector(31 downto 0);
     SIGNAL fdiff_1pps   : std_logic_vector(31 downto 0);
@@ -95,6 +99,8 @@ begin
             tsc_read          => tsc_read,
             tsc_sync          => tsc_sync,
             gps_1pps_d        => gps_1pps_d,
+            tsc_1pps_d        => tsc_1pps_d,
+            pll_trig          => pll_trig,
 
             pdiff_1pps        => pdiff_1pps,
             fdiff_1pps        => fdiff_1pps,

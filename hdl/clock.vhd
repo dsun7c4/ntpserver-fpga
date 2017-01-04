@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-03-13
--- Last update: 2016-11-14
+-- Last update: 2017-01-03
 -- Platform   : 
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -178,10 +178,14 @@ architecture STRUCTURE of clock is
             -- PLL control
             gps_3dfix_d       : in    std_logic;
             gps_1pps_d        : in    std_logic;
+            tsc_1pps_d        : in    std_logic;
+            pll_trig          : in    std_logic;
             pdiff_1pps        : in    std_logic_vector(31 downto 0);
             fdiff_1pps        : in    std_logic_vector(31 downto 0);
             tsc_sync          : out   std_logic;
             dac_val           : out   std_logic_vector(15 downto 0);
+            pps_irq           : out   std_logic;
+            pll_irq           : out   std_logic;
 
             -- Fan ms per revolution, percent speed
             fan_uspr          : in    std_logic_vector(19 downto 0);
@@ -226,6 +230,8 @@ architecture STRUCTURE of clock is
             tsc_read          : in    std_logic;
             tsc_sync          : in    std_logic;
             gps_1pps_d        : out   std_logic;
+            tsc_1pps_d        : out   std_logic;
+            pll_trig          : out   std_logic;
 
             pdiff_1pps        : out   std_logic_vector(31 downto 0);
             fdiff_1pps        : out   std_logic_vector(31 downto 0);
@@ -353,6 +359,7 @@ architecture STRUCTURE of clock is
     signal iic_sda_t       : std_logic;
 
     signal int             : std_logic_vector (3 downto 0);
+    signal irq             : std_logic_vector (3 downto 0);
 
     signal fclk            : std_logic;
     signal fclk_rst_n      : std_logic;
@@ -370,6 +377,8 @@ architecture STRUCTURE of clock is
     signal tsc_read        : std_logic;
     signal tsc_sync        : std_logic;
     signal gps_1pps_d      : std_logic;
+    SIGNAL tsc_1pps_d      : std_logic;
+    SIGNAL pll_trig        : std_logic;
 
     SIGNAL pdiff_1pps      : std_logic_vector(31 downto 0);
     SIGNAL fdiff_1pps      : std_logic_vector(31 downto 0);
@@ -473,10 +482,10 @@ begin
             FCLK_CLK0                 => fclk,
             FCLK_RESET0_N             => fclk_rst_n,
             OCXO_RESETN(0)            => rst_n,
-            Int0(0)                   => int(0),
-            Int1(0)                   => int(1),
-            Int2(0)                   => int(2),
-            Int3(0)                   => int(3)
+            Int0(0)                   => int(0),  -- id# 63, hw# 31
+            Int1(0)                   => int(1),  -- id# 64, hw# 32
+            Int2(0)                   => int(2),  -- id# 65, hw# 33
+            Int3(0)                   => int(3)   -- id# 66, hw# 34
             );
 
 
@@ -533,11 +542,12 @@ begin
             );
 
 
-    -- Interrupts
-    int(0) <= '0';    -- RTC
-    int(1) <= '0';    -- 1pps
-    int(2) <= '0';    -- PLL
-    int(3) <= '0';    -- Spare
+    -- Interrupts, clock domain transfer to cpu clock domain
+    irq_i : delay_vec generic map (2) port map (fclk_rst_n, fclk, irq, int);
+    irq(0) <= '0';    -- RTC
+    --irq(1) <= '0';    -- 1pps
+    --irq(2) <= '0';    -- PLL
+    irq(3) <= '0';    -- Spare
 
     clk_sel <= '0';
 
@@ -558,6 +568,7 @@ begin
 
 
     gps_3dfix_i:  delay_sig generic map (2) port map (rst_n, clk, gps_3dfix,  gps_3dfix_d);
+
 
     regs_i: regs
         port map (
@@ -586,10 +597,14 @@ begin
             -- PLL control
             gps_3dfix_d       => gps_3dfix_d,
             gps_1pps_d        => gps_1pps_d,
+            tsc_1pps_d        => tsc_1pps_d,
+            pll_trig          => pll_trig,
             pdiff_1pps        => pdiff_1pps,
             fdiff_1pps        => fdiff_1pps,
             tsc_sync          => tsc_sync,
             dac_val           => dac_val,
+            pps_irq           => irq(1),
+            pll_irq           => irq(2),
 
             -- Fan ms per revolution, percent speed
             fan_uspr          => fan_uspr,
@@ -633,6 +648,8 @@ begin
             tsc_read          => tsc_read,
             tsc_sync          => tsc_sync,
             gps_1pps_d        => gps_1pps_d,
+            tsc_1pps_d        => tsc_1pps_d,
+            pll_trig          => pll_trig,
 
             pdiff_1pps        => pdiff_1pps,
             fdiff_1pps        => fdiff_1pps,

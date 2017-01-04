@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-04-29
--- Last update: 2016-08-24
+-- Last update: 2017-01-03
 -- Platform   : 
 -- Standard   : VHDL'87
 -------------------------------------------------------------------------------
@@ -38,6 +38,8 @@ entity tsc is
       tsc_read          : in    std_logic;
       tsc_sync          : in    std_logic;
       gps_1pps_d        : out   std_logic;
+      tsc_1pps_d        : out   std_logic;
+      pll_trig          : out   std_logic;
 
       pdiff_1pps        : out   std_logic_vector(31 downto 0);
       fdiff_1pps        : out   std_logic_vector(31 downto 0);
@@ -227,14 +229,11 @@ begin
     end process;
 
 
-    gps_1pps_d <= gps_1pps_pulse;
-    
-
     -- Delay the ocxo 1pps pulse approximately the same amount as the gps 1pps
     tsc_pps_i:  delay_sig generic map (3) port map (rst_n, clk, pps_cnt_term, tsc_1pps_pulse);
     tsc_pfd_rst_i:  delay_pulse generic map (10) port map (rst_n, clk, pps_rst, pfd_rst);
     
-    
+
     -- Phase detector
     tsc_phase:
     process (rst_n, clk) is
@@ -335,6 +334,9 @@ begin
     end process;
 
 
+    gps_1pps_d <= gps_1pps_pulse;
+    tsc_1pps_d <= tsc_1pps_pulse;
+    pll_trig   <= trig;
     pdiff_1pps <= pdiff;
     fdiff_1pps <= fdiff;
 
