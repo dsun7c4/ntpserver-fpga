@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-06-28
--- Last update: 2017-01-03
+-- Last update: 2017-05-26
 -- Platform   : 
 -- Standard   : VHDL'87
 -------------------------------------------------------------------------------
@@ -125,30 +125,46 @@ begin
         gps_1pps <= '0';
         tsc_sync <= '0';
 
-        run_clk(clk, 100001099);
+        run_clk(clk, 100000099);
+        -- tsc pps pulse starts here
 
+        run_clk(clk, 1000);
+        -- Generate gps pps pulse 1000 cycles later
+        -- 1s
         gps_1pps <= '1';                
         run_clk(clk, 1);
         gps_1pps <= '0';
+
         run_clk(clk, 99997999);
-
+        -- 1000 cycles before tsc
+        -- 2s
         gps_1pps <= '1';
         run_clk(clk, 1);
         gps_1pps <= '0';
+
         run_clk(clk, 100000999);
-
-        gps_1pps <= '1';
+        -- In line with tsc
+        -- 3s
+        gps_1pps <= '0';
         run_clk(clk, 1);
         gps_1pps <= '0';
+
         run_clk(clk, 100000999);
-
+        -- 1000 cycles after tsc
+        -- 4s
         gps_1pps <= '1';
         run_clk(clk, 1);
         gps_1pps <= '0';
+
+        -- trigger resync
+        -- 4.5s
         run_clk(clk, 49999999);
-        tsc_sync <= '1';
+        --tsc_sync <= '1';
         run_clk(clk, 50000000);
 
+        -- tsc resynced
+        -- 4 cycles before tsc from pipeline delay
+        -- 5s
         gps_1pps <= '1';
         run_clk(clk, 1);
         gps_1pps <= '0';
@@ -156,6 +172,8 @@ begin
         tsc_sync <= '0';
         run_clk(clk, 99999995);
 
+        -- 4 cycles before tsc from pipeline delay
+        -- 6s...
         loop
             gps_1pps <= '1';
             run_clk(clk, 1);

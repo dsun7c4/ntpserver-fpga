@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-04-29
--- Last update: 2017-01-03
+-- Last update: 2017-05-26
 -- Platform   : 
 -- Standard   : VHDL'87
 -------------------------------------------------------------------------------
@@ -73,13 +73,39 @@ architecture rtl of tsc is
     signal pps_rst        : std_logic;
     signal pfd_rst        : std_logic;
     signal tsc_1pps_pulse : std_logic;
-    signal lead           : std_logic;
-    signal lag            : std_logic;
-    signal trig           : std_logic;
 
-    signal diff_cnt       : std_logic_vector(31 downto 0);
-    signal pdiff          : std_logic_vector(31 downto 0);
-    signal fdiff          : std_logic_vector(31 downto 0);
+    type pfd_t is (pfd_idle,
+                   pfd_lead,
+                   pfd_lag,
+                   pfd_trig,
+                   pfd_sync,
+                   pfd_tsc,
+                   pfd_gps,
+                   pfd_det_gps,
+                   pfd_det_tsc,
+                   pfd_wait_gps,
+                   pfd_wait_tsc
+                   );
+
+    signal curr_state     : pfd_t;
+    signal next_state     : pfd_t;
+    
+
+    constant CLKS_PER_SEC    : natural := 100000000;
+    constant CLKS_PER_MS     : natural := CLKS_PER_SEC / 1000;
+    constant CLKS_PER_US     : natural := CLKS_PER_MS  / 1000;
+    constant CLKS_PER_SEC_2  : natural := CLKS_PER_SEC / 2;
+    constant CLKS_PER_SEC_2N : integer := -CLKS_PER_SEC_2;
+
+    signal lead       : std_logic;
+    signal lag        : std_logic;
+    signal trig       : std_logic;
+    signal gt_half    : std_logic;
+    signal clr_diff   : std_logic;
+
+    signal diff_cnt   : std_logic_vector(31 downto 0);
+    signal pdiff      : std_logic_vector(31 downto 0);
+    signal fdiff      : std_logic_vector(31 downto 0);
 
 begin
 
@@ -145,7 +171,7 @@ begin
 
             if (pps_rst = '1') then
                 pps_cnt_term <= '0';
-            elsif (pps_cnt = (100000000 - 2)) then
+            elsif (pps_cnt = (CLKS_PER_SEC - 2)) then
                 pps_cnt_term <= '1';
             else
                 pps_cnt_term <= '0';
@@ -172,7 +198,7 @@ begin
 
             if (pps_cnt_term = '1' or pps_rst = '1') then
                 ppms_cnt_term <= '0';
-            elsif (ppms_cnt = (100000 - 2)) then
+            elsif (ppms_cnt = (CLKS_PER_MS - 2)) then
                 ppms_cnt_term <= '1';
             else
                 ppms_cnt_term <= '0';
@@ -199,7 +225,7 @@ begin
 
             if (pps_cnt_term = '1' or pps_rst = '1') then
                 ppus_cnt_term <= '0';
-            elsif (ppus_cnt = (100 - 2)) then
+            elsif (ppus_cnt = (CLKS_PER_US - 2)) then
                 ppus_cnt_term <= '1';
             else
                 ppus_cnt_term <= '0';
@@ -234,69 +260,191 @@ begin
     tsc_pfd_rst_i:  delay_pulse generic map (10) port map (rst_n, clk, pps_rst, pfd_rst);
     
 
-    -- Phase detector
-    tsc_phase:
+    -- Phase detector state machine register
+    tsc_pfd_st:
     process (rst_n, clk) is
     begin
         if (rst_n = '0') then
-            lead <= '0';
-            lag  <= '0';
-            trig <= '0';
+            curr_state <= pfd_idle;
         elsif (clk'event and clk = '1') then
-            trig <= '0';
-
-            -- Reset phase detector on sync
             if (pfd_rst = '1') then
-                lead <= '0';
-                lag  <= '0';
-                trig <= '0';
-            -- (lead & lag & tsc_1pps_pulse & gps_1pps_pulse)
-            -- 0010
-            elsif (lead = '0' and lag = '0' and
-                tsc_1pps_pulse = '1' and gps_1pps_pulse = '0' ) then
-                lead <= '1';
-            -- 1001
-            elsif (lead = '1' and lag = '0' and
-                   tsc_1pps_pulse = '0' and gps_1pps_pulse = '1' ) then
-                lead <= '0';
-                trig <= '1';
-
-            -- 0001
-            elsif (lead = '0' and lag = '0' and
-                   tsc_1pps_pulse = '0' and gps_1pps_pulse = '1' ) then
-                lag  <= '1';
-            -- 0110
-            elsif (lead = '0' and lag = '1' and
-                   tsc_1pps_pulse = '1' and gps_1pps_pulse = '0' ) then
-                lag  <= '0';
-                trig <= '1';
-
-            -- 0011
-            -- 0111
-            -- 1011
-            -- 1100
-            -- 1101
-            -- 1110
-            -- 1111
-            elsif ((lead = '1' and lag = '1') or 
-                   (tsc_1pps_pulse = '1' and gps_1pps_pulse = '1')) then
-                lead <= '0';
-                lag  <= '0';
-                trig <= '1';
+                curr_state <= pfd_sync;
+            else
+                curr_state <= next_state;
             end if;
-
-            -- 0000
-            -- 0100  Measure lag
-            -- 0101
-            -- 1000  Measure lead
-            -- 1010
         end if;
     end process;
 
 
+    -- Phase detector State diagram
+    -- Set difference to zero for missing pps
+    -- Automatically set the lead/lag phasing
+    tsc_pfd_next:
+    process (curr_state, tsc_1pps_pulse, gps_1pps_pulse, gt_half) is
+    begin
+        -- outputs
+        lead      <= '0';
+        lag       <= '0';
+        trig      <= '0';
+        clr_diff  <= '0';
+        
+        case curr_state is
+            -- ------------------------------------------------------------
+            -- ------------------------------------------------------------
+            -- Phase detector
+            -- Referenced to GPS PPS
+            -- Negative phase if TSC is before GPS
+
+            when pfd_idle =>
+                -- Idle state 
+                if (tsc_1pps_pulse = '1' and gps_1pps_pulse = '1') then
+                    next_state <= pfd_trig;
+                elsif (tsc_1pps_pulse = '1') then
+                    next_state <= pfd_lead;
+                elsif (gps_1pps_pulse = '1' ) then
+                    next_state <= pfd_lag;
+                else
+                    next_state <= pfd_idle;
+                end if;
+
+            when pfd_lead =>
+                -- Got tsc pps before gps
+
+                lead      <= '1'; -- Count down
+
+                if (tsc_1pps_pulse = '1') then
+                    -- Missing gps pps
+                    next_state <= pfd_sync;
+                elsif (gps_1pps_pulse = '1' ) then
+                    next_state <= pfd_trig;
+                else
+                    next_state <= pfd_lead;
+                end if;
+
+            when pfd_lag =>
+                -- Got gps pps before tsc
+
+                lag       <= '1'; -- Count up
+
+                if (gps_1pps_pulse = '1' ) then
+                    -- Missing tsc pps
+                    next_state <= pfd_sync;
+                elsif (tsc_1pps_pulse = '1') then
+                    next_state <= pfd_trig;
+                else
+                    next_state <= pfd_lag;
+                end if;
+
+            when pfd_trig =>
+                -- Set the holding register
+
+                trig      <= '1';
+
+                next_state <= pfd_idle;
+
+
+            -- ------------------------------------------------------------
+            -- ------------------------------------------------------------
+            -- Resync the phase detector
+
+            when pfd_sync =>
+                -- Resync the phase detector due to lost pulse or sw resync
+
+                clr_diff  <= '1';
+
+                if (tsc_1pps_pulse = '1' and gps_1pps_pulse = '1') then
+                    next_state <= pfd_idle;
+                elsif (tsc_1pps_pulse = '1') then
+                    next_state <= pfd_tsc;
+                elsif (gps_1pps_pulse = '1' ) then
+                    next_state <= pfd_gps;
+                else
+                    next_state <= pfd_sync;
+                end if;
+
+            -- ------------------------------------------------------------
+            -- tsc pulse detected first
+
+            when pfd_tsc =>
+                -- tsc pulse detected, measure time to gps pulse
+
+                lag       <= '1'; -- Count up
+
+                if (tsc_1pps_pulse = '1') then
+                    next_state <= pfd_sync;
+                elsif (gps_1pps_pulse = '1' ) then
+                    next_state <= pfd_det_gps;
+                else
+                    next_state <= pfd_tsc;
+                end if;
+
+            when pfd_det_gps =>
+                -- gps pulse detected, check tsc->gps time measurement
+
+                if (gt_half = '1' ) then
+                    next_state <= pfd_wait_gps;
+                else
+                    next_state <= pfd_idle;
+                end if;
+
+            when pfd_wait_gps =>
+                -- Wait for next gps pulse to restart measurement
+
+                if (tsc_1pps_pulse = '1' and gps_1pps_pulse = '1') then
+                    next_state <= pfd_idle;
+                elsif (gps_1pps_pulse = '1' ) then
+                    next_state <= pfd_gps;
+                else
+                    next_state <= pfd_wait_gps;
+                end if;
+
+            -- ------------------------------------------------------------
+            -- gps pulse detected first
+
+            when pfd_gps =>
+                -- gps pulse detected, measure time to tsc pulse
+
+                lag       <= '1'; -- Count up
+
+                if (gps_1pps_pulse = '1') then
+                    next_state <= pfd_sync;
+                elsif (tsc_1pps_pulse = '1' ) then
+                    next_state <= pfd_det_tsc;
+                else
+                    next_state <= pfd_gps;
+                end if;
+
+            when pfd_det_tsc =>
+                -- gps pulse detected, check gps->tsc time measurement
+
+                if (gt_half = '1' ) then
+                    next_state <= pfd_wait_tsc;
+                else
+                    next_state <= pfd_idle;
+                end if;
+
+            when pfd_wait_tsc =>
+                -- Wait for next tsc pulse to restart measurement
+
+                if (tsc_1pps_pulse = '1' and gps_1pps_pulse = '1') then
+                    next_state <= pfd_idle;
+                elsif (tsc_1pps_pulse = '1' ) then
+                    next_state <= pfd_tsc;
+                else
+                    next_state <= pfd_wait_tsc;
+                end if;
+
+            -- ------------------------------------------------------------
+            -- ------------------------------------------------------------
+            when others =>
+                next_state <= pfd_idle;
+        end case;
+
+    end process;
+
 
     -- Difference measurement between GPS and OCXO
-    tsc_meas:
+    tsc_ctrs:
     process (rst_n, clk) is
         variable diff_add : std_logic_vector(diff_cnt'left downto 0);
         variable diff_sub : std_logic_vector(diff_cnt'left downto 0);
@@ -305,13 +453,14 @@ begin
             diff_cnt    <= (others => '0');
             pdiff       <= (others => '0');
             fdiff       <= (others => '0');
+            gt_half     <= '0';
         elsif (clk'event and clk = '1') then
             diff_add  := diff_cnt + 1;
             diff_sub  := diff_cnt - 1;
 
-            if ((lead = '0' and lag = '0') or
-                (tsc_1pps_pulse = '1' and gps_1pps_pulse = '1')) then
+            if (lead = '0' and lag = '0') then
                 diff_cnt    <= (others => '0');
+                gt_half     <= '0';
             else
                 if (lag = '1') then
                     -- Saturate at 2^31-1
@@ -324,9 +473,16 @@ begin
                         diff_cnt    <= diff_sub(diff_cnt'range);
                     end if;                        
                 end if;
+                if (diff_cnt = CLKS_PER_SEC_2 or
+                    diff_cnt = conv_std_logic_vector(CLKS_PER_SEC_2N, diff_cnt'length)) then
+                    gt_half     <= '1';
+                end if;
             end if;
 
-            if (trig = '1') then
+            if (clr_diff = '1') then
+                pdiff       <= (others => '0');
+                fdiff       <= (others => '0');
+            elsif (trig = '1') then
                 pdiff       <= diff_cnt;
                 fdiff       <= diff_cnt - pdiff;
             end if;
