@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-06-28
--- Last update: 2017-05-26
+-- Last update: 2017-05-27
 -- Platform   : 
 -- Standard   : VHDL'87
 -------------------------------------------------------------------------------
@@ -49,9 +49,11 @@ architecture STRUCTURE of tsc_tb is
             gps_3dfix_d       : in    std_logic;
             tsc_read          : in    std_logic;
             tsc_sync          : in    std_logic;
+            pfd_resync        : in    std_logic;
             gps_1pps_d        : out   std_logic;
             tsc_1pps_d        : out   std_logic;
             pll_trig          : out   std_logic;
+            pfd_status        : out   std_logic;
 
             pdiff_1pps        : out   std_logic_vector(31 downto 0);
             fdiff_1pps        : out   std_logic_vector(31 downto 0);
@@ -72,9 +74,11 @@ architecture STRUCTURE of tsc_tb is
     SIGNAL gps_3dfix_d  : std_logic;
     SIGNAL tsc_read     : std_logic;
     SIGNAL tsc_sync     : std_logic;
+    SIGNAL pfd_resync   : std_logic;
     SIGNAL gps_1pps_d   : std_logic;
     SIGNAL tsc_1pps_d   : std_logic;
     SIGNAL pll_trig     : std_logic;
+    SIGNAL pfd_status   : std_logic;
 
     SIGNAL pdiff_1pps   : std_logic_vector(31 downto 0);
     SIGNAL fdiff_1pps   : std_logic_vector(31 downto 0);
@@ -98,9 +102,11 @@ begin
             gps_3dfix_d       => gps_3dfix_d,
             tsc_read          => tsc_read,
             tsc_sync          => tsc_sync,
+            pfd_resync        => pfd_resync,
             gps_1pps_d        => gps_1pps_d,
             tsc_1pps_d        => tsc_1pps_d,
             pll_trig          => pll_trig,
+            pfd_status        => pfd_status,
 
             pdiff_1pps        => pdiff_1pps,
             fdiff_1pps        => fdiff_1pps,
@@ -122,8 +128,9 @@ begin
 
     process
     begin
-        gps_1pps <= '0';
-        tsc_sync <= '0';
+        gps_1pps   <= '0';
+        tsc_sync   <= '0';
+        pfd_resync <= '0';
 
         run_clk(clk, 100000099);
         -- tsc pps pulse starts here

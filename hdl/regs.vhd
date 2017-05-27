@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    :
 -- Created    : 2016-03-13
--- Last update: 2017-01-03
+-- Last update: 2017-05-27
 -- Platform   :
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -52,9 +52,12 @@
 --
 -- 0x8060_0120 |               | 10 h  | 1 h   | 10 m  |  1 m  | 10 s  |  1 s  |
 --
--- 0x8060_0124 | |                   | |       |            DAC value          |
---              |                     |
---              GPS 3D Fix            Sync PFD and PLL
+-- 0x8060_0124 | |             | | | | |       |            DAC value          |
+--              |               |   | |
+--              GPS 3D Fix      |   | Sync clock
+--                              |   Sync PFD
+--                              |
+--                              PFD Status
 --
 -- 0x8060_0128 |                                                           | | |
 --                                                                          | |
@@ -175,9 +178,11 @@ entity regs is
         gps_1pps_d        : in    std_logic;
         tsc_1pps_d        : in    std_logic;
         pll_trig          : in    std_logic;
+        pfd_status        : in    std_logic;
         pdiff_1pps        : in    std_logic_vector(31 downto 0);
         fdiff_1pps        : in    std_logic_vector(31 downto 0);
         tsc_sync          : out   std_logic;
+        pfd_resync        : out   std_logic;
         dac_val           : out   std_logic_vector(15 downto 0);
         pps_irq           : out   std_logic;
         pll_irq           : out   std_logic;
@@ -381,6 +386,7 @@ begin
                     when "1001" =>
                         time_regs_mux <= time_regs(9);
                         time_regs_mux(31) <= gps_3dfix_d;
+                        time_regs_mux(23) <= pfd_status;
                     when "1010" =>
                         time_regs_mux <= time_regs(10);
                     when "1011" =>
@@ -512,6 +518,10 @@ begin
             if (gps_1pps_d = '1' and time_regs(9)(20) = '1') then
                 time_regs(9)(20) <= '0';
             end if;
+            -- Clear the pfd sync control when the PFD is in the sync state
+            if (pfd_status = '1') then
+                time_regs(9)(21) <= '0';
+            end if;
         end if;
     end process;
 
@@ -525,8 +535,9 @@ begin
     set_time.t_1h    <= time_regs(8)(19 downto 16);
     set_time.t_10h   <= time_regs(8)(23 downto 20);
 
-    dac_val  <= time_regs(9)(15 downto 0);
-    tsc_sync <= time_regs(9)(20);
+    dac_val    <= time_regs(9)(15 downto 0);
+    tsc_sync   <= time_regs(9)(20);
+    pfd_resync <= time_regs(9)(21);
 
 
     -- Fan control registers

@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-03-13
--- Last update: 2017-01-03
+-- Last update: 2017-05-27
 -- Platform   : 
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -180,9 +180,11 @@ architecture STRUCTURE of clock is
             gps_1pps_d        : in    std_logic;
             tsc_1pps_d        : in    std_logic;
             pll_trig          : in    std_logic;
+            pfd_status        : in    std_logic;
             pdiff_1pps        : in    std_logic_vector(31 downto 0);
             fdiff_1pps        : in    std_logic_vector(31 downto 0);
             tsc_sync          : out   std_logic;
+            pfd_resync        : out   std_logic;
             dac_val           : out   std_logic_vector(15 downto 0);
             pps_irq           : out   std_logic;
             pll_irq           : out   std_logic;
@@ -229,9 +231,11 @@ architecture STRUCTURE of clock is
             gps_3dfix_d       : in    std_logic;
             tsc_read          : in    std_logic;
             tsc_sync          : in    std_logic;
+            pfd_resync        : in    std_logic;
             gps_1pps_d        : out   std_logic;
             tsc_1pps_d        : out   std_logic;
             pll_trig          : out   std_logic;
+            pfd_status        : out   std_logic;
 
             pdiff_1pps        : out   std_logic_vector(31 downto 0);
             fdiff_1pps        : out   std_logic_vector(31 downto 0);
@@ -376,9 +380,11 @@ architecture STRUCTURE of clock is
     signal gps_3dfix_d     : std_logic;
     signal tsc_read        : std_logic;
     signal tsc_sync        : std_logic;
+    SIGNAL pfd_resync      : std_logic;
     signal gps_1pps_d      : std_logic;
     SIGNAL tsc_1pps_d      : std_logic;
     SIGNAL pll_trig        : std_logic;
+    SIGNAL pfd_status      : std_logic;
 
     SIGNAL pdiff_1pps      : std_logic_vector(31 downto 0);
     SIGNAL fdiff_1pps      : std_logic_vector(31 downto 0);
@@ -599,9 +605,11 @@ begin
             gps_1pps_d        => gps_1pps_d,
             tsc_1pps_d        => tsc_1pps_d,
             pll_trig          => pll_trig,
+            pfd_status        => pfd_status,
             pdiff_1pps        => pdiff_1pps,
             fdiff_1pps        => fdiff_1pps,
             tsc_sync          => tsc_sync,
+            pfd_resync        => pfd_resync,
             dac_val           => dac_val,
             pps_irq           => irq(1),
             pll_irq           => irq(2),
@@ -647,9 +655,11 @@ begin
             gps_3dfix_d       => gps_3dfix_d,
             tsc_read          => tsc_read,
             tsc_sync          => tsc_sync,
+            pfd_resync        => pfd_resync,
             gps_1pps_d        => gps_1pps_d,
             tsc_1pps_d        => tsc_1pps_d,
             pll_trig          => pll_trig,
+            pfd_status        => pfd_status,
 
             pdiff_1pps        => pdiff_1pps,
             fdiff_1pps        => fdiff_1pps,

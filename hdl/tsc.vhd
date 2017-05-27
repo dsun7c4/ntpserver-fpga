@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-04-29
--- Last update: 2017-05-26
+-- Last update: 2017-05-27
 -- Platform   : 
 -- Standard   : VHDL'87
 -------------------------------------------------------------------------------
@@ -37,9 +37,11 @@ entity tsc is
       gps_3dfix_d       : in    std_logic;
       tsc_read          : in    std_logic;
       tsc_sync          : in    std_logic;
+      pfd_resync        : in    std_logic;
       gps_1pps_d        : out   std_logic;
       tsc_1pps_d        : out   std_logic;
       pll_trig          : out   std_logic;
+      pfd_status        : out   std_logic;
 
       pdiff_1pps        : out   std_logic_vector(31 downto 0);
       fdiff_1pps        : out   std_logic_vector(31 downto 0);
@@ -71,7 +73,6 @@ architecture rtl of tsc is
     signal gps_1pps_pulse : std_logic;
 
     signal pps_rst        : std_logic;
-    signal pfd_rst        : std_logic;
     signal tsc_1pps_pulse : std_logic;
 
     type pfd_t is (pfd_idle,
@@ -102,6 +103,8 @@ architecture rtl of tsc is
     signal trig       : std_logic;
     signal gt_half    : std_logic;
     signal clr_diff   : std_logic;
+    signal clr_status : std_logic;
+    signal set_status : std_logic;
 
     signal diff_cnt   : std_logic_vector(31 downto 0);
     signal pdiff      : std_logic_vector(31 downto 0);
@@ -257,7 +260,6 @@ begin
 
     -- Delay the ocxo 1pps pulse approximately the same amount as the gps 1pps
     tsc_pps_i:  delay_sig generic map (3) port map (rst_n, clk, pps_cnt_term, tsc_1pps_pulse);
-    tsc_pfd_rst_i:  delay_pulse generic map (10) port map (rst_n, clk, pps_rst, pfd_rst);
     
 
     -- Phase detector state machine register
@@ -267,11 +269,7 @@ begin
         if (rst_n = '0') then
             curr_state <= pfd_idle;
         elsif (clk'event and clk = '1') then
-            if (pfd_rst = '1') then
-                curr_state <= pfd_sync;
-            else
-                curr_state <= next_state;
-            end if;
+            curr_state <= next_state;
         end if;
     end process;
 
@@ -280,13 +278,15 @@ begin
     -- Set difference to zero for missing pps
     -- Automatically set the lead/lag phasing
     tsc_pfd_next:
-    process (curr_state, tsc_1pps_pulse, gps_1pps_pulse, gt_half) is
+    process (curr_state, tsc_1pps_pulse, gps_1pps_pulse, pfd_resync, gt_half) is
     begin
         -- outputs
-        lead      <= '0';
-        lag       <= '0';
-        trig      <= '0';
-        clr_diff  <= '0';
+        lead       <= '0';
+        lag        <= '0';
+        trig       <= '0';
+        clr_diff   <= '0';
+        clr_status <= '0';
+        set_status <= '0';
         
         case curr_state is
             -- ------------------------------------------------------------
@@ -297,12 +297,17 @@ begin
 
             when pfd_idle =>
                 -- Idle state 
+
+                clr_status <= '1';
+
                 if (tsc_1pps_pulse = '1' and gps_1pps_pulse = '1') then
                     next_state <= pfd_trig;
                 elsif (tsc_1pps_pulse = '1') then
                     next_state <= pfd_lead;
                 elsif (gps_1pps_pulse = '1' ) then
                     next_state <= pfd_lag;
+                elsif (pfd_resync = '1') then
+                    next_state <= pfd_sync;
                 else
                     next_state <= pfd_idle;
                 end if;
@@ -310,7 +315,7 @@ begin
             when pfd_lead =>
                 -- Got tsc pps before gps
 
-                lead      <= '1'; -- Count down
+                lead       <= '1'; -- Count down
 
                 if (tsc_1pps_pulse = '1') then
                     -- Missing gps pps
@@ -324,7 +329,7 @@ begin
             when pfd_lag =>
                 -- Got gps pps before tsc
 
-                lag       <= '1'; -- Count up
+                lag        <= '1'; -- Count up
 
                 if (gps_1pps_pulse = '1' ) then
                     -- Missing tsc pps
@@ -338,7 +343,7 @@ begin
             when pfd_trig =>
                 -- Set the holding register
 
-                trig      <= '1';
+                trig       <= '1';
 
                 next_state <= pfd_idle;
 
@@ -350,7 +355,8 @@ begin
             when pfd_sync =>
                 -- Resync the phase detector due to lost pulse or sw resync
 
-                clr_diff  <= '1';
+                clr_diff   <= '1';
+                set_status <= '1';
 
                 if (tsc_1pps_pulse = '1' and gps_1pps_pulse = '1') then
                     next_state <= pfd_idle;
@@ -368,7 +374,7 @@ begin
             when pfd_tsc =>
                 -- tsc pulse detected, measure time to gps pulse
 
-                lag       <= '1'; -- Count up
+                lag        <= '1'; -- Count up
 
                 if (tsc_1pps_pulse = '1') then
                     next_state <= pfd_sync;
@@ -404,7 +410,7 @@ begin
             when pfd_gps =>
                 -- gps pulse detected, measure time to tsc pulse
 
-                lag       <= '1'; -- Count up
+                lag        <= '1'; -- Count up
 
                 if (gps_1pps_pulse = '1') then
                     next_state <= pfd_sync;
@@ -497,4 +503,20 @@ begin
     fdiff_1pps <= fdiff;
 
     
+    -- PFD sync state status register
+    tsc_pfd_status:
+    process (rst_n, clk) is
+    begin
+        if (rst_n = '0') then
+            pfd_status <= '0';
+        elsif (clk'event and clk = '1') then
+            if (clr_status = '1') then
+                pfd_status <= '0';
+            elsif (set_status = '1') then
+                pfd_status <= '1';
+            end if;
+        end if;
+    end process;
+
+
 end rtl;
