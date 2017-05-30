@@ -68,6 +68,10 @@ compile : .compile.done
 .compile.done : .setup.done
 	vivado -mode batch -source scripts/compile.tcl -log compile.log -jou compile.jou
 
+fsbl:
+	${MAKE} -C fsbl
+
+
 # delete everything except this Makefile
 clean :	
 	rm -f $(VER_SRC)
@@ -90,3 +94,6 @@ check:
 	@echo "XLX_XDC     = $(XLX_XDC)"
 	@echo "XLX_IP      = $(XLX_IP)"
 	@echo "XLX_IP_SIM  = $(XLX_IP_SIM)"
+
+
+.PHONY: fsbl

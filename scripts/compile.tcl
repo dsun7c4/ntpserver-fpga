@@ -12,3 +12,7 @@ wait_on_run impl_1
 
 # If successful, "touch" a file so the make utility will know it's done 
 touch {.compile.done}
+
+# Export the hardware definition file for the SDK to make the FSBL
+write_hwdef -force  -file ./fsbl/clock.hdf
+
