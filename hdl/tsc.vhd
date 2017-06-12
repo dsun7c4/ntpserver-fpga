@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-04-29
--- Last update: 2017-05-27
+-- Last update: 2017-06-08
 -- Platform   : 
 -- Standard   : VHDL'87
 -------------------------------------------------------------------------------
@@ -73,6 +73,7 @@ architecture rtl of tsc is
     signal gps_1pps_pulse : std_logic;
 
     signal pps_rst        : std_logic;
+    signal tsc_1pps_dly   : std_logic_vector(2 downto 0);
     signal tsc_1pps_pulse : std_logic;
 
     type pfd_t is (pfd_idle,
@@ -243,23 +244,35 @@ begin
 
 
     -- GPS 1 pulse per second input register
-    tsc_gps_ireg:
+    -- Delay the ocxo 1pps pulse approximately the same amount as the gps 1pps
+    tsc_pps_delay:
     process (rst_n, clk) is
     begin
         if (rst_n = '0') then
             gps_1pps_dly   <= (others => '0');
             gps_1pps_pulse <= '0';
+            tsc_1pps_dly   <= (others => '0');
+            tsc_1pps_pulse <= '0';
         elsif (clk'event and clk = '1') then
             gps_1pps_dly(0) <= gps_1pps;
             gps_1pps_dly(1) <= gps_1pps_dly(0);
             gps_1pps_dly(2) <= gps_1pps_dly(1);
             gps_1pps_pulse  <= not gps_1pps_dly(2) and gps_1pps_dly(1);
+
+            if (pps_rst = '1') then
+                tsc_1pps_dly   <= (others => '0');
+                tsc_1pps_pulse <= '0';
+            else
+                tsc_1pps_dly(0) <= pps_cnt_term;
+                tsc_1pps_dly(1) <= tsc_1pps_dly(0);
+                tsc_1pps_dly(2) <= tsc_1pps_dly(1);
+                tsc_1pps_pulse  <= tsc_1pps_dly(1);
+            end if;
         end if;
     end process;
 
-
-    -- Delay the ocxo 1pps pulse approximately the same amount as the gps 1pps
-    tsc_pps_i:  delay_sig generic map (3) port map (rst_n, clk, pps_cnt_term, tsc_1pps_pulse);
+    gps_1pps_d <= gps_1pps_pulse;
+    tsc_1pps_d <= tsc_1pps_pulse;
     
 
     -- Phase detector state machine register
@@ -317,7 +330,7 @@ begin
 
                 lead       <= '1'; -- Count down
 
-                if (tsc_1pps_pulse = '1') then
+                if (tsc_1pps_pulse = '1' or gt_half = '1') then
                     -- Missing gps pps
                     next_state <= pfd_sync;
                 elsif (gps_1pps_pulse = '1' ) then
@@ -331,7 +344,7 @@ begin
 
                 lag        <= '1'; -- Count up
 
-                if (gps_1pps_pulse = '1' ) then
+                if (gps_1pps_pulse = '1' or gt_half = '1') then
                     -- Missing tsc pps
                     next_state <= pfd_sync;
                 elsif (tsc_1pps_pulse = '1') then
@@ -448,43 +461,46 @@ begin
 
     end process;
 
+    pll_trig   <= trig;
+
 
     -- Difference measurement between GPS and OCXO
     tsc_ctrs:
     process (rst_n, clk) is
-        variable diff_add : std_logic_vector(diff_cnt'left downto 0);
-        variable diff_sub : std_logic_vector(diff_cnt'left downto 0);
     begin
         if (rst_n = '0') then
             diff_cnt    <= (others => '0');
-            pdiff       <= (others => '0');
-            fdiff       <= (others => '0');
             gt_half     <= '0';
         elsif (clk'event and clk = '1') then
-            diff_add  := diff_cnt + 1;
-            diff_sub  := diff_cnt - 1;
-
             if (lead = '0' and lag = '0') then
                 diff_cnt    <= (others => '0');
                 gt_half     <= '0';
             else
                 if (lag = '1') then
-                    -- Saturate at 2^31-1
-                    if (diff_add(diff_add'left) = '0') then
-                        diff_cnt    <= diff_add(diff_cnt'range);
-                    end if;
+                    diff_cnt    <= diff_cnt + 1;
                 elsif (lead = '1') then
-                    -- Saturate at -2^31
-                    if (diff_sub(diff_sub'left) = '1') then
-                        diff_cnt    <= diff_sub(diff_cnt'range);
-                    end if;                        
+                    diff_cnt    <= diff_cnt - 1;
                 end if;
+
                 if (diff_cnt = CLKS_PER_SEC_2 or
                     diff_cnt = conv_std_logic_vector(CLKS_PER_SEC_2N, diff_cnt'length)) then
                     gt_half     <= '1';
                 end if;
             end if;
+        end if;
+    end process;
 
+
+    -- Count output for micro registers
+    -- PFD sync state status register
+    tsc_pfd_status:
+    process (rst_n, clk) is
+    begin
+        if (rst_n = '0') then
+            pdiff       <= (others => '0');
+            fdiff       <= (others => '0');
+            pfd_status  <= '0';
+        elsif (clk'event and clk = '1') then
             if (clr_diff = '1') then
                 pdiff       <= (others => '0');
                 fdiff       <= (others => '0');
@@ -492,31 +508,17 @@ begin
                 pdiff       <= diff_cnt;
                 fdiff       <= diff_cnt - pdiff;
             end if;
-        end if;
-    end process;
 
-
-    gps_1pps_d <= gps_1pps_pulse;
-    tsc_1pps_d <= tsc_1pps_pulse;
-    pll_trig   <= trig;
-    pdiff_1pps <= pdiff;
-    fdiff_1pps <= fdiff;
-
-    
-    -- PFD sync state status register
-    tsc_pfd_status:
-    process (rst_n, clk) is
-    begin
-        if (rst_n = '0') then
-            pfd_status <= '0';
-        elsif (clk'event and clk = '1') then
             if (clr_status = '1') then
-                pfd_status <= '0';
+                pfd_status  <= '0';
             elsif (set_status = '1') then
-                pfd_status <= '1';
+                pfd_status  <= '1';
             end if;
         end if;
     end process;
+
+    pdiff_1pps <= pdiff;
+    fdiff_1pps <= fdiff;
 
 
 end rtl;
