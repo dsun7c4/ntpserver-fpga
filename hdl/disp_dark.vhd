@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-05-19
--- Last update: 2016-08-12
+-- Last update: 2017-06-17
 -- Platform   : 
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -34,10 +34,12 @@ entity disp_dark is
       clk               : in    std_logic;
 
       tsc_1ppus         : in    std_logic;
+      status            : in    std_logic;
 
       disp_pdm          : in    std_logic_vector(7 downto 0);
 
-      disp_blank        : OUT   std_logic
+      disp_blank        : OUT   std_logic;
+      disp_status       : OUT   std_logic
 
   );
 end disp_dark;
@@ -51,6 +53,9 @@ architecture rtl of disp_dark is
     signal pdm_on      : std_logic;
     signal pdm_cnt     : std_logic_vector(7 downto 0);
     signal pdm_term    : std_logic;
+    signal pdm_status  : std_logic;
+
+
     
 begin
 
@@ -103,5 +108,7 @@ begin
 
     -- Final output register
     disp_oreg: delay_sig generic map (1) port map (rst_n, clk, pdm_term, disp_blank);
+    pdm_status <= pdm_term and status;
+    disp_status_oreg: delay_sig generic map (1) port map (rst_n, clk, pdm_status, disp_status);
 
 end rtl;

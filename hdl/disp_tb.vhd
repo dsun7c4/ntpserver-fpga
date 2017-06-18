@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-05-19
--- Last update: 2016-08-22
+-- Last update: 2017-06-17
 -- Platform   : 
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -67,7 +67,8 @@ architecture STRUCTURE of disp_tb is
             disp_sclk         : OUT   std_logic;
             disp_blank        : OUT   std_logic;
             disp_lat          : OUT   std_logic;
-            disp_sin          : OUT   std_logic
+            disp_sin          : OUT   std_logic;
+            disp_status       : OUT   std_logic
 
             );
     end component;
@@ -97,6 +98,7 @@ architecture STRUCTURE of disp_tb is
     SIGNAL disp_blank   : std_logic;
     SIGNAL disp_lat     : std_logic;
     SIGNAL disp_sin     : std_logic;
+    SIGNAL disp_status  : std_logic;
 
 begin
 
@@ -127,7 +129,8 @@ begin
             disp_sclk         => disp_sclk,
             disp_blank        => disp_blank,
             disp_lat          => disp_lat,
-            disp_sin          => disp_sin
+            disp_sin          => disp_sin,
+            disp_status       => disp_status
             );
 
 

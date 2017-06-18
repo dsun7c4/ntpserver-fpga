@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-03-22
--- Last update: 2016-08-17
+-- Last update: 2017-06-17
 -- Platform   : 
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -80,6 +80,8 @@ architecture STRUCTURE of clock_tb is
 
             rtc_scl           : INOUT std_logic;
             rtc_sda           : INOUT std_logic;
+            rtc_32khz         : IN    std_logic;
+            rtc_int_n         : IN    std_logic;
 
             ocxo_ena          : INOUT std_logic;
             ocxo_clk          : IN    std_logic;
@@ -98,6 +100,8 @@ architecture STRUCTURE of clock_tb is
 
             temp_scl          : INOUT std_logic;
             temp_sda          : INOUT std_logic;
+            temp_int1_n       : IN    std_logic;
+            temp_int2_n       : IN    std_logic;
 
             disp_sclk         : OUT   std_logic;
             disp_blank        : OUT   std_logic;
@@ -141,6 +145,8 @@ architecture STRUCTURE of clock_tb is
 
     SIGNAL rtc_scl      : std_logic;
     SIGNAL rtc_sda      : std_logic;
+    SIGNAL rtc_32khz    : std_logic;
+    SIGNAL rtc_int_n    : std_logic;
 
     SIGNAL ocxo_ena     : std_logic;
     SIGNAL ocxo_clk     : std_logic;
@@ -159,6 +165,8 @@ architecture STRUCTURE of clock_tb is
 
     SIGNAL temp_scl     : std_logic;
     SIGNAL temp_sda     : std_logic;
+    SIGNAL temp_int1_n  : std_logic;
+    SIGNAL temp_int2_n  : std_logic;
 
     SIGNAL disp_sclk    : std_logic;
     SIGNAL disp_blank   : std_logic;
@@ -203,6 +211,8 @@ begin
 
             rtc_scl           => rtc_scl,
             rtc_sda           => rtc_sda,
+            rtc_32khz         => rtc_32khz,
+            rtc_int_n         => rtc_int_n,
 
             ocxo_ena          => ocxo_ena,
             ocxo_clk          => ocxo_clk,
@@ -221,6 +231,8 @@ begin
 
             temp_scl          => temp_scl,
             temp_sda          => temp_sda,
+            temp_int1_n       => temp_int1_n,
+            temp_int2_n       => temp_int2_n,
 
             disp_sclk         => disp_sclk,
             disp_blank        => disp_blank,
@@ -295,11 +307,13 @@ begin
     end process;
 
 
-    gps_3dfix <= '0';
-    gps_rxd   <= '0';
-    Vp_Vn_v_n <= '0';
-    Vp_Vn_v_p <= '0';
-
+    gps_3dfix   <= '0';
+    gps_rxd     <= '0';
+    Vp_Vn_v_n   <= '0';
+    Vp_Vn_v_p   <= '0';
+    rtc_int_n   <= '1';
+    temp_int1_n <= '1';
+    temp_int2_n <= '1';
 
 
 end STRUCTURE;
