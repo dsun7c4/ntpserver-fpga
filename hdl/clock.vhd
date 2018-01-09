@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-03-13
--- Last update: 2017-05-27
+-- Last update: 2017-06-17
 -- Platform   : 
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -311,7 +311,8 @@ architecture STRUCTURE of clock is
             disp_sclk         : out   std_logic;
             disp_blank        : out   std_logic;
             disp_lat          : out   std_logic;
-            disp_sin          : out   std_logic
+            disp_sin          : out   std_logic;
+            disp_status       : OUT   std_logic
             );
     end component;
 
@@ -373,6 +374,10 @@ architecture STRUCTURE of clock is
 
     signal clk             : std_logic;
     signal locked          : std_logic;
+
+    signal rtc_int_n_d     : std_logic;
+    signal temp_int1_n_d   : std_logic;
+    signal temp_int2_n_d   : std_logic;
 
     signal fan_pct         : std_logic_vector(7 downto 0);
     signal fan_uspr        : std_logic_vector(19 downto 0);
@@ -549,11 +554,14 @@ begin
 
 
     -- Interrupts, clock domain transfer to cpu clock domain
-    irq_i : delay_vec generic map (2) port map (fclk_rst_n, fclk, irq, int);
-    irq(0) <= '0';    -- RTC
+    rtc_irq   : delay_sig generic map (1, '1') port map (fclk_rst_n, fclk, rtc_int_n, rtc_int_n_d);
+    temp_irq1 : delay_sig generic map (1, '1') port map (fclk_rst_n, fclk, temp_int1_n, temp_int1_n_d);
+    temp_irq2 : delay_sig generic map (1, '1') port map (fclk_rst_n, fclk, temp_int2_n, temp_int2_n_d);
+    irq(0) <= not rtc_int_n_d;    -- RTC
     --irq(1) <= '0';    -- 1pps
     --irq(2) <= '0';    -- PLL
-    irq(3) <= '0';    -- Spare
+    irq(3) <= not temp_int1_n_d or not temp_int2_n_d;    -- temp sensors
+    irq_i     : delay_vec generic map (2) port map (fclk_rst_n, fclk, irq, int);
 
     clk_sel <= '0';
 
@@ -731,7 +739,8 @@ begin
             disp_sclk         => disp_sclk,
             disp_blank        => disp_blank,
             disp_lat          => disp_lat,
-            disp_sin          => disp_sin
+            disp_sin          => disp_sin,
+            disp_status       => disp_status
             );
 
 

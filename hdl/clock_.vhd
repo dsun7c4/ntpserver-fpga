@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-03-13
--- Last update: 2016-08-17
+-- Last update: 2017-06-17
 -- Platform   : 
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -55,6 +55,8 @@ entity clock is
 
       rtc_scl           : INOUT std_logic;
       rtc_sda           : INOUT std_logic;
+      rtc_32khz         : IN    std_logic;
+      rtc_int_n         : IN    std_logic;
 
       ocxo_ena          : INOUT std_logic;
       ocxo_clk          : IN    std_logic;
@@ -73,11 +75,14 @@ entity clock is
 
       temp_scl          : INOUT std_logic;
       temp_sda          : INOUT std_logic;
+      temp_int1_n       : IN    std_logic;
+      temp_int2_n       : IN    std_logic;
 
       disp_sclk         : OUT   std_logic;
       disp_blank        : OUT   std_logic;
       disp_lat          : OUT   std_logic;
       disp_sin          : OUT   std_logic;
+      disp_status       : OUT   std_logic;
 
       fan_tach          : IN    std_logic;
       fan_pwm           : OUT   std_logic;
