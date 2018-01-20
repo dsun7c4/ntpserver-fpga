@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-05-14
--- Last update: 2017-06-17
+-- Last update: 2018-01-20
 -- Platform   : 
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -39,6 +39,8 @@ entity disp is
 
       disp_ena          : in    std_logic;
       disp_pdm          : in    std_logic_vector(7 downto 0);
+      stat_src          : in    std_logic_vector(3 downto 0);
+      stat              : in    std_logic_vector(15 downto 0);
       dp                : in    std_logic_vector(31 downto 0);
 
       -- Display memory
@@ -105,7 +107,8 @@ architecture rtl of disp is
             clk               : in    std_logic;
 
             tsc_1ppus         : in    std_logic;
-            status            : in    std_logic;
+            stat_src          : in    std_logic_vector(3 downto 0);
+            stat              : in    std_logic_vector(15 downto 0);
 
             disp_pdm          : in    std_logic_vector(7 downto 0);
 
@@ -183,7 +186,8 @@ begin
             clk               => clk,
 
             tsc_1ppus         => tsc_1ppus,
-            status            => dp(31),
+            stat_src          => stat_src,
+            stat              => stat,
 
             disp_pdm          => disp_pdm,
 

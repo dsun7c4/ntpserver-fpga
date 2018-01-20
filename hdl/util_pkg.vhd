@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-04-26
--- Last update: 2016-08-17
+-- Last update: 2018-01-20
 -- Platform   : 
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -67,6 +67,19 @@ package util_pkg is
             signal q : out std_logic
             );
     end component delay_pulse;
+                        
+    component pulse_stretch
+        generic (
+            cycles : in natural := 0
+            );
+        port (
+            signal rst_n : in std_logic;
+            signal clk   : in std_logic;
+
+            signal d : in  std_logic;
+            signal q : out std_logic
+            );
+    end component pulse_stretch;
                         
     function log2(i : in natural) return natural;
 
@@ -294,6 +307,72 @@ begin
                 if (dly = 1 and d = '0') then
                     q <= '1';
                 else
+                    q <= '0';
+                end if;
+            end if;
+        end process;
+
+    end generate;
+
+end rtl;
+
+
+
+
+-- ----------------------------------------------------------------------
+-- ----------------------------------------------------------------------
+-- ----------------------------------------------------------------------
+
+
+library IEEE;
+
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.STD_LOGIC_UNSIGNED.ALL;
+use IEEE.STD_LOGIC_ARITH.ALL;
+
+use work.util_pkg.all;
+
+entity pulse_stretch is
+    generic (
+        cycles : in natural := 0
+        );
+    port (
+        signal rst_n : in std_logic;
+        signal clk   : in std_logic;
+
+        signal d : in  std_logic;
+        signal q : out std_logic
+        );
+end pulse_stretch;
+
+
+architecture rtl of pulse_stretch is
+begin
+
+    lt_1:
+    if (cycles < 1) generate
+    begin
+
+        d_s: delay_sig generic map (1) port map (rst_n, clk, d, q);
+
+    end generate;
+
+
+    ge_1:
+    if (cycles >= 1) generate
+        signal clear : std_logic;
+    begin
+
+        d_s: delay_pulse generic map (cycles + 1) port map (rst_n, clk, d, clear);
+
+        process (rst_n, clk)
+        begin
+            if (rst_n = '0') then
+                q <= '0';
+            elsif (clk'event and clk = '1') then
+                if (d = '1') then
+                    q <= '1';
+                elsif (clear = '1') then
                     q <= '0';
                 end if;
             end if;

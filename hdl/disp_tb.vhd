@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-05-19
--- Last update: 2017-06-17
+-- Last update: 2018-01-20
 -- Platform   : 
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -52,6 +52,8 @@ architecture STRUCTURE of disp_tb is
 
             disp_ena          : in    std_logic;
             disp_pdm          : in    std_logic_vector(7 downto 0);
+            stat_src          : in    std_logic_vector(3 downto 0);
+            stat              : in    std_logic_vector(15 downto 0);
             dp                : in    std_logic_vector(31 downto 0);
 
             -- Display memory
@@ -82,6 +84,8 @@ architecture STRUCTURE of disp_tb is
 
     SIGNAL disp_ena     : std_logic;
     SIGNAL disp_pdm     : std_logic_vector(7 downto 0);
+    SIGNAL stat_src     : std_logic_vector(3 downto 0);
+    SIGNAL stat         : std_logic_vector(15 downto 0);
     SIGNAL dp           : std_logic_vector(31 downto 0);
 
       -- Display memory
@@ -114,6 +118,8 @@ begin
 
             disp_ena          => disp_ena,
             disp_pdm          => disp_pdm,
+            stat_src          => stat_src,
+            stat              => stat,
             dp                => dp,
 
             -- Display memory
@@ -258,6 +264,8 @@ begin
         sram_addr      <= (others => '0');
         sram_we        <= '0';
         sram_datao     <= (others => '0');
+        stat_src       <= (others => '0');
+        stat           <= (others => '0');
 
         cur_time.t_1ms          <= (others => '0');
         cur_time.t_10ms         <= (others => '0');

@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-03-13
--- Last update: 2017-06-17
+-- Last update: 2018-01-20
 -- Platform   : 
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -200,6 +200,7 @@ architecture STRUCTURE of clock is
             sram_datai        : in    std_logic_vector(31 downto 0);
 
             dp                : out   std_logic_vector(31 downto 0);
+            stat_src          : out   std_logic_vector(3 downto 0);
             disp_pdm          : out   std_logic_vector(7 downto 0)
             );
     end component regs;
@@ -296,6 +297,8 @@ architecture STRUCTURE of clock is
 
             disp_ena          : in    std_logic;
             disp_pdm          : in    std_logic_vector(7 downto 0);
+            stat_src          : in    std_logic_vector(3 downto 0);
+            stat              : in    std_logic_vector(15 downto 0);
             dp                : in    std_logic_vector(31 downto 0);
 
             -- Display memory
@@ -405,7 +408,7 @@ architecture STRUCTURE of clock is
 
     signal dac_val         : std_logic_vector(15 downto 0);
 
-    SIGNAL cur_time        : time_ty;
+    signal cur_time        : time_ty;
 
     signal sram_addr       : std_logic_vector(9 downto 0);
     signal sram_we         : std_logic;
@@ -413,6 +416,7 @@ architecture STRUCTURE of clock is
     signal sram_datai      : std_logic_vector(31 downto 0);
 
     signal dp              : std_logic_vector(31 downto 0);
+    signal stat_src        : std_logic_vector(3 downto 0);
     signal disp_pdm        : std_logic_vector(7 downto 0);
 
 begin
@@ -633,6 +637,7 @@ begin
             sram_datai        => sram_datai,
 
             dp                => dp,
+            stat_src          => stat_src,
             disp_pdm          => disp_pdm
 
             );
@@ -724,6 +729,14 @@ begin
 
             disp_ena          => disp_ena,
             disp_pdm          => disp_pdm,
+            stat_src          => stat_src,
+            stat(0)           => dp(31),
+            stat(1)           => gps_3dfix_d,
+            stat(2)           => gps_1pps_d,
+            stat(3)           => tsc_1pps_d,
+            stat(4)           => pll_trig,
+            stat(5)           => pfd_status,
+            stat(15 downto 6) => (others => '0'),
             dp                => dp,
 
             -- Display memory

@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    :
 -- Created    : 2016-03-13
--- Last update: 2017-05-27
+-- Last update: 2018-01-20
 -- Platform   :
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -93,7 +93,7 @@
 --             | 3 |         2         |         1         |         0         |
 --             |1|0|9|8|7|6|5|4|3|2|1|0|9|8|7|6|5|4|3|2|1|0|9|8|7|6|5|4|3|2|1|0|
 --
--- 0x8060_0300 |                                               |    disp pdm   |
+-- 0x8060_0300 |                                       | stat  |    disp pdm   |
 --
 -- 0x8060_0304 |      Decimal point      ...    f e d c b a 9 8 7 6 5 4 3 2 1 0|
 --
@@ -198,6 +198,7 @@ entity regs is
         sram_datai        : in    std_logic_vector(31 downto 0);
 
         dp                : out   std_logic_vector(31 downto 0);
+        stat_src          : out   std_logic_vector(3 downto 0);
         disp_pdm          : out   std_logic_vector(7 downto 0)
         );
 end regs;
@@ -592,6 +593,7 @@ begin
     end process;
 
     disp_pdm <= disp_regs(0)(7 downto 0);
+    stat_src <= disp_regs(0)(11 downto 8);
     dp       <= disp_regs(1);
 
 

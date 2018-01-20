@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-08-11
--- Last update: 2016-08-12
+-- Last update: 2018-01-20
 -- Platform   : 
 -- Standard   : VHDL'87
 -------------------------------------------------------------------------------
@@ -56,6 +56,7 @@ architecture STRUCTURE of util_pkg_tb is
     SIGNAL q_vec        : vec_arr(31 downto 0);
     SIGNAL q_sig        : std_logic_vector(31 downto 0);
     SIGNAL q_pulse      : std_logic_vector(31 downto 0);
+    SIGNAL q_stretch    : std_logic_vector(31 downto 0);
 
 
 
@@ -99,9 +100,10 @@ begin
 
     tests:
     for i in 0 to 31 generate
-        s: delay_sig   generic map (i) port map (rst_n, clk, d,     q_sig(i));
-        v: delay_vec   generic map (i) port map (rst_n, clk, d_vec, q_vec(i));
-        p: delay_pulse generic map (i) port map (rst_n, clk, d,     q_pulse(i));
+        s:  delay_sig     generic map (i) port map (rst_n, clk, d,     q_sig(i));
+        v:  delay_vec     generic map (i) port map (rst_n, clk, d_vec, q_vec(i));
+        p:  delay_pulse   generic map (i) port map (rst_n, clk, d,     q_pulse(i));
+        st: pulse_stretch generic map (i) port map (rst_n, clk, d,     q_stretch(i));
     end generate;
     
 

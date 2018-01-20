@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-05-19
--- Last update: 2017-06-17
+-- Last update: 2018-01-20
 -- Platform   : 
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -34,7 +34,8 @@ entity disp_dark is
       clk               : in    std_logic;
 
       tsc_1ppus         : in    std_logic;
-      status            : in    std_logic;
+      stat_src          : in    std_logic_vector(3 downto 0);
+      stat              : in    std_logic_vector(15 downto 0);
 
       disp_pdm          : in    std_logic_vector(7 downto 0);
 
@@ -55,6 +56,8 @@ architecture rtl of disp_dark is
     signal pdm_term    : std_logic;
     signal pdm_status  : std_logic;
 
+    signal status_mux  : std_logic;
+    signal status      : std_logic;
 
     
 begin
@@ -87,7 +90,7 @@ begin
     end process;
 
     
-    -- Pulse width modulator counter
+    -- Pulse width modulator counter 512uS cycle
     disp_pdmcnt:
     process (rst_n, clk) is
         variable pdm_sum : std_logic_vector(8 downto 0);
@@ -106,9 +109,22 @@ begin
     end process;
 
 
+    -- Status LED mux, generate minimum 10 mS pulse for status
+    disp_stat_sel:
+    process (rst_n, clk) is
+    begin
+        if (rst_n = '0') then
+            status_mux <= '0';
+        elsif (clk'event and clk = '1') then
+            status_mux <= stat(conv_integer(stat_src));
+        end if;
+    end process;
+    st: pulse_stretch generic map (1000000) port map (rst_n, clk, status_mux, status);
+
+
     -- Final output register
     disp_oreg: delay_sig generic map (1) port map (rst_n, clk, pdm_term, disp_blank);
-    pdm_status <= pdm_term and status;
+    pdm_status <= not pdm_term and status;
     disp_status_oreg: delay_sig generic map (1) port map (rst_n, clk, pdm_status, disp_status);
 
 end rtl;
