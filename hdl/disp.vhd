@@ -42,7 +42,6 @@ entity disp is
       disp_pdm          : in    std_logic_vector(7 downto 0);
       stat_src          : in    std_logic_vector(3 downto 0);
       stat              : in    std_logic_vector(15 downto 0);
-      dp                : in    std_logic_vector(31 downto 0);
 
       -- Display memory
       sram_addr         : in    std_logic_vector(9 downto 0);
@@ -128,7 +127,6 @@ architecture rtl of disp is
 
             disp_ena          : in    std_logic;
             disp_page         : in    std_logic_vector(7 downto 0);
-            dp                : in    std_logic_vector(31 downto 0);
 
             -- Time of day
             cur_time          : in    time_ty;
@@ -207,7 +205,6 @@ begin
 
             disp_page         => disp_page,
             disp_ena          => disp_ena,
-            dp                => dp,
 
             -- Time of day
             cur_time          => cur_time,

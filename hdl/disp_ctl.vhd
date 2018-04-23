@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-05-19
--- Last update: 2018-04-21
+-- Last update: 2018-04-22
 -- Platform   : 
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -37,7 +37,6 @@ entity disp_ctl is
 
       disp_ena          : in    std_logic;
       disp_page         : in    std_logic_vector(7 downto 0);
-      dp                : in    std_logic_vector(31 downto 0);
 
       -- Time of day
       cur_time          : in    time_ty;
@@ -57,7 +56,7 @@ architecture rtl of disp_ctl is
 
     signal ce             : std_logic;
 
-    signal cnt            : std_logic_vector(4 downto 0);
+    signal cnt            : std_logic_vector(5 downto 0);
     signal cnt_term       : std_logic;
 
     signal char           : std_logic_vector(7 downto 0);
@@ -66,6 +65,7 @@ architecture rtl of disp_ctl is
     SIGNAL page           : std_logic_vector(7 downto 0);
 
     signal seg            : std_logic_vector(7 downto 0);
+    signal mask           : std_logic_vector(7 downto 0);
     type out_arr_t is array (natural range <>) of std_logic_vector(7 downto 0);
     signal disp_sr        : out_arr_t(31 downto 0);
 
@@ -73,6 +73,7 @@ architecture rtl of disp_ctl is
     signal inc_addr       : std_logic;
     signal disp_mem       : std_logic;
     signal data_val       : std_logic;
+    signal mask_val       : std_logic;
     signal lut_val        : std_logic;
     signal out_reg        : std_logic;
 
@@ -80,9 +81,9 @@ architecture rtl of disp_ctl is
                    ctl_rd,
                    ctl_mux,
                    ctl_disp,
+                   ctl_mask,
                    ctl_proc0,
                    ctl_proc1,
-                   ctl_proc2,
                    ctl_lut,
                    ctl_ins
                    );
@@ -128,7 +129,7 @@ begin
                 if (rst_addr = '1') then
                     cnt_term <= '0';
                 elsif (inc_addr = '1') then
-                    if (cnt = 30)  then
+                    if (cnt = 62)  then
                         cnt_term <= '1';
                     else
                         cnt_term <= '0';
@@ -146,11 +147,16 @@ begin
     begin
         if (rst_n = '0') then
             char  <= (others => '0');
+            mask  <= (others => '0');
             dchar <= (others => '0');
         elsif (clk'event and clk = '1') then
             if (ce = '1') then
                 if (data_val = '1') then
                     char  <= lut_data;
+                end if;
+
+                if (mask_val = '1') then
+                    mask  <= lut_data;
                 end if;
 
                 case char(3 downto 0) is
@@ -186,7 +192,7 @@ begin
     end process;
 
 
-    -- DIsplay page register,  Updated every 1ms
+    -- Display page register,  Updated every 1ms
     disp_mem_page:
     process (rst_n, clk) is
     begin
@@ -209,7 +215,7 @@ begin
         elsif (clk'event and clk = '1') then
             if (ce = '1') then
                 if (disp_mem = '1') then
-                    lut_addr <= "0" & page(5 downto 0) & cnt; 
+                    lut_addr <= "0" & page(4 downto 0) & cnt; 
                 else
                     lut_addr <= "1000" & dchar;
                 end if;
@@ -236,10 +242,10 @@ begin
                     seg <= lut_data;
                 end if;
                 
-                -- Or in dp register bits with lut data
+                -- Xor in second byte of the display memory register
+                -- bits with the lut data
                 if (out_reg = '1') then
-                    disp_sr(conv_integer(cnt))    <= seg;
-                    disp_sr(conv_integer(cnt))(0) <= seg(0) or dp(conv_integer(cnt));
+                    disp_sr(conv_integer(cnt(cnt'left downto 1)))    <= seg xor mask;
                 end if;
             end if;
         end if;
@@ -272,6 +278,7 @@ begin
         inc_addr <= '0';
         disp_mem <= '0';
         data_val <= '0';
+        mask_val <= '0';
         lut_val  <= '0';
         out_reg  <= '0';
         inc_addr <= '0';
@@ -290,17 +297,26 @@ begin
             when ctl_rd =>
                 -- Read the display memory
                 disp_mem <= '1';
+                inc_addr <= '1';
 
                 next_state <= ctl_mux;
 
             when ctl_mux =>
                 -- Address mux state
+                disp_mem <= '1';
 
                 next_state <= ctl_disp;
 
             when ctl_disp =>
                 -- Register the display memory data
                 data_val <= '1';
+
+                next_state <= ctl_mask;
+
+            when ctl_mask =>
+                -- Process char data
+                -- Register the display memory xor data
+                mask_val <= '1';
 
                 next_state <= ctl_proc0;
 
@@ -310,11 +326,6 @@ begin
                 next_state <= ctl_proc1;
 
             when ctl_proc1 =>
-                -- Processing
-
-                next_state <= ctl_proc2;
-
-            when ctl_proc2 =>
                 -- Processing
 
                 next_state <= ctl_lut;

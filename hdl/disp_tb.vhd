@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-05-19
--- Last update: 2018-04-21
+-- Last update: 2018-04-22
 -- Platform   : 
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -55,7 +55,6 @@ architecture STRUCTURE of disp_tb is
             disp_pdm          : in    std_logic_vector(7 downto 0);
             stat_src          : in    std_logic_vector(3 downto 0);
             stat              : in    std_logic_vector(15 downto 0);
-            dp                : in    std_logic_vector(31 downto 0);
 
             -- Display memory
             sram_addr          : in    std_logic_vector(9 downto 0);
@@ -88,7 +87,6 @@ architecture STRUCTURE of disp_tb is
     SIGNAL disp_pdm     : std_logic_vector(7 downto 0);
     SIGNAL stat_src     : std_logic_vector(3 downto 0);
     SIGNAL stat         : std_logic_vector(15 downto 0);
-    SIGNAL dp           : std_logic_vector(31 downto 0);
 
       -- Display memory
     SIGNAL sram_addr    : std_logic_vector(9 downto 0);
@@ -123,7 +121,6 @@ begin
             disp_pdm          => disp_pdm,
             stat_src          => stat_src,
             stat              => stat,
-            dp                => dp,
 
             -- Display memory
             sram_addr         => sram_addr,
@@ -264,7 +261,6 @@ begin
     begin
         disp_ena       <= '1';
         disp_page      <= (others => '0');
-        dp             <= (others => '0');
         sram_addr      <= (others => '0');
         sram_we        <= '0';
         sram_datao     <= (others => '0');
@@ -280,6 +276,11 @@ begin
         cur_time.t_10m          <= (others => '0');
         cur_time.t_1h           <= (others => '0');
         cur_time.t_10h          <= (others => '0');
+
+        run_clk(clk, 2000);
+
+        run_clk(clk, 10000);
+        disp_page      <= x"1f";
 
         run_clk(clk, 2000);
 

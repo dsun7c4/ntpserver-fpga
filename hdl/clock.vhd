@@ -199,7 +199,6 @@ architecture STRUCTURE of clock is
             sram_datao        : out   std_logic_vector(31 downto 0);
             sram_datai        : in    std_logic_vector(31 downto 0);
 
-            dp                : out   std_logic_vector(31 downto 0);
             stat_src          : out   std_logic_vector(3 downto 0);
             disp_page         : out   std_logic_vector(7 downto 0);
             disp_pdm          : out   std_logic_vector(7 downto 0)
@@ -301,7 +300,6 @@ architecture STRUCTURE of clock is
             disp_pdm          : in    std_logic_vector(7 downto 0);
             stat_src          : in    std_logic_vector(3 downto 0);
             stat              : in    std_logic_vector(15 downto 0);
-            dp                : in    std_logic_vector(31 downto 0);
 
             -- Display memory
             sram_addr         : in    std_logic_vector(9 downto 0);
@@ -417,7 +415,6 @@ architecture STRUCTURE of clock is
     signal sram_datao      : std_logic_vector(31 downto 0);
     signal sram_datai      : std_logic_vector(31 downto 0);
 
-    signal dp              : std_logic_vector(31 downto 0);
     signal stat_src        : std_logic_vector(3 downto 0);
     SIGNAL disp_page       : std_logic_vector(7 downto 0);
     signal disp_pdm        : std_logic_vector(7 downto 0);
@@ -639,7 +636,6 @@ begin
             sram_datao        => sram_datao,
             sram_datai        => sram_datai,
 
-            dp                => dp,
             stat_src          => stat_src,
             disp_page         => disp_page,
             disp_pdm          => disp_pdm
@@ -743,7 +739,6 @@ begin
             stat(5)           => pll_trig,
             stat(6)           => pfd_status,
             stat(15 downto 7) => (others => '0'),
-            dp                => dp,
 
             -- Display memory
             sram_addr         => sram_addr,

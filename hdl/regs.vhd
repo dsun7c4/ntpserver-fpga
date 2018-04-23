@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    :
 -- Created    : 2016-03-13
--- Last update: 2018-04-21
+-- Last update: 2018-04-22
 -- Platform   :
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -95,30 +95,47 @@
 --
 -- 0x8060_0300 |               |   disp page   |       | stat  |    disp pdm   |
 --
--- 0x8060_0304 |      Decimal point      ...    f e d c b a 9 8 7 6 5 4 3 2 1 0|
---
 --
 -- -----------------------------------------------------------------------------
 --             | 3 |         2         |         1         |         0         |
 --             |1|0|9|8|7|6|5|4|3|2|1|0|9|8|7|6|5|4|3|2|1|0|9|8|7|6|5|4|3|2|1|0|
 --
--- 0x8060_1000 |    digit 3    |    digit 2    |    digit 1    |    digit 0    |
+-- 0x8060_1000 |      xor 1    |    digit 1    |      xor 0    |    digit 0    |
 --
--- 0x8060_1004 |    digit 7    |    digit 6    |    digit 5    |    digit 4    |
+-- 0x8060_1004 |      xor 3    |    digit 3    |      xor 2    |    digit 2    |
 --
--- 0x8060_1008 |    digit 11   |    digit 10   |    digit 9    |    digit 8    |
+-- 0x8060_1008 |      xor 5    |    digit 5    |      xor 4    |    digit 4    |
 --
--- 0x8060_100c |    digit 15   |    digit 14   |    digit 13   |    digit 12   |
+-- 0x8060_100c |      xor 7    |    digit 7    |      xor 6    |    digit 6    |
 --
--- 0x8060_1010 |    digit 19   |    digit 18   |    digit 17   |    digit 16   |
+-- 0x8060_1010 |      xor 9    |    digit 9    |      xor 8    |    digit 8    |
 --
--- 0x8060_1014 |    digit 23   |    digit 22   |    digit 21   |    digit 20   |
+-- 0x8060_1014 |      xor 11   |    digit 11   |      xor 10   |    digit 10   |
 --
--- 0x8060_1018 |    digit 27   |    digit 26   |    digit 25   |    digit 24   |
+-- 0x8060_1018 |      xor 13   |    digit 13   |      xor 12   |    digit 12   |
 --
--- 0x8060_101c |    digit 31   |    digit 30   |    digit 29   |    digit 28   |
+-- 0x8060_101c |      xor 15   |    digit 15   |      xor 14   |    digit 14   |
 --
--- 0x8060_1020 |                              RAM                              |
+-- 0x8060_1020 |      xor 17   |    digit 17   |      xor 16   |    digit 16   |
+--
+-- 0x8060_1024 |      xor 19   |    digit 19   |      xor 18   |    digit 18   |
+--
+-- 0x8060_1028 |      xor 21   |    digit 21   |      xor 20   |    digit 20   |
+--
+-- 0x8060_102c |      xor 23   |    digit 23   |      xor 22   |    digit 22   |
+--
+-- 0x8060_1030 |      xor 25   |    digit 25   |      xor 24   |    digit 24   |
+--
+-- 0x8060_1034 |      xor 27   |    digit 27   |      xor 26   |    digit 26   |
+--
+-- 0x8060_1038 |      xor 29   |    digit 29   |      xor 28   |    digit 28   |
+--
+-- 0x8060_103c |      xor 31   |    digit 31   |      xor 30   |    digit 30   |
+--
+-- 0x8060_1040 |                              RAM Page 1                       |
+-- 0x8060_1080 |                              RAM Page 2                       |
+--             |                              ...                              |
+-- 0x8060_1080 |                              RAM Page 1f                      |
 -- 0x8060_17FC |                              RAM                              |
 --
 -- 0x8060_1800 |     lut  3    |     lut  2    |     lut  1    |     lut  0    |
@@ -197,7 +214,6 @@ entity regs is
         sram_datao        : out   std_logic_vector(31 downto 0);
         sram_datai        : in    std_logic_vector(31 downto 0);
 
-        dp                : out   std_logic_vector(31 downto 0);
         stat_src          : out   std_logic_vector(3 downto 0);
         disp_page         : out   std_logic_vector(7 downto 0);
         disp_pdm          : out   std_logic_vector(7 downto 0)
@@ -212,7 +228,7 @@ architecture rtl of regs is
 
     signal time_regs      : reg_arr(13 downto 0);
     signal fan_regs       : reg_arr(0 downto 0);
-    signal disp_regs      : reg_arr(1 downto 0);
+    signal disp_regs      : reg_arr(0 downto 0);
 
     signal addr           : std_logic_vector(31 downto 0);
     signal be             : std_logic_vector(3 downto 0);
@@ -340,7 +356,7 @@ begin
                     when "0001" =>
                         ver_regs_mux  <= TIME_CODE;
                         fan_regs_mux  <= (others => '0');
-                        disp_regs_mux <= disp_regs(1);
+                        disp_regs_mux <= (others => '0');
                     when "0010" =>
                         ver_regs_mux  <= DATE_CODE;
                         fan_regs_mux  <= (others => '0');
@@ -569,7 +585,7 @@ begin
     process (rst_n, clk) is
     begin
         if (rst_n = '0') then
-            for i in 0 to 1 loop
+            for i in 0 to 0 loop
                 disp_regs(i) <= (others => '0');
             end loop;
             disp_regs(0)(7 downto 0) <= x"ff";
@@ -581,8 +597,6 @@ begin
                 case addr(5 downto 2) is
                     when "0000" =>
                         disp_regs(0) <= data_o;
-                    when "0001" =>
-                        disp_regs(1) <= data_o;
                     when others =>
                         null;
                 end case;
@@ -596,7 +610,6 @@ begin
     disp_pdm <= disp_regs(0)(7 downto 0);
     stat_src <= disp_regs(0)(11 downto 8);
     disp_page <= disp_regs(0)(23 downto 16);
-    dp       <= disp_regs(1);
 
 
     -- GPS 1pps count register
