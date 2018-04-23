@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    :
 -- Created    : 2016-05-15
--- Last update: 2016-05-15
+-- Last update: 2018-04-21
 -- Platform   :
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -127,6 +127,9 @@ begin
     begin
         if (rst_n = '0') then
             bit_sr <= (others => '0');
+            bit_sr( 7 downto  0) <= x"1c";
+            bit_sr(15 downto  8) <= x"ce";
+            bit_sr(23 downto 16) <= x"bc";
             lat    <= '0';
             sclk   <= '0';
             sin    <= '0';

@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-05-19
--- Last update: 2016-08-26
+-- Last update: 2018-04-21
 -- Platform   : 
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -36,6 +36,7 @@ entity disp_ctl is
       tsc_1ppms         : in    std_logic;
 
       disp_ena          : in    std_logic;
+      disp_page         : in    std_logic_vector(7 downto 0);
       dp                : in    std_logic_vector(31 downto 0);
 
       -- Time of day
@@ -61,6 +62,8 @@ architecture rtl of disp_ctl is
 
     signal char           : std_logic_vector(7 downto 0);
     signal dchar          : std_logic_vector(7 downto 0);
+
+    SIGNAL page           : std_logic_vector(7 downto 0);
 
     signal seg            : std_logic_vector(7 downto 0);
     type out_arr_t is array (natural range <>) of std_logic_vector(7 downto 0);
@@ -183,7 +186,21 @@ begin
     end process;
 
 
-    -- Address mux
+    -- DIsplay page register,  Updated every 1ms
+    disp_mem_page:
+    process (rst_n, clk) is
+    begin
+        if (rst_n = '0') then
+            page <= (others => '0');
+        elsif (clk'event and clk = '1') then
+            if (tsc_1ppms = '1' ) then
+                page <= disp_page;
+            end if;
+        end if;
+    end process;
+
+
+    -- Address mux, select character to be displayed or character genrator lut
     disp_amux:
     process (rst_n, clk) is
     begin
@@ -192,7 +209,7 @@ begin
         elsif (clk'event and clk = '1') then
             if (ce = '1') then
                 if (disp_mem = '1') then
-                    lut_addr <= "0000000" & cnt;
+                    lut_addr <= "0" & page(5 downto 0) & cnt; 
                 else
                     lut_addr <= "1000" & dchar;
                 end if;
@@ -207,7 +224,10 @@ begin
     begin
         if (rst_n = '0') then
             seg <= (others => '0');
-            for i in 0 to 31 loop
+            disp_sr(0) <= x"1c";
+            disp_sr(1) <= x"ce";
+            disp_sr(2) <= x"bc";
+            for i in 3 to 31 loop
                 disp_sr(i) <= (others => '0');
             end loop;
         elsif (clk'event and clk = '1') then

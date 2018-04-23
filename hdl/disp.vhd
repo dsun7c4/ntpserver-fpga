@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-05-14
--- Last update: 2018-01-20
+-- Last update: 2018-04-21
 -- Platform   : 
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -38,6 +38,7 @@ entity disp is
       tsc_1ppus         : in    std_logic;
 
       disp_ena          : in    std_logic;
+      disp_page         : in    std_logic_vector(7 downto 0);
       disp_pdm          : in    std_logic_vector(7 downto 0);
       stat_src          : in    std_logic_vector(3 downto 0);
       stat              : in    std_logic_vector(15 downto 0);
@@ -126,6 +127,7 @@ architecture rtl of disp is
             tsc_1ppms         : in    std_logic;
 
             disp_ena          : in    std_logic;
+            disp_page         : in    std_logic_vector(7 downto 0);
             dp                : in    std_logic_vector(31 downto 0);
 
             -- Time of day
@@ -203,6 +205,7 @@ begin
 
             tsc_1ppms         => tsc_1ppms,
 
+            disp_page         => disp_page,
             disp_ena          => disp_ena,
             dp                => dp,
 

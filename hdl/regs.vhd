@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    :
 -- Created    : 2016-03-13
--- Last update: 2018-01-20
+-- Last update: 2018-04-21
 -- Platform   :
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -64,7 +64,7 @@
 --                                                            GPS PPS IRQ ENA |
 --                                                              TSC PPS IRQ ENA
 --
--- 0x8060_012c | |                                                       | | | |
+-- 0x8060_012c | |                                                         | | |
 --              |                                                           | |
 --              PPS IRQ Status                                    GPS PPS IRQ |
 --                                                                  TSC PPS IRQ
@@ -93,7 +93,7 @@
 --             | 3 |         2         |         1         |         0         |
 --             |1|0|9|8|7|6|5|4|3|2|1|0|9|8|7|6|5|4|3|2|1|0|9|8|7|6|5|4|3|2|1|0|
 --
--- 0x8060_0300 |                                       | stat  |    disp pdm   |
+-- 0x8060_0300 |               |   disp page   |       | stat  |    disp pdm   |
 --
 -- 0x8060_0304 |      Decimal point      ...    f e d c b a 9 8 7 6 5 4 3 2 1 0|
 --
@@ -199,6 +199,7 @@ entity regs is
 
         dp                : out   std_logic_vector(31 downto 0);
         stat_src          : out   std_logic_vector(3 downto 0);
+        disp_page         : out   std_logic_vector(7 downto 0);
         disp_pdm          : out   std_logic_vector(7 downto 0)
         );
 end regs;
@@ -251,8 +252,8 @@ begin
         if (rst_n = '0') then
             rnw     <= '0';
             cs_n_d  <= '1';
-            cs_dp_r <= '0';
-            cs_dp_w <= '0';
+            cs_dp_r <= '0';   -- Chip select read pulse
+            cs_dp_w <= '0';   -- Chip select write pulse
             decode  <= (others => '0');
             sram    <= '0';
         elsif (clk'event and clk = '1') then
@@ -278,7 +279,7 @@ begin
     end process;
 
 
-    -- Ready signal generator, 3 cycles after delayed chip select
+    -- Ready signal generator, 4 cycles after delayed chip select
     -- Hold ready active until the chip select goes inactive
     process (rst_n, clk) is
     begin
@@ -401,8 +402,8 @@ begin
                 end case;
             end if;
 
-            -- Latch tsc value on MSW or LSW read
-            if (cs_dp_r = '1' and decode(1) = '1' and addr(5 downto 3) = "000") then
+            -- Latch tsc value on LSW read
+            if (cs_dp_r = '1' and decode(1) = '1' and addr(5 downto 2) = "0000") then
                 tsc_read      <= '1';
             else
                 tsc_read      <= '0';
@@ -594,6 +595,7 @@ begin
 
     disp_pdm <= disp_regs(0)(7 downto 0);
     stat_src <= disp_regs(0)(11 downto 8);
+    disp_page <= disp_regs(0)(23 downto 16);
     dp       <= disp_regs(1);
 
 

@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-05-17
--- Last update: 2016-08-29
+-- Last update: 2018-01-29
 -- Platform   : 
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -100,7 +100,7 @@ BRAM_TDP_MACRO_inst : BRAM_TDP_MACRO
         WRITE_WIDTH_A       => 32, -- Valid values are 1-36 (19-36 only valid when BRAM_SIZE="36Kb")
         WRITE_WIDTH_B       => 8, -- Valid values are 1-36 (19-36 only valid when BRAM_SIZE="36Kb")
         -- The following INIT_xx declarations specify the initial contents of the RAM
-        INIT_00 => X"00000000000000000000000000000000000000000047504c20646353756e3838",
+        INIT_00 => X"000000000000000000000000000000000000000000646353756e38382047504c",
         INIT_01 => X"0000000000000000000000000000000000000000000000000000000000000000",
         INIT_02 => X"0000000000000000000000000000000000000000000000000000000000000000",
         INIT_03 => X"0000000000000000000000000000000000000000000000000000000000000000",

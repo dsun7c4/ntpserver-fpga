@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-03-13
--- Last update: 2018-01-20
+-- Last update: 2018-04-21
 -- Platform   : 
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -201,6 +201,7 @@ architecture STRUCTURE of clock is
 
             dp                : out   std_logic_vector(31 downto 0);
             stat_src          : out   std_logic_vector(3 downto 0);
+            disp_page         : out   std_logic_vector(7 downto 0);
             disp_pdm          : out   std_logic_vector(7 downto 0)
             );
     end component regs;
@@ -296,6 +297,7 @@ architecture STRUCTURE of clock is
             tsc_1ppus         : in    std_logic;
 
             disp_ena          : in    std_logic;
+            disp_page         : in    std_logic_vector(7 downto 0);
             disp_pdm          : in    std_logic_vector(7 downto 0);
             stat_src          : in    std_logic_vector(3 downto 0);
             stat              : in    std_logic_vector(15 downto 0);
@@ -417,6 +419,7 @@ architecture STRUCTURE of clock is
 
     signal dp              : std_logic_vector(31 downto 0);
     signal stat_src        : std_logic_vector(3 downto 0);
+    SIGNAL disp_page       : std_logic_vector(7 downto 0);
     signal disp_pdm        : std_logic_vector(7 downto 0);
 
 begin
@@ -638,6 +641,7 @@ begin
 
             dp                => dp,
             stat_src          => stat_src,
+            disp_page         => disp_page,
             disp_pdm          => disp_pdm
 
             );
@@ -728,15 +732,17 @@ begin
             tsc_1ppus         => tsc_1ppus,
 
             disp_ena          => disp_ena,
+            disp_page         => disp_page,
             disp_pdm          => disp_pdm,
             stat_src          => stat_src,
-            stat(0)           => dp(31),
-            stat(1)           => gps_3dfix_d,
-            stat(2)           => gps_1pps_d,
-            stat(3)           => tsc_1pps_d,
-            stat(4)           => pll_trig,
-            stat(5)           => pfd_status,
-            stat(15 downto 6) => (others => '0'),
+            stat(0)           => '0',
+            stat(1)           => '1',
+            stat(2)           => gps_3dfix_d,
+            stat(3)           => gps_1pps_d,
+            stat(4)           => tsc_1pps_d,
+            stat(5)           => pll_trig,
+            stat(6)           => pfd_status,
+            stat(15 downto 7) => (others => '0'),
             dp                => dp,
 
             -- Display memory

@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-05-19
--- Last update: 2018-01-20
+-- Last update: 2018-04-21
 -- Platform   : 
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -51,6 +51,7 @@ architecture STRUCTURE of disp_tb is
             tsc_1ppus         : in    std_logic;
 
             disp_ena          : in    std_logic;
+            disp_page         : in    std_logic_vector(7 downto 0);
             disp_pdm          : in    std_logic_vector(7 downto 0);
             stat_src          : in    std_logic_vector(3 downto 0);
             stat              : in    std_logic_vector(15 downto 0);
@@ -83,6 +84,7 @@ architecture STRUCTURE of disp_tb is
     SIGNAL tsc_1ppus    : std_logic;
 
     SIGNAL disp_ena     : std_logic;
+    SIGNAL disp_page    : std_logic_vector(7 downto 0);
     SIGNAL disp_pdm     : std_logic_vector(7 downto 0);
     SIGNAL stat_src     : std_logic_vector(3 downto 0);
     SIGNAL stat         : std_logic_vector(15 downto 0);
@@ -117,6 +119,7 @@ begin
             tsc_1ppus         => tsc_1ppus,
 
             disp_ena          => disp_ena,
+            disp_page         => disp_page,
             disp_pdm          => disp_pdm,
             stat_src          => stat_src,
             stat              => stat,
@@ -260,6 +263,7 @@ begin
     process
     begin
         disp_ena       <= '1';
+        disp_page      <= (others => '0');
         dp             <= (others => '0');
         sram_addr      <= (others => '0');
         sram_we        <= '0';
