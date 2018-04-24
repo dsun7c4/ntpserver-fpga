@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    :
 -- Created    : 2016-05-05
--- Last update: 2016-08-17
+-- Last update: 2018-04-23
 -- Platform   :
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -59,6 +59,8 @@ architecture rtl of dac is
     signal sclk           : std_logic;
     signal sin            : std_logic;
 
+    signal iob_rst_n      : std_logic;
+
     SIGNAL dac_sclk_o     : std_logic;
     SIGNAL dac_cs_n_o     : std_logic;
     SIGNAL dac_sin_o      : std_logic;
@@ -68,9 +70,16 @@ architecture rtl of dac is
     SIGNAL dac_sin_t      : std_logic;
 
     attribute keep : string;
-    attribute keep of dac_sclk_t : signal is "true";
-    attribute keep of dac_cs_n_t : signal is "true";
-    attribute keep of dac_sin_t  : signal is "true";
+    attribute keep of iob_rst_n : signal is "true";
+
+    attribute IOB : string;
+    attribute IOB of dac_sclk_t : signal is "true";
+    attribute IOB of dac_cs_n_t : signal is "true";
+    attribute IOB of dac_sin_t  : signal is "true";
+    attribute IOB of dac_sclk_o : signal is "true";
+    attribute IOB of dac_cs_n_o : signal is "true";
+    attribute IOB of dac_sin_o  : signal is "true";
+    
 
 begin
 
@@ -164,35 +173,44 @@ begin
     end process;
 
 
+    -- ----------------------------------------------------------------------
+    -- ----------------------------------------------------------------------
+    -- Written to allow for attributes for force the use of IOB registers.
+    -- The control signals (preset) can not be on a separate fanout.
+    -- The IOB attribute also seems to force the synthesizer to keep the
+    -- duplicate tri-state control registers.
+
+    iob_rst_n <= rst_n;
+
+    -- Final output register
     -- Tristate IOB register for dac output
     dac_tri_oreg:
-    process (rst_n, clk) is
+    process (iob_rst_n, clk) is
     begin
-        if (rst_n = '0') then
+        if (iob_rst_n = '0') then
             dac_sclk_t <= '1';
             dac_cs_n_t <= '1';
             dac_sin_t  <= '1';
+            dac_sclk_o <= '1';
+            dac_cs_n_o <= '1';
+            dac_sin_o  <= '1';
         elsif (clk'event and clk = '1') then
             dac_sclk_t <= dac_tri;
             dac_cs_n_t <= dac_tri;
             dac_sin_t  <= dac_tri;
+            dac_sclk_o <= sclk;
+            dac_cs_n_o <= cs;
+            dac_sin_o  <= sin;
         end if;
     end process;
-
-
-    -- Final output register
-    dac_ocs:   delay_sig generic map (1, '1') port map (rst_n, clk, cs,   dac_cs_n_o);
-    dac_osclk: delay_sig generic map (1, '1') port map (rst_n, clk, sclk, dac_sclk_o);
-    dac_osin:  delay_sig generic map (1, '1') port map (rst_n, clk, sin,  dac_sin_o);
-
-    -- Tristate IOB register for dac output
-    --dac_tcs:   delay_sig generic map (1, '1') port map (rst_n, clk, dac_tri, dac_cs_n_t);
-    --dac_tsclk: delay_sig generic map (1, '1') port map (rst_n, clk, dac_tri, dac_sclk_t);
-    --dac_tsin:  delay_sig generic map (1, '1') port map (rst_n, clk, dac_tri, dac_sin_t);
 
     dac_cs_n  <= dac_cs_n_o when dac_cs_n_t = '0' else 'Z';
     dac_sclk  <= dac_sclk_o when dac_sclk_t = '0' else 'Z';
     dac_sin   <= dac_sin_o  when dac_sin_t  = '0' else 'Z';
+
+    -- ----------------------------------------------------------------------
+    -- ----------------------------------------------------------------------
+
 
 end rtl;
 
