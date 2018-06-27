@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-04-28
--- Last update: 2016-08-16
+-- Last update: 2018-06-27
 -- Platform   : 
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -49,7 +49,7 @@ end fan;
 
 architecture rtl of fan is
 
-    signal pwm_div     : std_logic_vector(3 downto 0);
+    signal pwm_div     : std_logic_vector(4 downto 0);
     signal pwm_ce      : std_logic;
     signal pwm_cnt     : std_logic_vector(7 downto 0);
     signal pwm_term    : std_logic;
@@ -63,7 +63,8 @@ architecture rtl of fan is
 begin
 
     -- First divider to generate clock enable for the PWM
-    -- Divide by 16
+    -- Divide by 32
+    -- Generate PWM at clk / (32 * 256) rate (24414.0625Hz)
     fan_pwmdiv:
     process (rst_n, clk) is
     begin
@@ -77,7 +78,7 @@ begin
                 pwm_div  <= pwm_div + 1;
             end if;
 
-            if (pwm_div = x"E") then
+            if (pwm_div = x"1E") then
                 pwm_ce   <= '1';
             else
                 pwm_ce   <= '0';
@@ -152,7 +153,7 @@ begin
     -- Measure time between tach pulses
     fan_meas:
     process (rst_n, clk) is
-        variable tach_add    : std_logic_vector(fan_uspr'left + 1 downto 0);
+        variable tach_add    : std_logic_vector(tach_meas'left + 1 downto 0);
     begin
         if (rst_n = '0') then
             tach_meas  <= (others => '0');
