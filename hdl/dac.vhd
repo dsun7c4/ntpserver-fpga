@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    :
 -- Created    : 2016-05-05
--- Last update: 2018-04-23
+-- Last update: 2018-04-26
 -- Platform   :
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -83,7 +83,7 @@ architecture rtl of dac is
 
 begin
 
-    --
+    -- 16-Bit DAC DAC8830ICD (Updates on dac_cs_n rising edge)
     --            _______                               ______
     -- dac_cs_n          |_____________  ______________|
     --            _______ _____ _____ _  __ _____ _____ _______
