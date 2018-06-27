@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-04-29
--- Last update: 2017-06-08
+-- Last update: 2018-06-26
 -- Platform   : 
 -- Standard   : VHDL'87
 -------------------------------------------------------------------------------
@@ -63,10 +63,10 @@ architecture rtl of tsc is
     signal pps_cnt        : std_logic_vector(27 downto 0);
     signal pps_cnt_term   : std_logic;
 
-    signal ppms_cnt       : std_logic_vector(16 downto 0);
+    signal ppms_cnt       : std_logic_vector(17 downto 0);
     signal ppms_cnt_term  : std_logic;
 
-    signal ppus_cnt       : std_logic_vector(6 downto 0);
+    signal ppus_cnt       : std_logic_vector(7 downto 0);
     signal ppus_cnt_term  : std_logic;
 
     signal gps_1pps_dly   : std_logic_vector(2 downto 0);
@@ -93,7 +93,7 @@ architecture rtl of tsc is
     signal next_state     : pfd_t;
     
 
-    constant CLKS_PER_SEC    : natural := 100000000;
+    constant CLKS_PER_SEC    : natural := 200000000;
     constant CLKS_PER_MS     : natural := CLKS_PER_SEC / 1000;
     constant CLKS_PER_US     : natural := CLKS_PER_MS  / 1000;
     constant CLKS_PER_SEC_2  : natural := CLKS_PER_SEC / 2;

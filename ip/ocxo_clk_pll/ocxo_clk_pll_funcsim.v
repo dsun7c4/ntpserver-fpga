@@ -1,8 +1,8 @@
 // Copyright 1986-2014 Xilinx, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
 // Tool Version: Vivado v.2014.4 (lin64) Build 1071353 Tue Nov 18 16:47:07 MST 2014
-// Date        : Fri May  6 14:51:06 2016
-// Host        : graviton running 64-bit Debian GNU/Linux 7.10 (wheezy)
+// Date        : Tue Jun 26 11:27:05 2018
+// Host        : graviton running 64-bit Debian GNU/Linux 7.11 (wheezy)
 // Command     : write_verilog -force -mode funcsim /home/guest/cae/fpga/ntpserver/ip/ocxo_clk_pll/ocxo_clk_pll_funcsim.v
 // Design      : ocxo_clk_pll
 // Purpose     : This verilog netlist is a functional simulation representation of the design and should not be modified
@@ -82,12 +82,12 @@ module ocxo_clk_pll_ocxo_clk_pll_clk_wiz
 (* box_type = "PRIMITIVE" *) 
    MMCME2_ADV #(
     .BANDWIDTH("OPTIMIZED"),
-    .CLKFBOUT_MULT_F(63.750000),
+    .CLKFBOUT_MULT_F(62.500000),
     .CLKFBOUT_PHASE(0.000000),
     .CLKFBOUT_USE_FINE_PS("FALSE"),
     .CLKIN1_PERIOD(100.000000),
     .CLKIN2_PERIOD(0.000000),
-    .CLKOUT0_DIVIDE_F(6.375000),
+    .CLKOUT0_DIVIDE_F(3.125000),
     .CLKOUT0_DUTY_CYCLE(0.500000),
     .CLKOUT0_PHASE(0.000000),
     .CLKOUT0_USE_FINE_PS("FALSE"),

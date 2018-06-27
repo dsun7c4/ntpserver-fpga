@@ -1,4 +1,4 @@
--- (c) Copyright 1995-2016 Xilinx, Inc. All rights reserved.
+-- (c) Copyright 1995-2018 Xilinx, Inc. All rights reserved.
 -- 
 -- This file contains confidential and proprietary information
 -- of Xilinx, Inc. and is protected under U.S. and
@@ -173,7 +173,7 @@ BEGIN
       C_IIC_FREQ => 100000,
       C_TEN_BIT_ADR => 0,
       C_GPO_WIDTH => 1,
-      C_S_AXI_ACLK_FREQ_HZ => 100000000,
+      C_S_AXI_ACLK_FREQ_HZ => 200000000,
       C_SCL_INERTIAL_DELAY => 0,
       C_SDA_INERTIAL_DELAY => 0,
       C_SDA_LEVEL => 1,

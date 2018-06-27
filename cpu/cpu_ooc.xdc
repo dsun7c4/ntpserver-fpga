@@ -8,6 +8,6 @@
 ################################################################################
 create_clock -name OCXO_CLK100 -period 10 [get_ports OCXO_CLK100]
 create_clock -name EPC_INTF_clk -period 10 [get_ports EPC_INTF_clk]
-create_clock -name processing_system7_0_FCLK_CLK0 -period 10 [get_pins processing_system7_0/FCLK_CLK0]
+create_clock -name processing_system7_0_FCLK_CLK0 -period 5 [get_pins processing_system7_0/FCLK_CLK0]
 
 ################################################################################
