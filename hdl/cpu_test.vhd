@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-03-22
--- Last update: 2016-09-30
+-- Last update: 2018-06-28
 -- Platform   : 
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -177,7 +177,7 @@ architecture TEST of cpu is
 
 begin
 
-    cpu_ck1:  clk_gen(10 ns, 50, fclk);
+    cpu_ck1:  clk_gen(5 ns, 50, fclk);
     cpu_rst:  rst_n_gen(1 us, fclk_reset0_n);
     ocxo_rst: rst_n_gen(1 us, rst_n);
 
@@ -206,14 +206,14 @@ begin
     begin
         GPIO_tri_o <= x"00d3";
         GPIO_tri_t <= (others => '0');
-        run_clk(fclk, 12000);
+        run_clk(fclk, 24000);
 
         GPIO_tri_o <= x"00c2";
-        run_clk(fclk, 12000);
+        run_clk(fclk, 24000);
 
         GPIO_tri_o <= x"00d3";
         GPIO_tri_t <= (others => '0');
-        run_clk(fclk, 12000);
+        run_clk(fclk, 24000);
 
         wait;
     end process;
@@ -285,63 +285,63 @@ begin
         EPC_INTF_rnw      <= '1';
         EPC_INTF_wr_n     <= '1';
 
-        run_clk(clk, 2000);
+        run_clk(clk, 4000);
 
         reg_write(x"aaaaaaaa", x"55555555");
 
-        run_clk(clk, 100);
+        run_clk(clk, 200);
 
         reg_read(x"a5a5a5a5");
 
-        run_clk(clk, 100);
+        run_clk(clk, 200);
 
         reg_write(x"00000100", x"12345678");
 
-        run_clk(clk, 10000);
+        run_clk(clk, 20000);
 
         reg_write(x"00000200", x"00000080");
 
-        run_clk(clk, 100);
+        run_clk(clk, 200);
 
         reg_read(x"00000000");
 
-        run_clk(clk, 100);
+        run_clk(clk, 200);
 
         reg_read(x"00000314");
 
-        run_clk(clk, 100);
+        run_clk(clk, 200);
 
         reg_read(x"00000100");
 
-        run_clk(clk, 10000);
+        run_clk(clk, 20000);
 
         reg_write(x"00000200", x"000000ff");
 
-        run_clk(clk, 1000);
+        run_clk(clk, 2000);
 
         reg_read(x"00001004");
 
-        run_clk(clk, 1000);
+        run_clk(clk, 2000);
 
         reg_read(x"00001830");
 
-        run_clk(clk, 1000);
+        run_clk(clk, 2000);
 
         reg_read(x"00000004");
 
-        run_clk(clk, 1000);
+        run_clk(clk, 2000);
 
         reg_write(x"00000300", x"0000004f");
 
-        run_clk(clk, 100000);
+        run_clk(clk, 200000);
 
         reg_write(x"00000124", x"000080ff");
 
-        run_clk(clk, 100000);
+        run_clk(clk, 200000);
 
         reg_read(x"00000100");
 
-        run_clk(clk, 100000);
+        run_clk(clk, 200000);
 
         reg_read(x"00000104");
 

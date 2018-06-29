@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-05-19
--- Last update: 2018-04-22
+-- Last update: 2018-06-28
 -- Platform   : 
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -111,7 +111,7 @@ begin
             status_mux <= stat(conv_integer(stat_src));
         end if;
     end process;
-    st: pulse_stretch generic map (1000000) port map (rst_n, clk, status_mux, status);
+    st: pulse_stretch generic map (2000000) port map (rst_n, clk, status_mux, status);
 
 
     -- Final output register
