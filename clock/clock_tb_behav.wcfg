@@ -9,10 +9,26 @@
             <top_module name="tb_pkg" />
             <top_module name="types_pkg" />
             <top_module name="util_pkg" />
+            <top_module name="version_pkg" />
          </top_modules>
       </db_ref>
    </db_ref_list>
-   <WVObjectSize size="63" />
+   <WVObjectSize size="71" />
+   <wave_markers>
+      <marker label="" time="240005000000" />
+   </wave_markers>
+   <wvobject db_ref_id="1" type="logic" fp_name="/clock_tb/fpga/fclk_rst_n">
+      <obj_property name="ElementShortName">fclk_rst_n</obj_property>
+      <obj_property name="ObjectShortName">fclk_rst_n</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/clock_tb/fpga/rst_n">
+      <obj_property name="ElementShortName">rst_n</obj_property>
+      <obj_property name="ObjectShortName">rst_n</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/clock_tb/fpga/pll_rst_n">
+      <obj_property name="ElementShortName">pll_rst_n</obj_property>
+      <obj_property name="ObjectShortName">pll_rst_n</obj_property>
+   </wvobject>
    <wvobject db_ref_id="1" type="logic" fp_name="/clock_tb/fpga/ocxo_clk">
       <obj_property name="ElementShortName">ocxo_clk</obj_property>
       <obj_property name="ObjectShortName">ocxo_clk</obj_property>
@@ -69,9 +85,53 @@
       <obj_property name="ElementShortName">tsc_1ppus</obj_property>
       <obj_property name="ObjectShortName">tsc_1ppus</obj_property>
    </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/clock_tb/fpga/io_i/gps_tri">
+      <obj_property name="ElementShortName">gps_tri</obj_property>
+      <obj_property name="ObjectShortName">gps_tri</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/clock_tb/fpga/io_i/gps_pwr_ena">
+      <obj_property name="ElementShortName">gps_pwr_ena</obj_property>
+      <obj_property name="ObjectShortName">gps_pwr_ena</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/clock_tb/fpga/io_i/gps_pwr_on">
+      <obj_property name="ElementShortName">gps_pwr_on</obj_property>
+      <obj_property name="ObjectShortName">gps_pwr_on</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="array" fp_name="/clock_tb/fpga/io_i/gps_on_ctr">
+      <obj_property name="ElementShortName">gps_on_ctr[13:0]</obj_property>
+      <obj_property name="ObjectShortName">gps_on_ctr[13:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/clock_tb/fpga/gps_rxd">
+      <obj_property name="ElementShortName">gps_rxd</obj_property>
+      <obj_property name="ObjectShortName">gps_rxd</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/clock_tb/fpga/gps_txd">
+      <obj_property name="ElementShortName">gps_txd</obj_property>
+      <obj_property name="ObjectShortName">gps_txd</obj_property>
+   </wvobject>
    <wvobject fp_name="divider157" type="divider">
       <obj_property name="label">DAC</obj_property>
       <obj_property name="DisplayName">label</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/clock_tb/fpga/io_i/ocxo_pwr_ena">
+      <obj_property name="ElementShortName">ocxo_pwr_ena</obj_property>
+      <obj_property name="ObjectShortName">ocxo_pwr_ena</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/clock_tb/fpga/io_i/ocxo_pwr_on">
+      <obj_property name="ElementShortName">ocxo_pwr_on</obj_property>
+      <obj_property name="ObjectShortName">ocxo_pwr_on</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="array" fp_name="/clock_tb/fpga/io_i/ocxo_on_ctr">
+      <obj_property name="ElementShortName">ocxo_on_ctr[13:0]</obj_property>
+      <obj_property name="ObjectShortName">ocxo_on_ctr[13:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="array" fp_name="/clock_tb/fpga/dac_i/dac_val">
+      <obj_property name="ElementShortName">dac_val[15:0]</obj_property>
+      <obj_property name="ObjectShortName">dac_val[15:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/clock_tb/fpga/io_i/dac_tri">
+      <obj_property name="ElementShortName">dac_tri</obj_property>
+      <obj_property name="ObjectShortName">dac_tri</obj_property>
    </wvobject>
    <wvobject db_ref_id="1" type="logic" fp_name="/clock_tb/fpga/dac_sclk">
       <obj_property name="ElementShortName">dac_sclk</obj_property>
@@ -92,6 +152,10 @@
    <wvobject db_ref_id="1" type="logic" fp_name="/clock_tb/fpga/fan_tach">
       <obj_property name="ElementShortName">fan_tach</obj_property>
       <obj_property name="ObjectShortName">fan_tach</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="array" fp_name="/clock_tb/fpga/fan_i/fan_pct">
+      <obj_property name="ElementShortName">fan_pct[7:0]</obj_property>
+      <obj_property name="ObjectShortName">fan_pct[7:0]</obj_property>
    </wvobject>
    <wvobject db_ref_id="1" type="logic" fp_name="/clock_tb/fpga/fan_pwm">
       <obj_property name="ElementShortName">fan_pwm</obj_property>
@@ -157,8 +221,8 @@
       <obj_property name="Radix">HEXRADIX</obj_property>
    </wvobject>
    <wvobject db_ref_id="1" type="array" fp_name="/clock_tb/fpga/int">
-      <obj_property name="ElementShortName">int[1:0]</obj_property>
-      <obj_property name="ObjectShortName">int[1:0]</obj_property>
+      <obj_property name="ElementShortName">int[3:0]</obj_property>
+      <obj_property name="ObjectShortName">int[3:0]</obj_property>
    </wvobject>
    <wvobject fp_name="divider175" type="divider">
       <obj_property name="label">Time</obj_property>
@@ -272,11 +336,6 @@
       <obj_property name="label">Display</obj_property>
       <obj_property name="DisplayName">label</obj_property>
    </wvobject>
-   <wvobject db_ref_id="1" type="array" fp_name="/clock_tb/fpga/dp">
-      <obj_property name="ElementShortName">dp[31:0]</obj_property>
-      <obj_property name="ObjectShortName">dp[31:0]</obj_property>
-      <obj_property name="Radix">HEXRADIX</obj_property>
-   </wvobject>
    <wvobject db_ref_id="1" type="array" fp_name="/clock_tb/fpga/disp_pdm">
       <obj_property name="ElementShortName">disp_pdm[7:0]</obj_property>
       <obj_property name="ObjectShortName">disp_pdm[7:0]</obj_property>
@@ -299,6 +358,8 @@
       <obj_property name="ObjectShortName">disp_lat</obj_property>
    </wvobject>
    <wvobject fp_name="divider60" type="divider">
+      <obj_property name="label">PLL</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
    </wvobject>
    <wvobject db_ref_id="1" type="logic" fp_name="/clock_tb/fpga/tsc_i/tsc_1pps_pulse">
       <obj_property name="ElementShortName">tsc_1pps_pulse</obj_property>
@@ -325,44 +386,20 @@
       <obj_property name="ObjectShortName">diff_cnt[31:0]</obj_property>
       <obj_property name="Radix">HEXRADIX</obj_property>
    </wvobject>
-   <wvobject db_ref_id="1" type="logic" fp_name="/clock_tb/fpga/io_i/dac_tri">
-      <obj_property name="ElementShortName">dac_tri</obj_property>
-      <obj_property name="ObjectShortName">dac_tri</obj_property>
+   <wvobject db_ref_id="1" type="other" fp_name="/clock_tb/fpga/tsc_i/curr_state">
+      <obj_property name="ElementShortName">curr_state</obj_property>
+      <obj_property name="ObjectShortName">curr_state</obj_property>
    </wvobject>
-   <wvobject db_ref_id="1" type="logic" fp_name="/clock_tb/fpga/io_i/gps_tri">
-      <obj_property name="ElementShortName">gps_tri</obj_property>
-      <obj_property name="ObjectShortName">gps_tri</obj_property>
+   <wvobject db_ref_id="1" type="other" fp_name="/clock_tb/fpga/tsc_i/next_state">
+      <obj_property name="ElementShortName">next_state</obj_property>
+      <obj_property name="ObjectShortName">next_state</obj_property>
    </wvobject>
-   <wvobject db_ref_id="1" type="logic" fp_name="/clock_tb/fpga/io_i/ocxo_pwr_ena">
-      <obj_property name="ElementShortName">ocxo_pwr_ena</obj_property>
-      <obj_property name="ObjectShortName">ocxo_pwr_ena</obj_property>
+   <wvobject db_ref_id="1" type="array" fp_name="/clock_tb/fpga/tsc_i/pdiff">
+      <obj_property name="ElementShortName">pdiff[31:0]</obj_property>
+      <obj_property name="ObjectShortName">pdiff[31:0]</obj_property>
    </wvobject>
-   <wvobject db_ref_id="1" type="logic" fp_name="/clock_tb/fpga/io_i/ocxo_pwr_on">
-      <obj_property name="ElementShortName">ocxo_pwr_on</obj_property>
-      <obj_property name="ObjectShortName">ocxo_pwr_on</obj_property>
-   </wvobject>
-   <wvobject db_ref_id="1" type="array" fp_name="/clock_tb/fpga/io_i/ocxo_on_ctr">
-      <obj_property name="ElementShortName">ocxo_on_ctr[12:0]</obj_property>
-      <obj_property name="ObjectShortName">ocxo_on_ctr[12:0]</obj_property>
-   </wvobject>
-   <wvobject db_ref_id="1" type="logic" fp_name="/clock_tb/fpga/io_i/gps_pwr_ena">
-      <obj_property name="ElementShortName">gps_pwr_ena</obj_property>
-      <obj_property name="ObjectShortName">gps_pwr_ena</obj_property>
-   </wvobject>
-   <wvobject db_ref_id="1" type="logic" fp_name="/clock_tb/fpga/io_i/gps_pwr_on">
-      <obj_property name="ElementShortName">gps_pwr_on</obj_property>
-      <obj_property name="ObjectShortName">gps_pwr_on</obj_property>
-   </wvobject>
-   <wvobject db_ref_id="1" type="array" fp_name="/clock_tb/fpga/io_i/gps_on_ctr">
-      <obj_property name="ElementShortName">gps_on_ctr[12:0]</obj_property>
-      <obj_property name="ObjectShortName">gps_on_ctr[12:0]</obj_property>
-   </wvobject>
-   <wvobject db_ref_id="1" type="logic" fp_name="/clock_tb/fpga/gps_rxd">
-      <obj_property name="ElementShortName">gps_rxd</obj_property>
-      <obj_property name="ObjectShortName">gps_rxd</obj_property>
-   </wvobject>
-   <wvobject db_ref_id="1" type="logic" fp_name="/clock_tb/fpga/gps_txd">
-      <obj_property name="ElementShortName">gps_txd</obj_property>
-      <obj_property name="ObjectShortName">gps_txd</obj_property>
+   <wvobject db_ref_id="1" type="array" fp_name="/clock_tb/fpga/tsc_i/fdiff">
+      <obj_property name="ElementShortName">fdiff[31:0]</obj_property>
+      <obj_property name="ObjectShortName">fdiff[31:0]</obj_property>
    </wvobject>
 </wave_config>

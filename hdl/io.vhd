@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    :
 -- Created    : 2016-05-21
--- Last update: 2016-08-17
+-- Last update: 2018-06-29
 -- Platform   :
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -95,13 +95,13 @@ architecture rtl of io is
 
     signal ocxo_pwr_ena    : std_logic;
     signal ocxo_pwr_on     : std_logic;
-    signal ocxo_on_ctr     : std_logic_vector(12 downto 0);  -- 25 us turn on
+    signal ocxo_on_ctr     : std_logic_vector(13 downto 0);  -- 25 us turn on
 
     signal gps_ena_tri     : std_logic;
 
     signal gps_pwr_ena     : std_logic;
     signal gps_pwr_on      : std_logic;
-    signal gps_on_ctr      : std_logic_vector(12 downto 0);
+    signal gps_on_ctr      : std_logic_vector(13 downto 0);
 
     attribute keep : string;
     attribute keep of gps_pwr_ena : signal is "true";
@@ -177,12 +177,12 @@ begin
     process (rst_n, clk) is
     begin
         if (rst_n = '0') then
-            ocxo_on_ctr <= conv_std_logic_vector(5000, ocxo_on_ctr'length);
+            ocxo_on_ctr <= conv_std_logic_vector(10000, ocxo_on_ctr'length);
             ocxo_pwr_on <= '0';
             dac_tri     <= '1';
         elsif (clk'event and clk = '1') then
             if (ocxo_pwr_ena = '0' or ocxo_pwr_on = '1') then
-                ocxo_on_ctr  <= conv_std_logic_vector(5000, ocxo_on_ctr'length);
+                ocxo_on_ctr  <= conv_std_logic_vector(10000, ocxo_on_ctr'length);
             else
                 ocxo_on_ctr  <= ocxo_on_ctr - 1;
             end if;
@@ -223,12 +223,12 @@ begin
     process (fclk_rst_n, fclk) is
     begin
         if (fclk_rst_n = '0') then
-            gps_on_ctr <= conv_std_logic_vector(5000, gps_on_ctr'length);
+            gps_on_ctr <= conv_std_logic_vector(10000, gps_on_ctr'length);
             gps_pwr_on <= '0';
             gps_tri    <= '1';
         elsif (fclk'event and fclk = '1') then
             if (gps_pwr_ena = '0' or gps_pwr_on = '1') then
-                gps_on_ctr  <= conv_std_logic_vector(5000, gps_on_ctr'length);
+                gps_on_ctr  <= conv_std_logic_vector(10000, gps_on_ctr'length);
             else
                 gps_on_ctr <= gps_on_ctr - 1;
             end if;

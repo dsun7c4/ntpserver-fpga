@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-08-11
--- Last update: 2018-01-20
+-- Last update: 2018-06-29
 -- Platform   : 
 -- Standard   : VHDL'87
 -------------------------------------------------------------------------------
@@ -62,7 +62,7 @@ architecture STRUCTURE of util_pkg_tb is
 
 begin
 
-    clk_100MHZ: clk_gen(10 ns, 50, clk);
+    clk_200MHZ: clk_gen(5 ns, 50, clk);
     reset:      rst_n_gen(1 us, rst_n);
 
 
@@ -71,7 +71,7 @@ begin
         i     <= '0';
         i_vec <= (others => '0');
 
-        run_clk(clk, 200);
+        run_clk(clk, 400);
 
         i     <= '1';
         i_vec <= x"5555aaaa";

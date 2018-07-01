@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-05-04
--- Last update: 2016-08-22
+-- Last update: 2018-06-29
 -- Platform   : 
 -- Standard   : VHDL'87
 -------------------------------------------------------------------------------
@@ -85,7 +85,7 @@ begin
             );
 
 
-    clk_100MHZ: clk_gen(10 ns, 50, clk);
+    clk_200MHZ: clk_gen(5 ns, 50, clk);
     reset:      rst_n_gen(1 us, rst_n);
 
     process

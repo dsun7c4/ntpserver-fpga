@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dcsun88osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-05-15
--- Last update: 2016-05-15
+-- Last update: 2018-06-29
 -- Platform   : 
 -- Standard   : VHDL'87
 -------------------------------------------------------------------------------
@@ -91,14 +91,14 @@ begin
             );
 
 
-    clk_100MHZ: clk_gen(10 ns, 50, clk);
+    clk_200MHZ: clk_gen(5 ns, 50, clk);
     reset:      rst_n_gen(1 us, rst_n);
 
     process
     begin
         tsc_1pps <= '0';
 
-        run_clk(clk, 1000);
+        run_clk(clk, 2000);
 
         loop
             tsc_1pps <= '1';
@@ -116,7 +116,7 @@ begin
     begin
         tsc_1ppms <= '0';
 
-        run_clk(clk, 1000);
+        run_clk(clk, 2000);
 
         loop
             tsc_1ppms <= '1';
@@ -134,7 +134,7 @@ begin
     begin
         tsc_1ppus <= '0';
 
-        run_clk(clk, 1000);
+        run_clk(clk, 2000);
 
         loop
             tsc_1ppus <= '1';
@@ -152,7 +152,7 @@ begin
     begin
         disp_data <= (others =>'0');
 
-        run_clk(clk, 2000);
+        run_clk(clk, 4000);
 
         disp_data <= x"5aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5";
 
