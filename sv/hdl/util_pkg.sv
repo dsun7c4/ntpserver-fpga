@@ -45,7 +45,7 @@ module delay
    if (CYCLES == 0)
      begin : zero
         assign q = d;
-     end;
+     end
    
 
    if (CYCLES >= 1)
@@ -63,11 +63,11 @@ module delay
                   dly[0] <= d;
                   for (int i = 1; i < CYCLES; i++)
                     dly[i] <= dly[i - 1];
-               end;
-          end; // always_ff @
+               end
+          end // always_ff @
    
        assign q = dly[CYCLES - 1];
-     end;
+     end
 
 endmodule // delay
 
@@ -86,7 +86,7 @@ module delay_pulse
    if (CYCLES <= 3)
      begin : le_3
         delay #(.SIZE(1), .CYCLES(CYCLES)) pulse (.rst_n, .clk, .d, .q);
-     end;
+     end
    
 
    if (CYCLES > 3)
@@ -113,9 +113,9 @@ module delay_pulse
                     q   <= 1'b1;
                   else
                     q   <= 1'b0;
-               end;
-          end;
-     end;
+               end
+          end
+     end
 
 endmodule
 
@@ -134,7 +134,7 @@ module pulse_stretch
    if (CYCLES < 1)
      begin : lt_1
         delay #(.SIZE(1), .CYCLES(1)) pulse (.rst_n, .clk, .d, .q);
-     end;
+     end
 
    
    if (CYCLES >= 1)
@@ -157,8 +157,8 @@ module pulse_stretch
                     q <= 1'b0;
                   else
                     q <= q;
-               end;
-          end;
-     end;
+               end
+          end
+     end
 
 endmodule

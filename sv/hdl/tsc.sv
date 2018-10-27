@@ -76,12 +76,11 @@ module tsc
                               PFD_DET_GPS  = 11'b000_1000_0000,
                               PFD_DET_TSC  = 11'b001_0000_0000,
                               PFD_WAIT_GPS = 11'b010_0000_0000,
-                              PFD_WAIT_TS  = 11'b100_0000_0000
+                              PFD_WAIT_TSC = 11'b100_0000_0000
                               } pfd_t;
 
-    pfd_t curr_state;
-    pfd_t next_state;
-
+   pfd_t                curr_state;
+   pfd_t                next_state;
 
    localparam int       CLKS_PER_SEC    = 100000000;
    localparam int       CLKS_PER_MS     = CLKS_PER_SEC / 1000;
@@ -109,7 +108,7 @@ module tsc
           counter <= '0;
         else
           counter <= counter + 1;
-     end;
+     end
 
 
    // Output read sample register
@@ -128,8 +127,8 @@ module tsc
 
              if (pps_cnt_term == 1'b1)
                tsc_cnt1 <= counter;
-          end;
-     end;
+          end
+     end
 
 
    // ----------------------------------------------------------------------
@@ -142,7 +141,7 @@ module tsc
           pps_rst <= '0;
         else
           pps_rst <= tsc_sync & gps_1pps_pulse;
-     end;
+     end
 
 
     // One pulse pulse per second
@@ -166,8 +165,8 @@ module tsc
                pps_cnt_term <= 1'b1;
              else
                pps_cnt_term <= 1'b0;
-          end;
-     end;
+          end
+     end
 
    assign tsc_1pps = pps_cnt_term;
 
@@ -193,8 +192,8 @@ module tsc
                 ppms_cnt_term <= 1'b1;
             else
                 ppms_cnt_term <= 1'b0;
-          end;
-     end;
+          end
+     end
 
    assign tsc_1ppms = ppms_cnt_term;
 
@@ -220,8 +219,8 @@ module tsc
                ppus_cnt_term <= 1'b1;
              else
                ppus_cnt_term <= 1'b0;
-          end;
-     end;
+          end
+     end
 
    assign tsc_1ppus = ppus_cnt_term;
 
@@ -254,13 +253,275 @@ module tsc
               begin
                  tsc_1pps_dly    <= {tsc_1pps_dly, pps_cnt_term};
                  tsc_1pps_pulse  <= tsc_1pps_dly[1];
-              end;
-          end;
-     end;
+              end
+          end
+     end
 
    assign gps_1pps_d = gps_1pps_pulse;
    assign tsc_1pps_d = tsc_1pps_pulse;
 
+
+   // Phase detector state machine register
+   always_ff @(negedge rst_n, posedge clk)
+     begin : tsc_pfd_st
+        if (!rst_n)
+          curr_state <= PFD_IDLE;
+        else
+          curr_state <= next_state;
+     end
+
+
+   // Phase detector State diagram
+   // Set difference to zero for missing pps
+   // Automatically set the lead/lag phasing
+   always_comb
+     begin : tsc_pfd_next
+        // outputs
+        lead       = 1'b0;
+        lag        = 1'b0;
+        trig       = 1'b0;
+        clr_diff   = 1'b0;
+        clr_status = 1'b0;
+        set_status = 1'b0;
+        
+        unique case (curr_state)
+          // ------------------------------------------------------------
+          // ------------------------------------------------------------
+          // Phase detector
+          // Referenced to GPS PPS
+          // Negative phase if TSC is before GPS
+
+          PFD_IDLE :
+            begin
+               // Idle state 
+
+               clr_status = 1'b1;
+
+               if (tsc_1pps_pulse == 1'b1 && gps_1pps_pulse == 1'b1)
+                 next_state = PFD_TRIG;
+               else if (tsc_1pps_pulse == 1'b1)
+                 next_state = PFD_LEAD;
+               else if (gps_1pps_pulse == 1'b1)
+                 next_state = PFD_LAG;
+               else if (pfd_resync == 1'b1)
+                 next_state = PFD_SYNC;
+               else
+                 next_state = PFD_IDLE;
+            end
+
+            PFD_LEAD :
+              begin
+                 // Got tsc pps before gps
+
+                 lead       = 1'b1; // Count down
+
+                 if (tsc_1pps_pulse == 1'b1 || gt_half == 1'b1)
+                   // Missing gps pps
+                   next_state = PFD_SYNC;
+                 else if (gps_1pps_pulse == 1'b1)
+                   next_state = PFD_TRIG;
+                 else
+                   next_state = PFD_LEAD;
+              end
+
+            PFD_LAG :
+              begin
+                 // Got gps pps before tsc
+
+                 lag        = 1'b1; // Count up
+
+                 if (gps_1pps_pulse == 1'b1 || gt_half == 1'b1)
+                   // Missing tsc pps
+                   next_state = PFD_SYNC;
+                 else if (tsc_1pps_pulse == 1'b1)
+                   next_state = PFD_TRIG;
+                 else
+                    next_state = PFD_LAG;
+                end
+
+            PFD_TRIG :
+              begin
+                 // Set the holding register
+
+                 trig       = 1'b1;
+
+                 next_state = PFD_IDLE;
+              end
+
+          // ------------------------------------------------------------
+          // ------------------------------------------------------------
+          // Resync the phase detector
+
+          PFD_SYNC :
+            begin
+               // Resync the phase detector due to lost pulse or sw resync
+
+               clr_diff   = 1'b1;
+               set_status = 1'b1;
+
+               if (tsc_1pps_pulse == 1'b1 && gps_1pps_pulse == 1'b1)
+                 next_state = PFD_IDLE;
+               else if (tsc_1pps_pulse == 1'b1)
+                 next_state = PFD_TSC;
+               else if (gps_1pps_pulse == 1'b1)
+                 next_state = PFD_GPS;
+               else
+                 next_state = PFD_SYNC;
+            end
+
+          // ------------------------------------------------------------
+          // tsc pulse detected first
+
+          PFD_TSC :
+            begin
+               // tsc pulse detected, measure time to gps pulse
+
+               lag        = 1'b1; // Count up
+
+               if (tsc_1pps_pulse == 1'b1)
+                 next_state = PFD_SYNC;
+               else if (gps_1pps_pulse == 1'b1)
+                 next_state = PFD_DET_GPS;
+               else
+                 next_state = PFD_TSC;
+            end
+
+            PFD_DET_GPS :
+              begin
+                 // gps pulse detected, check tsc->gps time measurement
+
+                 if (gt_half == 1'b1)
+                   next_state = PFD_WAIT_GPS;
+                 else
+                   next_state = PFD_IDLE;
+              end
+
+            PFD_WAIT_GPS :
+              begin
+                 // Wait for next gps pulse to restart measurement
+
+                 if (tsc_1pps_pulse == 1'b1 && gps_1pps_pulse == 1'b1)
+                   next_state = PFD_IDLE;
+                 else if (gps_1pps_pulse == 1'b1)
+                   next_state = PFD_GPS;
+                 else
+                   next_state = PFD_WAIT_GPS;
+              end
+
+          // ------------------------------------------------------------
+          // gps pulse detected first
+
+          PFD_GPS :
+            begin
+               // gps pulse detected, measure time to tsc pulse
+
+               lag        = 1'b1; // Count up
+
+               if (gps_1pps_pulse == 1'b1)
+                 next_state = PFD_SYNC;
+               else if (tsc_1pps_pulse == 1'b1)
+                 next_state = PFD_DET_TSC;
+               else
+                 next_state = PFD_GPS;
+            end
+
+          PFD_DET_TSC :
+            begin
+               // gps pulse detected, check gps->tsc time measurement
+
+               if (gt_half == 1'b1 )
+                 next_state = PFD_WAIT_TSC;
+               else
+                 next_state = PFD_IDLE;
+            end
+
+          PFD_WAIT_TSC :
+            begin
+               // Wait for next tsc pulse to restart measurement
+
+               if (tsc_1pps_pulse == 1'b1 && gps_1pps_pulse == 1'b1)
+                 next_state = PFD_IDLE;
+               else if (tsc_1pps_pulse == 1'b1)
+                 next_state = PFD_TSC;
+               else
+                 next_state = PFD_WAIT_TSC;
+            end
+
+          // ------------------------------------------------------------
+          // ------------------------------------------------------------
+          default :
+            begin
+               next_state = PFD_IDLE;
+            end
+        endcase
+     end
+
+   assign pll_trig   = trig;
+
+
+
+   // Difference measurement between GPS and OCXO
+   always_ff @(negedge rst_n, posedge clk)
+     begin : tsc_ctrs
+        if (!rst_n)
+          begin
+             diff_cnt    <= '0;
+             gt_half     <= 1'b0;
+          end
+        else
+          begin
+             if (lead == 1'b0 && lag == 1'b0)
+               begin
+                  diff_cnt    <= '0;
+                  gt_half     <= 1'b0;
+               end
+             else
+               begin
+                  if (lag == 1'b1)
+                    diff_cnt    <= diff_cnt + 1;
+                  else if (lead == 1'b1)
+                    diff_cnt    <= diff_cnt - 1;
+
+                  if (diff_cnt == CLKS_PER_SEC_2 ||
+                      diff_cnt == CLKS_PER_SEC_2N)
+                    gt_half     <= 1'b1;
+                end
+          end
+     end
+
+
+   // Count output for micro registers
+   // PFD sync state status register
+   always_ff @(negedge rst_n, posedge clk)
+     begin : tsc_pfd_status
+        if (!rst_n)
+          begin
+             pdiff       <= '0;
+             fdiff       <= '0;
+             pfd_status  <= 1'b0;
+          end
+        else
+          begin
+             if (clr_diff == 1'b1)
+               begin
+                  pdiff       <= '0;
+                  fdiff       <= '0;
+               end
+             else if (trig == 1'b1)
+               begin
+                  pdiff       <= diff_cnt;
+                  fdiff       <= diff_cnt - pdiff;
+               end
+          end;
+
+        if (clr_status == 1'b1)
+          pfd_status  <= 1'b0;
+        else if (set_status == 1'b1)
+          pfd_status  <= 1'b1;
+     end
+
+   assign pdiff_1pps = pdiff;
+   assign fdiff_1pps = fdiff;
 
 
 endmodule

@@ -48,14 +48,14 @@ module util_tb
         delay         #(.SIZE($bits(q_sig[i])), .CYCLES(i)) dly_sig (.rst_n, .clk, .d(d),     .q(q_sig[i]));
         delay_pulse   #(.CYCLES(i))                         dly_p   (.rst_n, .clk, .d(d),     .q(q_pulse[i]));
         pulse_stretch #(.CYCLES(i))                         dly_st  (.rst_n, .clk, .d(d),     .q(q_stretch[i]));
-     end;
+     end
 
 
    initial
      begin
         d     = '0;
         d_vec = '0;
-     end;
+     end
 
    
    always
@@ -81,9 +81,9 @@ module util_tb
              d     = '0;
              d_vec = '0;
              run_clk(clk, j);
-          end;
+          end
 
-     end;
+     end
 
    
 endmodule

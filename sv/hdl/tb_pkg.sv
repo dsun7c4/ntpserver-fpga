@@ -43,9 +43,9 @@ package tb_pkg;
            repeat (count)
              begin : clk_wait
                 @ (negedge clk);
-             end;
+             end
            // $display("Finish run_clk task %t  clk %d", $time, clk);
-        end;
+        end
       return;
 
    endtask
@@ -78,13 +78,13 @@ module clk_gen
         high = period * duty / 100;
         low  = period - high;
         clk  = 1'b1;
-     end;
+     end
 
    always
      begin
         #high clk = 1'b0;
         #low  clk = 1'b1;
-     end;
+     end
 
 endmodule
 
@@ -108,6 +108,6 @@ module rst_n_gen
      begin
                rst_n = 1'b0;
         #delay rst_n = 1'b1;
-     end;
+     end
 
 endmodule

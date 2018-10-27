@@ -48,7 +48,7 @@ module tsc_tb
    logic        tsc_1ppus;
 
    clk_gen   #(.period(10), .duty(50)) clk_100MHZ (.clk(clk));
-   rst_n_gen #(.delay(1001))           reset      (.rst_n(rst_n));
+   rst_n_gen #(.delay(996))            reset      (.rst_n(rst_n));
 
    tsc tsc_i (.*);
 
@@ -116,7 +116,7 @@ module tsc_tb
             run_clk(clk, 1);
             gps_1pps = 1'b0;
             run_clk(clk, 99999999);
-          end;
-     end;
+          end
+     end
 
 endmodule
