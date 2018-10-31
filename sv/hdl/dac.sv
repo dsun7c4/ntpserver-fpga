@@ -142,7 +142,7 @@ module dac
                 
              cs     <= ~trig;
              sclk   <= bit_cnt[0];
-             s_in   <= bit_sr[15];
+             s_in   <= bit_sr[$left(bit_sr)];
             end
         end
 

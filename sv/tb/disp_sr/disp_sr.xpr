@@ -3,10 +3,10 @@
 <!--                                                         -->
 <!-- Copyright 1986-2014 Xilinx, Inc. All Rights Reserved.   -->
 
-<Project Version="7" Minor="2" Path="/home/guest/cae/fpga/ntpserver/sv/tb/dac/dac.xpr">
+<Project Version="7" Minor="2" Path="/home/guest/cae/fpga/ntpserver/sv/tb/disp_sr/disp_sr.xpr">
   <DefaultLaunch Dir="$PRUNDIR"/>
   <Configuration>
-    <Option Name="Id" Val="b14f8dd77fd14d46bd9f38733890082f"/>
+    <Option Name="Id" Val="5df6fe55c33f445f9caa8c6ca4f98fb5"/>
     <Option Name="Part" Val="xc7z010clg400-1"/>
     <Option Name="CompiledLibDir" Val="$PCACHEDIR/compile_simlib"/>
     <Option Name="BoardPart" Val="em.avnet.com:microzed_7010:part0:1.0"/>
@@ -16,7 +16,14 @@
   <FileSets Version="1" Minor="31">
     <FileSet Name="sources_1" Type="DesignSrcs" RelSrcDir="$PSRCDIR/sources_1">
       <Filter Type="Srcs"/>
-      <File Path="$PPRDIR/../../hdl/dac.sv">
+      <File Path="$PPRDIR/../../hdl/util_pkg.sv">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../../hdl/disp_sr.sv">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
@@ -25,7 +32,7 @@
       </File>
       <Config>
         <Option Name="DesignMode" Val="RTL"/>
-        <Option Name="TopModule" Val="dac"/>
+        <Option Name="TopModule" Val="disp_sr"/>
         <Option Name="TopAutoSet" Val="TRUE"/>
       </Config>
     </FileSet>
@@ -44,7 +51,7 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../../hdl/dac_tb.sv">
+      <File Path="$PPRDIR/../../hdl/disp_sr_tb.sv">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
@@ -53,10 +60,10 @@
       </File>
       <Config>
         <Option Name="DesignMode" Val="RTL"/>
-        <Option Name="TopModule" Val="dac_tb"/>
+        <Option Name="TopModule" Val="disp_sr_tb"/>
         <Option Name="TopAutoSet" Val="TRUE"/>
         <Option Name="SrcSet" Val="sources_1"/>
-        <Option Name="xsim.simulate.runtime" Val="200us"/>
+        <Option Name="xsim.simulate.runtime" Val="100us"/>
       </Config>
     </FileSet>
   </FileSets>
