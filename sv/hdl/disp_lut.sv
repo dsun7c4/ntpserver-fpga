@@ -231,7 +231,7 @@ module disp_lut
       .INITP_0E(256'h0000000000000000000000000000000000000000000000000000000000000000),
       .INITP_0F(256'h0000000000000000000000000000000000000000000000000000000000000000)
    ) BRAM_TDP_MACRO_inst (
-      .DOA(sram_data1),       // Output port-A data, width defined by READ_WIDTH_A parameter
+      .DOA(sram_datai),       // Output port-A data, width defined by READ_WIDTH_A parameter
       .DOB(lut_data),       // Output port-B data, width defined by READ_WIDTH_B parameter
       .ADDRA(sram_addr),   // Input port-A address, width defined by Port A depth
       .ADDRB(lut_addr),   // Input port-B address, width defined by Port B depth
