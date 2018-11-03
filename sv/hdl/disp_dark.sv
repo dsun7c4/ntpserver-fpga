@@ -102,7 +102,7 @@ module disp_dark
    assign pdm_status = ~pdm_term & status;
 
     // Final output register
-   delay #(.SIZE($bits(pdm_term)),   .CYCLES(1)) disp_oreg        (.rst_n, .clk, .d(pdm_term),   .q(disp_blank));
-   delay #(.SIZE($bits(pdm_status)), .CYCLES(1)) disp_status_oreg (.rst_n, .clk, .d(pdm_status), .q(disp_status));
+   delay1 #(.CYCLES(1)) disp_oreg        (.rst_n, .clk, .d(pdm_term),   .q(disp_blank));
+   delay1 #(.CYCLES(1)) disp_status_oreg (.rst_n, .clk, .d(pdm_status), .q(disp_status));
 
 endmodule

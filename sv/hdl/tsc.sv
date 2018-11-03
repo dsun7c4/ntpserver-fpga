@@ -512,12 +512,12 @@ module tsc
                   pdiff       <= diff_cnt;
                   fdiff       <= diff_cnt - pdiff;
                end
-          end;
 
-        if (clr_status == 1'b1)
-          pfd_status  <= 1'b0;
-        else if (set_status == 1'b1)
-          pfd_status  <= 1'b1;
+             if (clr_status == 1'b1)
+               pfd_status  <= 1'b0;
+             else if (set_status == 1'b1)
+               pfd_status  <= 1'b1;
+          end
      end
 
    assign pdiff_1pps = pdiff;

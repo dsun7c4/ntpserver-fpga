@@ -141,8 +141,8 @@ module disp_sr
 
 
     // Final output register
-   delay #(.SIZE($bits(lat)),  .CYCLES(1)) disp_olat  (.rst_n, .clk, .d(lat),  .q(disp_lat));
-   delay #(.SIZE($bits(sclk)), .CYCLES(1)) disp_osclk (.rst_n, .clk, .d(sclk), .q(disp_sclk));
-   delay #(.SIZE($bits(s_in)), .CYCLES(1)) disp_osin  (.rst_n, .clk, .d(s_in), .q(disp_sin));
+   delay1 #(.CYCLES(1)) disp_olat  (.rst_n, .clk, .d(lat),  .q(disp_lat));
+   delay1 #(.CYCLES(1)) disp_osclk (.rst_n, .clk, .d(sclk), .q(disp_sclk));
+   delay1 #(.CYCLES(1)) disp_osin  (.rst_n, .clk, .d(s_in), .q(disp_sin));
 
 endmodule

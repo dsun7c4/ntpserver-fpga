@@ -72,6 +72,47 @@ module delay
 endmodule // delay
 
 
+module delay1
+  #( int   CYCLES = 1,
+     logic INIT   = 1'b0
+     )
+   ( input  logic rst_n,
+     input  logic clk,
+
+     input  logic d,
+     output logic q
+     );
+   
+
+   if (CYCLES == 0)
+     begin : zero
+        assign q = d;
+     end
+   
+
+   if (CYCLES >= 1)
+     begin : ge_one
+        logic  dly [CYCLES - 1:0];
+   
+        always_ff @(posedge clk, negedge rst_n)
+          begin
+             if (rst_n == 0)
+               for (int i = 0; i < CYCLES; i++)
+                   dly[i] <= INIT;
+             else
+               begin
+                  dly[0] <= d;
+                  for (int i = 1; i < CYCLES; i++)
+                    dly[i] <= dly[i - 1];
+               end
+          end
+   
+       assign q = dly[CYCLES - 1];
+     end
+
+endmodule
+
+
 module delay_pulse
   #( int   CYCLES = 1
      )

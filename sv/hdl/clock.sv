@@ -65,7 +65,7 @@ module clock
 
    inout logic        gps_ena,
    input logic        gps_rxd,
-   output logic       gps_txd,
+   inout logic        gps_txd,
    input logic        gps_3dfix,
    input logic        gps_1pps,
 
@@ -265,39 +265,39 @@ module clock
       .FCLK_CLK0(fclk),
       .FCLK_RESET0_N(fclk_rst_n),
       .OCXO_RESETN(rst_n),
-      .Int0(intr[0]),  //-id# 63, hw# 31
-      .Int1(intr[1]),  //-id# 64, hw# 32
-      .Int2(intr[2]),  //-id# 65, hw# 33
-      .Int3(intr[3])   //-id# 66, hw# 34
+      .Int0(intr[0]),  // id# 63, hw# 31
+      .Int1(intr[1]),  // id# 64, hw# 32
+      .Int2(intr[2]),  // id# 65, hw# 33
+      .Int3(intr[3])   // id# 66, hw# 34
       );
 
 
-   //-rtc I2C interface
+   // rtc I2C interface
    assign rtc_scl     = iic_0_scl_t == 1'b0 ? iic_0_scl_o : 1'bZ;
    assign iic_0_scl_i = rtc_scl;
    assign rtc_sda     = iic_0_sda_t == 1'b0 ? iic_0_sda_o : 1'bZ;
    assign iic_0_sda_i = rtc_sda;
 
-   //-ocxo I2C interface
+   // ocxo I2C interface
    assign ocxo_scl    = iic_1_scl_t == 1'b0 ? iic_1_scl_o : 1'bZ;
    assign iic_1_scl_i = ocxo_scl;
    assign ocxo_sda    = iic_1_sda_t == 1'b0 ? iic_1_sda_o : 1'bZ;
    assign iic_1_sda_i = ocxo_sda;
 
-    //-Temperature sensor I2C interface
-    assign temp_scl   = iic_scl_t == 1'b0 ? iic_scl_o : 1'bZ;
-    assign iic_scl_i  = temp_scl;
-    assign temp_sda   = iic_sda_t == 1'b0 ? iic_sda_o : 1'bZ;
-    assign iic_sda_i  = temp_sda;
+   // Temperature sensor I2C interface
+   assign temp_scl   = iic_scl_t == 1'b0 ? iic_scl_o : 1'bZ;
+   assign iic_scl_i  = temp_scl;
+   assign temp_sda   = iic_sda_t == 1'b0 ? iic_sda_o : 1'bZ;
+   assign iic_sda_i  = temp_sda;
 
-    //-GPS uart IOB and tristate
-   delay #(.CYCLES(1), .INIT(1'b1)) gps_rx_i
+   // GPS uart IOB and tristate
+   delay1 #(.CYCLES(1), .INIT(1'b1)) gps_rx_i
      (.rst_n(fclk_rst_n), .clk(fclk), .d(gps_rxd),      .q(gps_uart_rxd));
-   delay #(.CYCLES(1), .INIT(1'b1)) gps_tx_t
+   delay1 #(.CYCLES(1), .INIT(1'b1)) gps_tx_t
      (.rst_n(fclk_rst_n), .clk(fclk), .d(gps_tri),      .q(gps_uart_txd_t));
-   delay #(.CYCLES(1), .INIT(1'b1)) gps_tx_o
+   delay1 #(.CYCLES(1), .INIT(1'b1)) gps_tx_o
      (.rst_n(fclk_rst_n), .clk(fclk), .d(gps_uart_txd), .q(gps_uart_txd_o));
-   assign gps_txd    = gps_uart_txd_t == 1'b0 ? gps_uart_txd_o : 1'bZ;
+   assign gps_txd     = gps_uart_txd_t == 1'b0 ? gps_uart_txd_o : 1'bZ;
 
 
    io io_i
@@ -307,18 +307,18 @@ module clock
       .rst_n(rst_n),
       .clk(clk),
 
-      //-fclk
+      // fclk
       .GPIO_tri_i(GPIO_tri_i),
       .GPIO_tri_o(GPIO_tri_o),
       .GPIO_tri_t(GPIO_tri_t),
 
-      //-clk
+      // clk
       .locked(locked),
       .dac_ena(dac_ena),
       .dac_tri(dac_tri),
       .disp_ena(disp_ena),
 
-      //-fclk
+      // fclk
       .pll_rst_n(pll_rst_n),
       .ocxo_ena(ocxo_ena),
       .gps_ena(gps_ena),
@@ -327,17 +327,17 @@ module clock
       );
 
 
-   //-Interrupts, clock domain transfer to cpu clock domain
-   delay #(.CYCLES(1), .INIT(1'b1)) rtc_irq
+   // Interrupts, clock domain transfer to cpu clock domain
+   delay1 #(.CYCLES(1), .INIT(1'b1)) rtc_irq
      (.rst_n(fclk_rst_n), .clk(fclk), .d(rtc_int_n),   .q(rtc_int_n_d));
-   delay #(.CYCLES(1), .INIT(1'b1)) temp_irq1
+   delay1 #(.CYCLES(1), .INIT(1'b1)) temp_irq1
      (.rst_n(fclk_rst_n), .clk(fclk), .d(temp_int1_n), .q(temp_int1_n_d));
-   delay #(.CYCLES(1), .INIT(1'b1)) temp_irq2
+   delay1 #(.CYCLES(1), .INIT(1'b1)) temp_irq2
      (.rst_n(fclk_rst_n), .clk(fclk), .d(temp_int2_n), .q(temp_int2_n_d));
-   assign irq[0] = ~rtc_int_n_d;    //-RTC
-   // assign irq[1] = 1'b0;    //-1pps
-   // assign irq[2] = 1'b0;    //-PLL
-   assign irq[3] = ~temp_int1_n_d | ~temp_int2_n_d;    //-temp sensors
+   assign irq[0] = ~rtc_int_n_d;    // RTC
+   // assign irq[1] = 1'b0;    // 1pps
+   // assign irq[2] = 1'b0;    // PLL
+   assign irq[3] = ~temp_int1_n_d | ~temp_int2_n_d;    // temp sensors
    delay #(.SIZE($bits(irq)), .CYCLES(2)) irq_i
      (.rst_n(fclk_rst_n), .clk(fclk), .d(irq), .q(intr));
 
@@ -345,21 +345,21 @@ module clock
 
    syspll syspll_i
      (
-      //-Clock in ports
+      // Clock in ports
       .ocxo_clk(ocxo_clk),
       .fclk(fclk),
       .clk_sel(clk_sel),
 
-      //-Clock out ports
+      // Clock out ports
       .clk(clk),
 
-      //-Status and control signals
+      // Status and control signals
       .pll_rst_n(pll_rst_n),
       .locked(locked)
       );
 
 
-   delay #(.CYCLES(2)) gps_3dfix_i
+   delay1 #(.CYCLES(2)) gps_3dfix_i
      (.rst_n, .clk, .d(gps_3dfix), .q(gps_3dfix_d));
 
 
@@ -377,17 +377,17 @@ module clock
       .EPC_INTF_rdy(EPC_INTF_rdy),
       .EPC_INTF_rnw(EPC_INTF_rnw),
 
-      //-Time stamp counter
+      // Time stamp counter
       .tsc_cnt(tsc_cnt),
       .tsc_cnt1(tsc_cnt1),
       .tsc_read(tsc_read),
 
-      //-Time setting
+      // Time setting
       .cur_time(cur_time),
       .set(set),
       .set_time(set_time),
 
-      //-PLL control
+      // PLL control
       .gps_3dfix_d(gps_3dfix_d),
       .gps_1pps_d(gps_1pps_d),
       .tsc_1pps_d(tsc_1pps_d),
@@ -401,11 +401,11 @@ module clock
       .pps_irq(irq[1]),
       .pll_irq(irq[2]),
 
-      //-Fan ms per revolution, percent speed
+      // Fan ms per revolution, percent speed
       .fan_uspr(fan_uspr),
       .fan_pct(fan_pct),
 
-      //-Display memory
+      // Display memory
       .sram_addr(sram_addr),
       .sram_we(sram_we),
       .sram_datao(sram_datao),
@@ -517,16 +517,16 @@ module clock
              1'b0
              }),
 
-      //-Display memory
+      // Display memory
       .sram_addr(sram_addr),
       .sram_we(sram_we),
       .sram_datao(sram_datao),
       .sram_datai(sram_datai),
 
-      //-Time of day
+      // Time of day
       .cur_time(cur_time),
 
-      //-Output to tlc59282 LED driver
+      // Output to tlc59282 LED driver
       .disp_sclk(disp_sclk),
       .disp_blank(disp_blank),
       .disp_lat(disp_lat),

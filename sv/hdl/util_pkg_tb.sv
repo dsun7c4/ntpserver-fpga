@@ -45,9 +45,9 @@ module util_tb
    for (i = 0; i < 16; i++)
      begin : tests
         delay         #(.SIZE($bits(q_vec[i])), .CYCLES(i)) dly_vec (.rst_n, .clk, .d(d_vec), .q(q_vec[i]));
-        delay         #(.SIZE($bits(q_sig[i])), .CYCLES(i)) dly_sig (.rst_n, .clk, .d(d),     .q(q_sig[i]));
-        delay_pulse   #(.CYCLES(i))                         dly_p   (.rst_n, .clk, .d(d),     .q(q_pulse[i]));
-        pulse_stretch #(.CYCLES(i))                         dly_st  (.rst_n, .clk, .d(d),     .q(q_stretch[i]));
+        delay1        #(                        .CYCLES(i)) dly_sig (.rst_n, .clk, .d(d),     .q(q_sig[i]));
+        delay_pulse   #(                        .CYCLES(i)) dly_p   (.rst_n, .clk, .d(d),     .q(q_pulse[i]));
+        pulse_stretch #(                        .CYCLES(i)) dly_st  (.rst_n, .clk, .d(d),     .q(q_stretch[i]));
      end
 
 
