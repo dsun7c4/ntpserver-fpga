@@ -190,7 +190,7 @@ module clock
    logic [7:0]        disp_page;
    logic [7:0]        disp_pdm;
 
-   cpu  cpu_i
+   cpu cpu_i
      (
       .DDR_addr(DDR_addr),
       .DDR_ba(DDR_ba),

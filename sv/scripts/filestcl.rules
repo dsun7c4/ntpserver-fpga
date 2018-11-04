@@ -1,0 +1,43 @@
+# Generate a TCL file with lists of file names used to build and simulate
+
+
+TCL_FILE    = scripts/files.tcl
+
+tcl: $(TCL_FILE)
+
+$(TCL_FILE): Makefile
+	@echo "set vhdl_src [list \\" > $@
+	@for i in $(VHDL_SRC) $(VHDL_VER_SRC); do \
+		echo  "  \"[file normalize \"\$$origin_dir/$$i\"]\"\\"  >> $@; \
+	done
+	@echo "]\n" >> $@
+	@echo "set vlog_src [list \\" >> $@
+	@for i in $(VLOG_SRC) $(VLOG_VER_SRC); do \
+		echo  "  \"[file normalize \"\$$origin_dir/$$i\"]\"\\"  >> $@; \
+	done
+	@echo "]\n" >> $@
+	@echo "set xlx_blk [list \\" >> $@
+	@for i in $(XLX_BLK); do \
+		echo  "  \"[file normalize \"\$$origin_dir/$$i\"]\"\\"  >> $@; \
+	done
+	@echo "]\n" >> $@
+	@echo "set xlx_ip [list \\" >> $@
+	@for i in $(XLX_IP); do \
+		echo  "  \"[file normalize \"\$$origin_dir/$$i\"]\"\\"  >> $@; \
+	done
+	@echo "]\n" >> $@
+	@echo "set xlx_xdc [list \\" >> $@
+	@for i in $(XLX_XDC); do \
+		echo  "  \"[file normalize \"\$$origin_dir/$$i\"]\"\\"  >> $@; \
+	done
+	@echo "]\n" >> $@
+	@echo "set vhdl_sim [list \\" >> $@
+	@for i in $(VHDL_SIM) $(VHDL_VER_SRC); do \
+		echo  "  \"[file normalize \"\$$origin_dir/$$i\"]\"\\"  >> $@; \
+	done
+	@echo "]\n" >> $@
+	@echo "set vlog_sim [list \\" >> $@
+	@for i in $(VLOG_SIM) $(VLOG_VER_SRC); do \
+		echo  "  \"[file normalize \"\$$origin_dir/$$i\"]\"\\"  >> $@; \
+	done
+	@echo "]\n" >> $@

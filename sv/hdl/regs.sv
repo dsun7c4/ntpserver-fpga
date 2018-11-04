@@ -206,7 +206,7 @@ module regs
    output logic [31:0] sram_datao,
    input logic [31:0]  sram_datai,
 
-   output logic        stat_src,
+   output logic [3:0]  stat_src,
    output logic [7:0]  disp_page,
    output logic [7:0]  disp_pdm
    );
