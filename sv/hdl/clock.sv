@@ -65,7 +65,7 @@ module clock
 
    inout logic        gps_ena,
    input logic        gps_rxd,
-   inout logic        gps_txd,
+   output logic       gps_txd,
    input logic        gps_3dfix,
    input logic        gps_1pps,
 

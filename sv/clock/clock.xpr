@@ -67,23 +67,23 @@
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
-        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_xadc_wiz_0_0/cpu_xadc_wiz_0_0.xci"/>
-        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_xlconcat_0_0/cpu_xlconcat_0_0.xci"/>
-        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_rst_M_AXI_GP1_ACLK_100M_0/cpu_rst_M_AXI_GP1_ACLK_100M_0.xci"/>
-        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_processing_system7_0_axi_periph_1_0/cpu_processing_system7_0_axi_periph_1_0.xci"/>
-        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_axi_epc_0_0/cpu_axi_epc_0_0.xci"/>
-        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_xbar_0/cpu_xbar_0.xci"/>
-        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_axi_iic_0_0/cpu_axi_iic_0_0.xci"/>
-        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_rst_processing_system7_0_100M_0/cpu_rst_processing_system7_0_100M_0.xci"/>
-        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_processing_system7_0_axi_periph_0/cpu_processing_system7_0_axi_periph_0.xci"/>
-        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_axi_gpio_0_0/cpu_axi_gpio_0_0.xci"/>
-        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_processing_system7_0_0/cpu_processing_system7_0_0.xci"/>
         <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="hw_handoff/cpu_bd.tcl"/>
         <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="hw_handoff/cpu.hwh"/>
         <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="cpu_ooc.xdc"/>
         <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="hdl/cpu.v"/>
-        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_auto_pc_1/cpu_auto_pc_1.xci"/>
+        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_processing_system7_0_0/cpu_processing_system7_0_0.xci"/>
+        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_axi_gpio_0_0/cpu_axi_gpio_0_0.xci"/>
+        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_processing_system7_0_axi_periph_0/cpu_processing_system7_0_axi_periph_0.xci"/>
+        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_rst_processing_system7_0_100M_0/cpu_rst_processing_system7_0_100M_0.xci"/>
+        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_axi_iic_0_0/cpu_axi_iic_0_0.xci"/>
+        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_xbar_0/cpu_xbar_0.xci"/>
+        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_axi_epc_0_0/cpu_axi_epc_0_0.xci"/>
+        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_processing_system7_0_axi_periph_1_0/cpu_processing_system7_0_axi_periph_1_0.xci"/>
+        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_rst_M_AXI_GP1_ACLK_100M_0/cpu_rst_M_AXI_GP1_ACLK_100M_0.xci"/>
+        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_xlconcat_0_0/cpu_xlconcat_0_0.xci"/>
+        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_xadc_wiz_0_0/cpu_xadc_wiz_0_0.xci"/>
         <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_auto_pc_0/cpu_auto_pc_0.xci"/>
+        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_auto_pc_1/cpu_auto_pc_1.xci"/>
       </File>
       <File Path="$PPRDIR/../hdl/tsc.sv">
         <FileInfo>
@@ -226,6 +226,20 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
+      <File Path="$PPRDIR/../ip/ocxo_clk_pll/ocxo_clk_pll_clk_wiz.v">
+        <FileInfo SFType="SVerilog">
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../ip/ocxo_clk_pll/ocxo_clk_pll.v">
+        <FileInfo SFType="SVerilog">
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
       <File Path="$PPRDIR/../hdl/syspll.sv">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
@@ -257,12 +271,6 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../hdl/clock.sv">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
       <File Path="$PPRDIR/../hdl/tb_pkg.sv">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
@@ -275,23 +283,15 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../hdl/clock_tb.sv">
+      <File Path="$PPRDIR/../hdl/clock.sv">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../ip/ocxo_clk_pll/ocxo_clk_pll_clk_wiz.v">
-        <FileInfo SFType="SVerilog">
+      <File Path="$PPRDIR/../hdl/clock_tb.sv">
+        <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../ip/ocxo_clk_pll/ocxo_clk_pll.v">
-        <FileInfo SFType="SVerilog">
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
