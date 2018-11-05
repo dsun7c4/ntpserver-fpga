@@ -7,12 +7,12 @@ tcl: $(TCL_FILE)
 
 $(TCL_FILE): Makefile
 	@echo "set vhdl_src [list \\" > $@
-	@for i in $(VHDL_SRC) $(VHDL_VER_SRC); do \
+	@for i in $(VHDL_VER_SRC) $(VHDL_SRC); do \
 		echo  "  \"[file normalize \"\$$origin_dir/$$i\"]\"\\"  >> $@; \
 	done
 	@echo "]\n" >> $@
 	@echo "set vlog_src [list \\" >> $@
-	@for i in $(VLOG_SRC) $(VLOG_VER_SRC); do \
+	@for i in $(VLOG_VER_SRC) $(VLOG_SRC); do \
 		echo  "  \"[file normalize \"\$$origin_dir/$$i\"]\"\\"  >> $@; \
 	done
 	@echo "]\n" >> $@
@@ -32,12 +32,12 @@ $(TCL_FILE): Makefile
 	done
 	@echo "]\n" >> $@
 	@echo "set vhdl_sim [list \\" >> $@
-	@for i in $(VHDL_SIM) $(VHDL_VER_SRC); do \
+	@for i in $(VHDL_VER_SRC) $(VHDL_SIM); do \
 		echo  "  \"[file normalize \"\$$origin_dir/$$i\"]\"\\"  >> $@; \
 	done
 	@echo "]\n" >> $@
 	@echo "set vlog_sim [list \\" >> $@
-	@for i in $(VLOG_SIM) $(VLOG_VER_SRC); do \
+	@for i in $(VLOG_VER_SRC) $(VLOG_SIM); do \
 		echo  "  \"[file normalize \"\$$origin_dir/$$i\"]\"\\"  >> $@; \
 	done
 	@echo "]\n" >> $@

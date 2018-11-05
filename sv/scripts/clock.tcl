@@ -93,7 +93,7 @@ set obj [get_projects clock]
 set_property "board_part" "em.avnet.com:microzed_7010:part0:1.0" $obj
 set_property "default_lib" "work" $obj
 set_property "simulator_language" "Mixed" $obj
-set_property "target_language" "VHDL" $obj
+set_property "source_mgmt_mode" "DisplayOnly" $obj
 
 source "$origin_dir/scripts/files.tcl"
 

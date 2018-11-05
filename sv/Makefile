@@ -5,29 +5,31 @@ VLOG_VER_SRC  = hdl/version_pkg.sv
 
 VLOG_SRC = 								   \
 	$(addprefix hdl/,						   \
+	types_pkg.sv							   \
+	util_pkg.sv							   \
 	bcdtime.sv							   \
 	dac.sv								   \
-	disp.sv							           \
+	disp.sv								   \
 	disp_ctl.sv							   \
 	disp_dark.sv							   \
 	disp_lut.sv							   \
 	disp_sr.sv							   \
 	fan.sv								   \
 	io.sv								   \
-	regs.sv							           \
+	regs.sv								   \
 	syspll.sv							   \
 	tsc.sv								   \
-	util_pkg.sv							   \
-	types_pkg.sv							   \
 	clock.sv							   \
 	)
 
 VLOG_SIM = 								   \
-	$(VLOG_SRC)							   \
-	$(XLX_IP_SIM)							   \
 	$(addprefix hdl/,						   \
 	tb_pkg.sv							   \
 	cpu_test.sv							   \
+	)								   \
+	$(XLX_IP_SIM)							   \
+	$(VLOG_SRC)							   \
+	$(addprefix hdl/,						   \
 	clock_tb.sv							   \
 	)
 
@@ -61,7 +63,7 @@ include scripts/filestcl.rules
 
 # This setups up the top level project
 setup : .setup.done
-.setup.done : $(VHDL_SRC) $(VHDL_SIM) $(VER_SRC) $(XLX_BLK) $(XLX_IP) $(XLX_XDC) $(TCL_FILE)
+.setup.done : $(VLOG_SRC) $(VLOG_SIM) $(VLOG_VER_SRC) $(XLX_BLK) $(XLX_IP) $(XLX_XDC) $(TCL_FILE)
 	vivado -mode batch -source scripts/clock.tcl -log setup.log -jou setup.jou
 
 compile : .compile.done
@@ -89,8 +91,10 @@ clean :
 
 check:
 	@echo "VHDL_SRC    = $(VHDL_SRC)"
+	@echo "VLOG_SRC    = $(VLOG_SRC)"
 	@echo "XLX_BLK     = $(XLX_BLK)"
 	@echo "VHDL_SIM    = $(VHDL_SIM)"
+	@echo "VLOG_SIM    = $(VLOG_SIM)"
 	@echo "XLX_XDC     = $(XLX_XDC)"
 	@echo "XLX_IP      = $(XLX_IP)"
 	@echo "XLX_IP_SIM  = $(XLX_IP_SIM)"
