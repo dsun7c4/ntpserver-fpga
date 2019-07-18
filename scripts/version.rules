@@ -20,9 +20,9 @@ DATE_m1     = $(word 12, $(DATE))
 
 PKG_NAME    = version_pkg
 
-version: $(VER_SRC)
+version: $(VHDL_VER_SRC) $(VLOG_VER_SRC)
 
-$(VER_SRC): $(VHDL_SRC) $(XDC)
+$(VHDL_VER_SRC): $(VHDL_SRC) $(XDC)
 	@echo "library IEEE;"  > $@
 	@echo "use IEEE.STD_LOGIC_1164.ALL;" >> $@
 	@echo "use IEEE.STD_LOGIC_UNSIGNED.ALL;" >> $@
@@ -47,6 +47,29 @@ $(VER_SRC): $(VHDL_SRC) $(XDC)
 	@echo "end package $(PKG_NAME);\n" >> $@
 	@echo "package body $(PKG_NAME) is\n" >> $@
 	@echo "end package body $(PKG_NAME);" >> $@
+	@echo GIT_COMMIT = $(GIT_COMMIT)
+	@echo GIT_BUILD  = $(GIT_BUILD)
+	@echo DATE       = $(DATE)
+
+$(VLOG_VER_SRC): $(VLOG_SRC) $(XDC)
+	@echo "package $(PKG_NAME);\n" > $@
+	@echo "    localparam [31:0] GIT_COMMIT = 32'h$(GIT_COMMIT);" >> $@
+	@echo "    localparam [31:0] TIME_CODE  = {" >> $@
+	@echo "                                    4'd$(DATE_H10),   // Hour 10" >> $@
+	@echo "                                    4'd$(DATE_H1),   // Hour 1" >> $@
+	@echo "                                    4'd$(DATE_m10),   // Min 10" >> $@
+	@echo "                                    4'd$(DATE_m1),   // Min 1" >> $@
+	@echo "                                    16'd$(GIT_BUILD)};  // Build" >> $@
+	@echo "    localparam [31:0] DATE_CODE  = {" >> $@
+	@echo "                                    4'd$(DATE_Y1000),   // Year" >> $@
+	@echo "                                    4'd$(DATE_Y100),   // Year" >> $@
+	@echo "                                    4'd$(DATE_Y10),   // Year" >> $@
+	@echo "                                    4'd$(DATE_Y1),   // Year" >> $@
+	@echo "                                    4'd$(DATE_M10),   // Month 10" >> $@
+	@echo "                                    4'd$(DATE_M1),   // Month 1" >> $@
+	@echo "                                    4'd$(DATE_D10),   // Day 10" >> $@
+	@echo "                                    4'd$(DATE_D1)};  // Day 1\n" >> $@
+	@echo "endpackage : $(PKG_NAME)" >> $@
 	@echo GIT_COMMIT = $(GIT_COMMIT)
 	@echo GIT_BUILD  = $(GIT_BUILD)
 	@echo DATE       = $(DATE)

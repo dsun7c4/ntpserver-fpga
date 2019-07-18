@@ -73,13 +73,13 @@
 #
 #*****************************************************************************************
 
+# Set the reference directory for source file relative paths (by default the value is script directory path)
+set origin_dir "."
+
 # get the directory where this script resides
 set thisDir [file dirname [info script]]
 # source common utilities
-source -notrace $thisDir/utils.tcl
-
-# Set the reference directory for source file relative paths (by default the value is script directory path)
-set origin_dir "."
+source -notrace $origin_dir/../scripts/utils.tcl
 
 # Set the directory path for the original project from where this script was exported
 set orig_proj_dir "[file normalize "$origin_dir/clock"]"
@@ -97,7 +97,7 @@ set_property "default_lib" "work" $obj
 set_property "simulator_language" "Mixed" $obj
 set_property "target_language" "VHDL" $obj
 
-source "$origin_dir/scripts/files.tcl"
+source "$thisDir/files.tcl"
 
 # Add the VHDL design sources
 add_source_files sources_1 $vhdl_src "VHDL"
@@ -120,7 +120,7 @@ set_property "top" "clock" $obj
 add_source_files constrs_1 $xlx_xdc "XDC"
 
 #set obj [get_filesets constrs_1]
-#set_property "target_constrs_file" "[file normalize "$origin_dir/xdc/pin.xdc"]" $obj
+#set_property "target_constrs_file" "[file normalize "$origin_dir/../xdc/pin.xdc"]" $obj
 
 
 # Add the VHDL simulation sources
