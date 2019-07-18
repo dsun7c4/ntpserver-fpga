@@ -6,7 +6,7 @@
 <Project Version="7" Minor="2" Path="/home/tmp/fpga/sv/clock/clock.xpr">
   <DefaultLaunch Dir="$PRUNDIR"/>
   <Configuration>
-    <Option Name="Id" Val="586f62dd01844c3b9cd0d28c2c7c3391"/>
+    <Option Name="Id" Val="3acf57a4820f4f00a9a0cc45d66c03e0"/>
     <Option Name="Part" Val="xc7z010clg400-1"/>
     <Option Name="CompiledLibDir" Val="$PCACHEDIR/compile_simlib"/>
     <Option Name="BoardPart" Val="em.avnet.com:microzed_7010:part0:1.0"/>
@@ -152,28 +152,10 @@
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
-        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_processing_system7_0_0/cpu_processing_system7_0_0.xci"/>
-        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_xadc_wiz_0_0/cpu_xadc_wiz_0_0.xci"/>
-        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_xlconcat_0_0/cpu_xlconcat_0_0.xci"/>
-        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_rst_M_AXI_GP1_ACLK_100M_0/cpu_rst_M_AXI_GP1_ACLK_100M_0.xci"/>
-        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_processing_system7_0_axi_periph_1_0/cpu_processing_system7_0_axi_periph_1_0.xci"/>
-        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_axi_epc_0_0/cpu_axi_epc_0_0.xci"/>
-        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_xbar_0/cpu_xbar_0.xci"/>
-        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_axi_iic_0_0/cpu_axi_iic_0_0.xci"/>
-        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_rst_processing_system7_0_100M_0/cpu_rst_processing_system7_0_100M_0.xci"/>
-        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_processing_system7_0_axi_periph_0/cpu_processing_system7_0_axi_periph_0.xci"/>
-        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_axi_gpio_0_0/cpu_axi_gpio_0_0.xci"/>
       </File>
       <File Path="$PPRDIR/../ip/ocxo_clk_pll/ocxo_clk_pll.xci">
         <FileInfo>
           <Attr Name="Library" Val="work"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../../cpu/hdl/cpu_wrapper.v">
-        <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
