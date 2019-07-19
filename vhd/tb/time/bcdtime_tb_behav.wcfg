@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="bcdtime_tb_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="bcdtime_tb" />
+            <top_module name="tb_pkg" />
+            <top_module name="types_pkg" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <WVObjectSize size="21" />
+   <wvobject db_ref_id="1" type="logic" fp_name="/bcdtime_tb/rst_n">
+      <obj_property name="ElementShortName">rst_n</obj_property>
+      <obj_property name="ObjectShortName">rst_n</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/bcdtime_tb/clk">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/bcdtime_tb/tsc_1pps">
+      <obj_property name="ElementShortName">tsc_1pps</obj_property>
+      <obj_property name="ObjectShortName">tsc_1pps</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/bcdtime_tb/tsc_1ppms">
+      <obj_property name="ElementShortName">tsc_1ppms</obj_property>
+      <obj_property name="ObjectShortName">tsc_1ppms</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/bcdtime_tb/set">
+      <obj_property name="ElementShortName">set</obj_property>
+      <obj_property name="ObjectShortName">set</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="array" fp_name="/bcdtime_tb/set_time">
+      <obj_property name="ElementShortName">set_time</obj_property>
+      <obj_property name="ObjectShortName">set_time</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="array" fp_name="/bcdtime_tb/digits/dig_1ms">
+      <obj_property name="ElementShortName">dig_1ms[3:0]</obj_property>
+      <obj_property name="ObjectShortName">dig_1ms[3:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="array" fp_name="/bcdtime_tb/digits/dig_10ms">
+      <obj_property name="ElementShortName">dig_10ms[3:0]</obj_property>
+      <obj_property name="ObjectShortName">dig_10ms[3:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="array" fp_name="/bcdtime_tb/digits/dig_100ms">
+      <obj_property name="ElementShortName">dig_100ms[3:0]</obj_property>
+      <obj_property name="ObjectShortName">dig_100ms[3:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="array" fp_name="/bcdtime_tb/digits/dig_1s">
+      <obj_property name="ElementShortName">dig_1s[3:0]</obj_property>
+      <obj_property name="ObjectShortName">dig_1s[3:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="array" fp_name="/bcdtime_tb/digits/dig_10s">
+      <obj_property name="ElementShortName">dig_10s[3:0]</obj_property>
+      <obj_property name="ObjectShortName">dig_10s[3:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="array" fp_name="/bcdtime_tb/digits/dig_1m">
+      <obj_property name="ElementShortName">dig_1m[3:0]</obj_property>
+      <obj_property name="ObjectShortName">dig_1m[3:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="array" fp_name="/bcdtime_tb/digits/dig_10m">
+      <obj_property name="ElementShortName">dig_10m[3:0]</obj_property>
+      <obj_property name="ObjectShortName">dig_10m[3:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="array" fp_name="/bcdtime_tb/digits/dig_1h">
+      <obj_property name="ElementShortName">dig_1h[3:0]</obj_property>
+      <obj_property name="ObjectShortName">dig_1h[3:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="array" fp_name="/bcdtime_tb/digits/dig_10h">
+      <obj_property name="ElementShortName">dig_10h[3:0]</obj_property>
+      <obj_property name="ObjectShortName">dig_10h[3:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/bcdtime_tb/digits/ms_carry">
+      <obj_property name="ElementShortName">ms_carry</obj_property>
+      <obj_property name="ObjectShortName">ms_carry</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/bcdtime_tb/digits/s_carry">
+      <obj_property name="ElementShortName">s_carry</obj_property>
+      <obj_property name="ObjectShortName">s_carry</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/bcdtime_tb/digits/m_carry">
+      <obj_property name="ElementShortName">m_carry</obj_property>
+      <obj_property name="ObjectShortName">m_carry</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/bcdtime_tb/digits/h_carry">
+      <obj_property name="ElementShortName">h_carry</obj_property>
+      <obj_property name="ObjectShortName">h_carry</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/bcdtime_tb/digits/sync_time">
+      <obj_property name="ElementShortName">sync_time</obj_property>
+      <obj_property name="ObjectShortName">sync_time</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="array" fp_name="/bcdtime_tb/cur_time">
+      <obj_property name="ElementShortName">cur_time</obj_property>
+      <obj_property name="ObjectShortName">cur_time</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+      <wvobject db_ref_id="1" type="array" fp_name="/bcdtime_tb/cur_time.t_10h">
+         <obj_property name="ElementShortName">.t_10h[3:0]</obj_property>
+         <obj_property name="ObjectShortName">cur_time.t_10h[3:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject db_ref_id="1" type="array" fp_name="/bcdtime_tb/cur_time.t_1h">
+         <obj_property name="ElementShortName">.t_1h[3:0]</obj_property>
+         <obj_property name="ObjectShortName">cur_time.t_1h[3:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject db_ref_id="1" type="array" fp_name="/bcdtime_tb/cur_time.t_10m">
+         <obj_property name="ElementShortName">.t_10m[3:0]</obj_property>
+         <obj_property name="ObjectShortName">cur_time.t_10m[3:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject db_ref_id="1" type="array" fp_name="/bcdtime_tb/cur_time.t_1m">
+         <obj_property name="ElementShortName">.t_1m[3:0]</obj_property>
+         <obj_property name="ObjectShortName">cur_time.t_1m[3:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject db_ref_id="1" type="array" fp_name="/bcdtime_tb/cur_time.t_10s">
+         <obj_property name="ElementShortName">.t_10s[3:0]</obj_property>
+         <obj_property name="ObjectShortName">cur_time.t_10s[3:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject db_ref_id="1" type="array" fp_name="/bcdtime_tb/cur_time.t_1s">
+         <obj_property name="ElementShortName">.t_1s[3:0]</obj_property>
+         <obj_property name="ObjectShortName">cur_time.t_1s[3:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject db_ref_id="1" type="array" fp_name="/bcdtime_tb/cur_time.t_100ms">
+         <obj_property name="ElementShortName">.t_100ms[3:0]</obj_property>
+         <obj_property name="ObjectShortName">cur_time.t_100ms[3:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject db_ref_id="1" type="array" fp_name="/bcdtime_tb/cur_time.t_10ms">
+         <obj_property name="ElementShortName">.t_10ms[3:0]</obj_property>
+         <obj_property name="ObjectShortName">cur_time.t_10ms[3:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject db_ref_id="1" type="array" fp_name="/bcdtime_tb/cur_time.t_1ms">
+         <obj_property name="ElementShortName">.t_1ms[3:0]</obj_property>
+         <obj_property name="ObjectShortName">cur_time.t_1ms[3:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+   </wvobject>
+</wave_config>

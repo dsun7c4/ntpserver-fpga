@@ -1,0 +1,10 @@
+#-----------------------------------------------------------
+# Vivado v2014.4 (64-bit)
+# SW Build 1071353 on Tue Nov 18 16:47:07 MST 2014
+# IP Build 1070531 on Tue Nov 18 01:10:18 MST 2014
+# Start of session at: Tue Mar 15 21:10:32 2016
+# Process ID: 25986
+# Log file: /home/guest/cae/fpga/ntpserver/ip/managed_ip_project/managed_ip_project.runs/ocxo_clk_pll_synth_1/ocxo_clk_pll.vds
+# Journal file: /home/guest/cae/fpga/ntpserver/ip/managed_ip_project/managed_ip_project.runs/ocxo_clk_pll_synth_1/vivado.jou
+#-----------------------------------------------------------
+source ocxo_clk_pll.tcl

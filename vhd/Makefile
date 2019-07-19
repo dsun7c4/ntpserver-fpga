@@ -1,6 +1,6 @@
 # these are the sources - everything depends upon them
 
-VER_SRC  = hdl/version_pkg.vhd
+VHDL_VER_SRC  = hdl/version_pkg.vhd
 
 VHDL_SRC = 								   \
 	$(addprefix hdl/,						   \
@@ -34,7 +34,7 @@ VHDL_SIM = 								   \
 #RTL=../hdl/top/top.v ../hdl/threeFlop/threeFlop.v
 
 XLX_BLK =								   \
-	cpu/cpu.bd							   \
+	../cpu/cpu.bd							   \
 
 
 XLX_IP =								   \
@@ -47,26 +47,26 @@ XLX_IP_SIM =								   \
 
 
 XLX_XDC =								   \
-	xdc/pin.xdc							   \
-	xdc/timing.xdc							   \
+	../xdc/pin.xdc							   \
+	../xdc/timing.xdc						   \
 
 
 # These are all the compilation targets, starting with "all"
 all : setup compile
 
 
-include scripts/version.rules
-include scripts/filestcl.rules
+include ../scripts/version.rules
+include ../scripts/filestcl.rules
 
 
 # This setups up the top level project
 setup : .setup.done
-.setup.done : $(VHDL_SRC) $(VHDL_SIM) $(VER_SRC) $(XLX_BLK) $(XLX_IP) $(XLX_XDC) $(TCL_FILE)
+.setup.done : $(VHDL_SRC) $(VHDL_SIM) $(VHDL_VER_SRC) $(XLX_BLK) $(XLX_IP) $(XLX_XDC) $(TCL_FILE)
 	vivado -mode batch -source scripts/clock.tcl -log setup.log -jou setup.jou
 
 compile : .compile.done
 .compile.done : .setup.done
-	vivado -mode batch -source scripts/compile.tcl -log compile.log -jou compile.jou
+	vivado -mode batch -source ../scripts/compile.tcl -log compile.log -jou compile.jou
 
 fsbl:
 	${MAKE} -C fsbl

@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="disp_tb_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="disp_tb" />
+            <top_module name="tb_pkg" />
+            <top_module name="types_pkg" />
+            <top_module name="util_pkg" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <WVObjectSize size="39" />
+   <wvobject db_ref_id="1" type="logic" fp_name="/disp_tb/rst_n">
+      <obj_property name="ElementShortName">rst_n</obj_property>
+      <obj_property name="ObjectShortName">rst_n</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/disp_tb/clk">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/disp_tb/tsc_1pps">
+      <obj_property name="ElementShortName">tsc_1pps</obj_property>
+      <obj_property name="ObjectShortName">tsc_1pps</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/disp_tb/tsc_1ppms">
+      <obj_property name="ElementShortName">tsc_1ppms</obj_property>
+      <obj_property name="ObjectShortName">tsc_1ppms</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/disp_tb/tsc_1ppus">
+      <obj_property name="ElementShortName">tsc_1ppus</obj_property>
+      <obj_property name="ObjectShortName">tsc_1ppus</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="array" fp_name="/disp_tb/disp_page">
+      <obj_property name="ElementShortName">disp_page[7:0]</obj_property>
+      <obj_property name="ObjectShortName">disp_page[7:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="divider71" type="divider">
+      <obj_property name="label">7-seg Drive</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/disp_tb/disp_sclk">
+      <obj_property name="ElementShortName">disp_sclk</obj_property>
+      <obj_property name="ObjectShortName">disp_sclk</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/disp_tb/disp_blank">
+      <obj_property name="ElementShortName">disp_blank</obj_property>
+      <obj_property name="ObjectShortName">disp_blank</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/disp_tb/disp_lat">
+      <obj_property name="ElementShortName">disp_lat</obj_property>
+      <obj_property name="ObjectShortName">disp_lat</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/disp_tb/disp_sin">
+      <obj_property name="ElementShortName">disp_sin</obj_property>
+      <obj_property name="ObjectShortName">disp_sin</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/disp_tb/disp_i/disp_status">
+      <obj_property name="ElementShortName">disp_status</obj_property>
+      <obj_property name="ObjectShortName">disp_status</obj_property>
+   </wvobject>
+   <wvobject fp_name="divider72" type="divider">
+      <obj_property name="label">Control</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/disp_tb/disp_i/disp_ctl_i/ce">
+      <obj_property name="ElementShortName">ce</obj_property>
+      <obj_property name="ObjectShortName">ce</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="array" fp_name="/disp_tb/disp_i/disp_ctl_i/page">
+      <obj_property name="ElementShortName">page[7:0]</obj_property>
+      <obj_property name="ObjectShortName">page[7:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/disp_tb/disp_i/disp_ctl_i/rst_addr">
+      <obj_property name="ElementShortName">rst_addr</obj_property>
+      <obj_property name="ObjectShortName">rst_addr</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/disp_tb/disp_i/disp_ctl_i/inc_addr">
+      <obj_property name="ElementShortName">inc_addr</obj_property>
+      <obj_property name="ObjectShortName">inc_addr</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="array" fp_name="/disp_tb/disp_i/disp_ctl_i/cnt">
+      <obj_property name="ElementShortName">cnt[5:0]</obj_property>
+      <obj_property name="ObjectShortName">cnt[5:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/disp_tb/disp_i/disp_ctl_i/cnt_term">
+      <obj_property name="ElementShortName">cnt_term</obj_property>
+      <obj_property name="ObjectShortName">cnt_term</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/disp_tb/disp_i/disp_ctl_i/disp_mem">
+      <obj_property name="ElementShortName">disp_mem</obj_property>
+      <obj_property name="ObjectShortName">disp_mem</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="array" fp_name="/disp_tb/disp_i/disp_ctl_i/lut_addr">
+      <obj_property name="ElementShortName">lut_addr[11:0]</obj_property>
+      <obj_property name="ObjectShortName">lut_addr[11:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="array" fp_name="/disp_tb/disp_i/disp_ctl_i/lut_data">
+      <obj_property name="ElementShortName">lut_data[7:0]</obj_property>
+      <obj_property name="ObjectShortName">lut_data[7:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/disp_tb/disp_i/disp_ctl_i/data_val">
+      <obj_property name="ElementShortName">data_val</obj_property>
+      <obj_property name="ObjectShortName">data_val</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="array" fp_name="/disp_tb/disp_i/disp_ctl_i/lchar">
+      <obj_property name="ElementShortName">lchar[7:0]</obj_property>
+      <obj_property name="ObjectShortName">lchar[7:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="array" fp_name="/disp_tb/disp_i/disp_ctl_i/dchar">
+      <obj_property name="ElementShortName">dchar[7:0]</obj_property>
+      <obj_property name="ObjectShortName">dchar[7:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/disp_tb/disp_i/disp_ctl_i/mask_val">
+      <obj_property name="ElementShortName">mask_val</obj_property>
+      <obj_property name="ObjectShortName">mask_val</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="array" fp_name="/disp_tb/disp_i/disp_ctl_i/mask">
+      <obj_property name="ElementShortName">mask[7:0]</obj_property>
+      <obj_property name="ObjectShortName">mask[7:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/disp_tb/disp_i/disp_ctl_i/lut_val">
+      <obj_property name="ElementShortName">lut_val</obj_property>
+      <obj_property name="ObjectShortName">lut_val</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="array" fp_name="/disp_tb/disp_i/disp_ctl_i/seg">
+      <obj_property name="ElementShortName">seg[7:0]</obj_property>
+      <obj_property name="ObjectShortName">seg[7:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/disp_tb/disp_i/disp_ctl_i/out_reg">
+      <obj_property name="ElementShortName">out_reg</obj_property>
+      <obj_property name="ObjectShortName">out_reg</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="array" fp_name="/disp_tb/disp_i/disp_ctl_i/disp_sr">
+      <obj_property name="ElementShortName">disp_sr[31:0][7:0]</obj_property>
+      <obj_property name="ObjectShortName">disp_sr[31:0][7:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+      <wvobject db_ref_id="1" type="array" fp_name="/disp_tb/disp_i/disp_ctl_i/disp_sr[31]">
+         <obj_property name="ElementShortName">[31][7:0]</obj_property>
+         <obj_property name="ObjectShortName">disp_sr[31][7:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject db_ref_id="1" type="array" fp_name="/disp_tb/disp_i/disp_ctl_i/disp_sr[30]">
+         <obj_property name="ElementShortName">[30][7:0]</obj_property>
+         <obj_property name="ObjectShortName">disp_sr[30][7:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject db_ref_id="1" type="array" fp_name="/disp_tb/disp_i/disp_ctl_i/disp_sr[29]">
+         <obj_property name="ElementShortName">[29][7:0]</obj_property>
+         <obj_property name="ObjectShortName">disp_sr[29][7:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject db_ref_id="1" type="array" fp_name="/disp_tb/disp_i/disp_ctl_i/disp_sr[28]">
+         <obj_property name="ElementShortName">[28][7:0]</obj_property>
+         <obj_property name="ObjectShortName">disp_sr[28][7:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject db_ref_id="1" type="array" fp_name="/disp_tb/disp_i/disp_ctl_i/disp_sr[27]">
+         <obj_property name="ElementShortName">[27][7:0]</obj_property>
+         <obj_property name="ObjectShortName">disp_sr[27][7:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject db_ref_id="1" type="array" fp_name="/disp_tb/disp_i/disp_ctl_i/disp_sr[26]">
+         <obj_property name="ElementShortName">[26][7:0]</obj_property>
+         <obj_property name="ObjectShortName">disp_sr[26][7:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject db_ref_id="1" type="array" fp_name="/disp_tb/disp_i/disp_ctl_i/disp_sr[25]">
+         <obj_property name="ElementShortName">[25][7:0]</obj_property>
+         <obj_property name="ObjectShortName">disp_sr[25][7:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject db_ref_id="1" type="array" fp_name="/disp_tb/disp_i/disp_ctl_i/disp_sr[24]">
+         <obj_property name="ElementShortName">[24][7:0]</obj_property>
+         <obj_property name="ObjectShortName">disp_sr[24][7:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject db_ref_id="1" type="array" fp_name="/disp_tb/disp_i/disp_ctl_i/disp_sr[23]">
+         <obj_property name="ElementShortName">[23][7:0]</obj_property>
+         <obj_property name="ObjectShortName">disp_sr[23][7:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject db_ref_id="1" type="array" fp_name="/disp_tb/disp_i/disp_ctl_i/disp_sr[22]">
+         <obj_property name="ElementShortName">[22][7:0]</obj_property>
+         <obj_property name="ObjectShortName">disp_sr[22][7:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject db_ref_id="1" type="array" fp_name="/disp_tb/disp_i/disp_ctl_i/disp_sr[21]">
+         <obj_property name="ElementShortName">[21][7:0]</obj_property>
+         <obj_property name="ObjectShortName">disp_sr[21][7:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject db_ref_id="1" type="array" fp_name="/disp_tb/disp_i/disp_ctl_i/disp_sr[20]">
+         <obj_property name="ElementShortName">[20][7:0]</obj_property>
+         <obj_property name="ObjectShortName">disp_sr[20][7:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject db_ref_id="1" type="array" fp_name="/disp_tb/disp_i/disp_ctl_i/disp_sr[19]">
+         <obj_property name="ElementShortName">[19][7:0]</obj_property>
+         <obj_property name="ObjectShortName">disp_sr[19][7:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject db_ref_id="1" type="array" fp_name="/disp_tb/disp_i/disp_ctl_i/disp_sr[18]">
+         <obj_property name="ElementShortName">[18][7:0]</obj_property>
+         <obj_property name="ObjectShortName">disp_sr[18][7:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject db_ref_id="1" type="array" fp_name="/disp_tb/disp_i/disp_ctl_i/disp_sr[17]">
+         <obj_property name="ElementShortName">[17][7:0]</obj_property>
+         <obj_property name="ObjectShortName">disp_sr[17][7:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject db_ref_id="1" type="array" fp_name="/disp_tb/disp_i/disp_ctl_i/disp_sr[16]">
+         <obj_property name="ElementShortName">[16][7:0]</obj_property>
+         <obj_property name="ObjectShortName">disp_sr[16][7:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject db_ref_id="1" type="array" fp_name="/disp_tb/disp_i/disp_ctl_i/disp_sr[15]">
+         <obj_property name="ElementShortName">[15][7:0]</obj_property>
+         <obj_property name="ObjectShortName">disp_sr[15][7:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject db_ref_id="1" type="array" fp_name="/disp_tb/disp_i/disp_ctl_i/disp_sr[14]">
+         <obj_property name="ElementShortName">[14][7:0]</obj_property>
+         <obj_property name="ObjectShortName">disp_sr[14][7:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject db_ref_id="1" type="array" fp_name="/disp_tb/disp_i/disp_ctl_i/disp_sr[13]">
+         <obj_property name="ElementShortName">[13][7:0]</obj_property>
+         <obj_property name="ObjectShortName">disp_sr[13][7:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject db_ref_id="1" type="array" fp_name="/disp_tb/disp_i/disp_ctl_i/disp_sr[12]">
+         <obj_property name="ElementShortName">[12][7:0]</obj_property>
+         <obj_property name="ObjectShortName">disp_sr[12][7:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject db_ref_id="1" type="array" fp_name="/disp_tb/disp_i/disp_ctl_i/disp_sr[11]">
+         <obj_property name="ElementShortName">[11][7:0]</obj_property>
+         <obj_property name="ObjectShortName">disp_sr[11][7:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject db_ref_id="1" type="array" fp_name="/disp_tb/disp_i/disp_ctl_i/disp_sr[10]">
+         <obj_property name="ElementShortName">[10][7:0]</obj_property>
+         <obj_property name="ObjectShortName">disp_sr[10][7:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject db_ref_id="1" type="array" fp_name="/disp_tb/disp_i/disp_ctl_i/disp_sr[9]">
+         <obj_property name="ElementShortName">[9][7:0]</obj_property>
+         <obj_property name="ObjectShortName">disp_sr[9][7:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject db_ref_id="1" type="array" fp_name="/disp_tb/disp_i/disp_ctl_i/disp_sr[8]">
+         <obj_property name="ElementShortName">[8][7:0]</obj_property>
+         <obj_property name="ObjectShortName">disp_sr[8][7:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject db_ref_id="1" type="array" fp_name="/disp_tb/disp_i/disp_ctl_i/disp_sr[7]">
+         <obj_property name="ElementShortName">[7][7:0]</obj_property>
+         <obj_property name="ObjectShortName">disp_sr[7][7:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject db_ref_id="1" type="array" fp_name="/disp_tb/disp_i/disp_ctl_i/disp_sr[6]">
+         <obj_property name="ElementShortName">[6][7:0]</obj_property>
+         <obj_property name="ObjectShortName">disp_sr[6][7:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject db_ref_id="1" type="array" fp_name="/disp_tb/disp_i/disp_ctl_i/disp_sr[5]">
+         <obj_property name="ElementShortName">[5][7:0]</obj_property>
+         <obj_property name="ObjectShortName">disp_sr[5][7:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject db_ref_id="1" type="array" fp_name="/disp_tb/disp_i/disp_ctl_i/disp_sr[4]">
+         <obj_property name="ElementShortName">[4][7:0]</obj_property>
+         <obj_property name="ObjectShortName">disp_sr[4][7:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject db_ref_id="1" type="array" fp_name="/disp_tb/disp_i/disp_ctl_i/disp_sr[3]">
+         <obj_property name="ElementShortName">[3][7:0]</obj_property>
+         <obj_property name="ObjectShortName">disp_sr[3][7:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject db_ref_id="1" type="array" fp_name="/disp_tb/disp_i/disp_ctl_i/disp_sr[2]">
+         <obj_property name="ElementShortName">[2][7:0]</obj_property>
+         <obj_property name="ObjectShortName">disp_sr[2][7:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject db_ref_id="1" type="array" fp_name="/disp_tb/disp_i/disp_ctl_i/disp_sr[1]">
+         <obj_property name="ElementShortName">[1][7:0]</obj_property>
+         <obj_property name="ObjectShortName">disp_sr[1][7:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject db_ref_id="1" type="array" fp_name="/disp_tb/disp_i/disp_ctl_i/disp_sr[0]">
+         <obj_property name="ElementShortName">[0][7:0]</obj_property>
+         <obj_property name="ObjectShortName">disp_sr[0][7:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject db_ref_id="1" type="array" fp_name="/disp_tb/disp_i/disp_data">
+      <obj_property name="ElementShortName">disp_data[255:0]</obj_property>
+      <obj_property name="ObjectShortName">disp_data[255:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="other" fp_name="/disp_tb/disp_i/disp_ctl_i/curr_state">
+      <obj_property name="ElementShortName">curr_state</obj_property>
+      <obj_property name="ObjectShortName">curr_state</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="other" fp_name="/disp_tb/disp_i/disp_ctl_i/next_state">
+      <obj_property name="ElementShortName">next_state</obj_property>
+      <obj_property name="ObjectShortName">next_state</obj_property>
+   </wvobject>
+   <wvobject fp_name="divider70" type="divider">
+      <obj_property name="label">PDM</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="array" fp_name="/disp_tb/disp_pdm">
+      <obj_property name="ElementShortName">disp_pdm[7:0]</obj_property>
+      <obj_property name="ObjectShortName">disp_pdm[7:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/disp_tb/disp_i/disp_dark_i/pdm_ce">
+      <obj_property name="ElementShortName">pdm_ce</obj_property>
+      <obj_property name="ObjectShortName">pdm_ce</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="array" fp_name="/disp_tb/disp_i/disp_dark_i/pdm_cnt">
+      <obj_property name="ElementShortName">pdm_cnt[7:0]</obj_property>
+      <obj_property name="ObjectShortName">pdm_cnt[7:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/disp_tb/disp_i/disp_dark_i/pdm_term">
+      <obj_property name="ElementShortName">pdm_term</obj_property>
+      <obj_property name="ObjectShortName">pdm_term</obj_property>
+   </wvobject>
+</wave_config>
