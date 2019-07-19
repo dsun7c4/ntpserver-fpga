@@ -74,7 +74,7 @@ module io
 
    logic               ocxo_pwr_ena;
    logic               ocxo_pwr_on;
-   logic [15:0]        ocxo_on_ctr;  // 25 us turn on
+   logic [12:0]        ocxo_on_ctr;  // 25 us turn on
 
    logic               gps_ena_tri;
 
