@@ -52,10 +52,10 @@ module tsc
    logic [27:0]         pps_cnt;
    logic                pps_cnt_term;
 
-   logic [16:0]         ppms_cnt;
+   logic [17:0]         ppms_cnt;
    logic                ppms_cnt_term;
 
-   logic [6:0]          ppus_cnt;
+   logic [7:0]          ppus_cnt;
    logic                ppus_cnt_term;
 
    logic [2:0]          gps_1pps_dly;
@@ -82,7 +82,7 @@ module tsc
    pfd_t                curr_state;
    pfd_t                next_state;
 
-   localparam int       CLKS_PER_SEC    = 100000000;
+   localparam int       CLKS_PER_SEC    = 200000000;
    localparam int       CLKS_PER_MS     = CLKS_PER_SEC / 1000;
    localparam int       CLKS_PER_US     = CLKS_PER_MS  / 1000;
    localparam int       CLKS_PER_SEC_2  = CLKS_PER_SEC / 2;

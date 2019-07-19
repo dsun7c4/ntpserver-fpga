@@ -55,7 +55,7 @@ module disp_tb
    logic                disp_status;
 
 
-   clk_gen   #(.period(10), .duty(50)) clk_100MHZ (.clk(clk));
+   clk_gen   #(.period(5), .duty(50))  clk_200MHZ (.clk(clk));
    rst_n_gen #(.delay(996))            reset      (.rst_n(rst_n));
 
    disp disp_i (.*);
@@ -65,7 +65,7 @@ module disp_tb
      begin
         tsc_1pps <= 1'b0;
 
-        run_clk(clk, 1000);
+        run_clk(clk, 2000);
 
         while (1)
           begin
@@ -85,7 +85,7 @@ module disp_tb
      begin
         tsc_1ppms <= 1'b0;
 
-        run_clk(clk, 1000);
+        run_clk(clk, 2000);
 
         while (1)
           begin
@@ -105,7 +105,7 @@ module disp_tb
      begin
         tsc_1ppus <= 1'b0;
 
-        run_clk(clk, 1000);
+        run_clk(clk, 2000);
 
         while (1)
           begin
@@ -125,7 +125,7 @@ module disp_tb
      begin
         disp_pdm <= '0;
 
-        run_clk(clk, 2000);
+        run_clk(clk, 4000);
 
         disp_pdm <= 8'haa;
         
@@ -195,7 +195,7 @@ module disp_tb
         cur_time.t_1h           <= '0;
         cur_time.t_10h          <= '0;
 
-        run_clk(clk, 2000);
+        run_clk(clk, 4000);
 
         run_clk(clk, 10000);
         disp_page      <= 8'h08;

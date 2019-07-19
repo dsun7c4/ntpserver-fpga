@@ -38,7 +38,7 @@ module util_tb
 
    genvar       i;
 
-   clk_gen   #(.period(10), .duty(50)) clk_100MHZ (.clk(clk));
+   clk_gen   #(.period(5), .duty(50))  clk_200MHZ (.clk(clk));
    rst_n_gen #(.delay(1001))           reset      (.rst_n(rst_n));
 
 
@@ -62,7 +62,7 @@ module util_tb
      begin
         d     = '0;
         d_vec = '0;
-        run_clk(clk, 200);
+        run_clk(clk, 400);
 
         d     = '1;
         d_vec = 'h5555aaaa;

@@ -39,7 +39,7 @@ module fan
    // import utils_pkg::*;
 
 
-   logic [3:0]         pwm_div;
+   logic [4:0]         pwm_div;
    logic               pwm_ce;
    logic [7:0]         pwm_cnt;
    logic               pwm_term;
@@ -52,7 +52,7 @@ module fan
 
 
    // First divider to generate clock enable for the PWM
-   // Divide by 16
+   // Divide by 32
    always_ff @(negedge rst_n, posedge clk)
      begin : fan_pwmdiv
         if (!rst_n)
@@ -67,7 +67,7 @@ module fan
             else
                 pwm_div  <= pwm_div + 1;
 
-            if (pwm_div == 4'hE)
+            if (pwm_div == 5'h1E)
                 pwm_ce   <= 1'b1;
             else
                 pwm_ce   <= 1'b0;
@@ -141,7 +141,7 @@ module fan
    // Measure time between tach pulses
    always_ff @(negedge rst_n, posedge clk)
      begin : fan_meas
-        logic [$bits(fan_uspr):0] tach_add;
+        logic [$bits(tach_meas):0] tach_add;
         if (!rst_n)
           begin
             tach_meas  <= '0;

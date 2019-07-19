@@ -1,8 +1,8 @@
 -- Copyright 1986-2014 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2014.4 (lin64) Build 1071353 Tue Nov 18 16:47:07 MST 2014
--- Date        : Fri Nov  2 15:01:50 2018
--- Host        : graviton running 64-bit Debian GNU/Linux 7.11 (wheezy)
+-- Date        : Fri Jul 19 13:44:19 2019
+-- Host        : graviton running 64-bit Devuan GNU/Linux ascii
 -- Command     : write_vhdl -force -mode funcsim
 --               /home/guest/cae/fpga/ntpserver/sv/ip/ocxo_clk_pll/ocxo_clk_pll_funcsim.vhdl
 -- Design      : ocxo_clk_pll
@@ -66,12 +66,12 @@ clkin1_ibufg: unisim.vcomponents.IBUF
 mmcm_adv_inst: unisim.vcomponents.MMCME2_ADV
     generic map(
       BANDWIDTH => "OPTIMIZED",
-      CLKFBOUT_MULT_F => 63.750000,
+      CLKFBOUT_MULT_F => 62.500000,
       CLKFBOUT_PHASE => 0.000000,
       CLKFBOUT_USE_FINE_PS => false,
       CLKIN1_PERIOD => 100.000000,
       CLKIN2_PERIOD => 0.000000,
-      CLKOUT0_DIVIDE_F => 6.375000,
+      CLKOUT0_DIVIDE_F => 3.125000,
       CLKOUT0_DUTY_CYCLE => 0.500000,
       CLKOUT0_PHASE => 0.000000,
       CLKOUT0_USE_FINE_PS => false,

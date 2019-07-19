@@ -38,7 +38,7 @@ module dac_tb
    logic                dac_cs_n;
    logic                dac_sin;
 
-   clk_gen   #(.period(10), .duty(50)) clk_100MHZ (.clk(clk));
+   clk_gen   #(.period(5), .duty(50))  clk_200MHZ (.clk(clk));
    rst_n_gen #(.delay(996))            reset      (.rst_n(rst_n));
 
    dac dac_i (.*);
@@ -50,7 +50,7 @@ module dac_tb
      begin
         tsc_1pps = 1'b0;
 
-        run_clk(clk, 1000);
+        run_clk(clk, 2000);
 
         while (1)
           begin
@@ -68,7 +68,7 @@ module dac_tb
     begin
         tsc_1ppms = 1'b0;
 
-        run_clk(clk, 1000);
+        run_clk(clk, 2000);
 
         while (1)
           begin
@@ -87,7 +87,7 @@ module dac_tb
      begin
         dac_val = '0;
 
-        run_clk(clk, 2000);
+        run_clk(clk, 4000);
 
         dac_val = 16'haaaa;
 

@@ -74,13 +74,13 @@ module io
 
    logic               ocxo_pwr_ena;
    logic               ocxo_pwr_on;
-   logic [15:0]        ocxo_on_ctr;  // 25 us turn on
+   logic [13:0]        ocxo_on_ctr;  // 25 us turn on
 
    logic               gps_ena_tri;
 
    (* keep = "true" *) logic               gps_pwr_ena;
    logic               gps_pwr_on;
-   logic [12:0]        gps_on_ctr;
+   logic [13:0]        gps_on_ctr;
 
 
    // Generic gpio interface output register
@@ -161,14 +161,14 @@ module io
     begin : ocxo_tristate
        if (!rst_n)
          begin
-            ocxo_on_ctr <= 5000;
+            ocxo_on_ctr <= 10000;
             ocxo_pwr_on <= 1'b0;
             dac_tri     <= 1'b1;
          end
        else
          begin
             if (ocxo_pwr_ena == 1'b0 || ocxo_pwr_on == 1'b1)
-              ocxo_on_ctr  <= 5000;
+              ocxo_on_ctr  <= 10000;
             else
               ocxo_on_ctr  <= ocxo_on_ctr - 1;
 
@@ -203,14 +203,14 @@ module io
      begin : gps_tristate
         if (!fclk_rst_n)
           begin
-            gps_on_ctr <= 5000;
+            gps_on_ctr <= 10000;
             gps_pwr_on <= 1'b0;
             gps_tri    <= 1'b1;
           end
         else
           begin
             if (gps_pwr_ena == 1'b0 || gps_pwr_on == 1'b1)
-              gps_on_ctr  <= 5000;
+              gps_on_ctr  <= 10000;
             else
               gps_on_ctr <= gps_on_ctr - 1;
 

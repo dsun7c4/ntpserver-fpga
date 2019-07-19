@@ -47,7 +47,7 @@ module tsc_tb
    logic        tsc_1ppms;
    logic        tsc_1ppus;
 
-   clk_gen   #(.period(10), .duty(50)) clk_100MHZ (.clk(clk));
+   clk_gen   #(.period(5), .duty(50))  clk_200MHZ (.clk(clk));
    rst_n_gen #(.delay(996))            reset      (.rst_n(rst_n));
 
    tsc tsc_i (.*);
@@ -61,31 +61,31 @@ module tsc_tb
         tsc_sync   = 1'b0;
         pfd_resync = 1'b0;
 
-        run_clk(clk, 100000099);
+        run_clk(clk, 200000099);
         // tsc pps pulse starts here
 
-        run_clk(clk, 1000);
+        run_clk(clk, 2000);
         // Generate gps pps pulse 1000 cycles later
         // 1s
         gps_1pps = 1'b1;                
         run_clk(clk, 1);
         gps_1pps = 1'b0;
 
-        run_clk(clk, 99997999);
+        run_clk(clk, 199997999);
         // 1000 cycles before tsc
         // 2s
         gps_1pps = 1'b1;
         run_clk(clk, 1);
         gps_1pps = 1'b0;
 
-        run_clk(clk, 100000999);
+        run_clk(clk, 200000999);
         // In line with tsc
         // 3s
         gps_1pps = 1'b0;
         run_clk(clk, 1);
         gps_1pps = 1'b0;
 
-        run_clk(clk, 100000999);
+        run_clk(clk, 200000999);
         // 1000 cycles after tsc
         // 4s
         gps_1pps = 1'b1;
@@ -94,9 +94,9 @@ module tsc_tb
 
         // trigger resync
         // 4.5s
-        run_clk(clk, 49999999);
+        run_clk(clk, 99999999);
         //tsc_sync = 1'b1;
-        run_clk(clk, 50000000);
+        run_clk(clk, 100000000);
 
         // tsc resynced
         // 4 cycles before tsc from pipeline delay
@@ -106,7 +106,7 @@ module tsc_tb
         gps_1pps = 1'b0;
         run_clk(clk, 4);
         tsc_sync = 1'b0;
-        run_clk(clk, 99999995);
+        run_clk(clk, 199999995);
 
         // 4 cycles before tsc from pipeline delay
         // 6s...
@@ -115,7 +115,7 @@ module tsc_tb
             gps_1pps = 1'b1;
             run_clk(clk, 1);
             gps_1pps = 1'b0;
-            run_clk(clk, 99999999);
+            run_clk(clk, 199999999);
           end
      end
 

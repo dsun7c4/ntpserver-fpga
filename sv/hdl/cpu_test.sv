@@ -100,7 +100,7 @@ module cpu
    logic         fclk;
    logic         rst_n;
 
-   clk_gen   #(.period(10), .duty(50)) cpu_ck1  (.clk(fclk));
+   clk_gen   #(.period(5), .duty(50))  cpu_ck1  (.clk(fclk));
    rst_n_gen #(.delay(996))            cpu_rst  (.rst_n(FCLK_RESET0_N));
    rst_n_gen #(.delay(996))            ocxo_rst (.rst_n(rst_n));
 
@@ -128,14 +128,14 @@ module cpu
      begin : gpio
         GPIO_tri_o = 16'h00d3;
         GPIO_tri_t = '0;
-        run_clk(fclk, 12000);
+        run_clk(fclk, 24000);
 
         GPIO_tri_o = 16'h00c2;
-        run_clk(fclk, 12000);
+        run_clk(fclk, 24000);
 
         GPIO_tri_o = 16'h00d3;
         GPIO_tri_t = '0;
-        run_clk(fclk, 12000);
+        run_clk(fclk, 24000);
      end
     
 
@@ -207,63 +207,63 @@ module cpu
         EPC_INTF_rnw      = 1'b1;
         EPC_INTF_wr_n     = 1'b1;
 
-        run_clk(clk, 2000);
+        run_clk(clk, 4000);
 
         reg_write(32'haaaaaaaa, 32'h55555555);
 
-        run_clk(clk, 100);
+        run_clk(clk, 200);
 
         reg_read(32'ha5a5a5a5);
 
-        run_clk(clk, 100);
+        run_clk(clk, 200);
 
         reg_write(32'h00000100, 32'h12345678);
 
-        run_clk(clk, 10000);
+        run_clk(clk, 20000);
 
         reg_write(32'h00000200, 32'h00000080);
 
-        run_clk(clk, 100);
+        run_clk(clk, 200);
 
         reg_read(32'h00000000);
 
-        run_clk(clk, 100);
+        run_clk(clk, 200);
 
         reg_read(32'h00000314);
 
-        run_clk(clk, 100);
+        run_clk(clk, 200);
 
         reg_read(32'h00000100);
 
-        run_clk(clk, 10000);
+        run_clk(clk, 20000);
 
         reg_write(32'h00000200, 32'h000000ff);
 
-        run_clk(clk, 1000);
+        run_clk(clk, 2000);
 
         reg_read(32'h00001004);
 
-        run_clk(clk, 1000);
+        run_clk(clk, 2000);
 
         reg_read(32'h00001830);
 
-        run_clk(clk, 1000);
+        run_clk(clk, 2000);
 
         reg_read(32'h00000004);
 
-        run_clk(clk, 1000);
+        run_clk(clk, 2000);
 
         reg_write(32'h00000300, 32'h0000004f);
 
-        run_clk(clk, 100000);
+        run_clk(clk, 200000);
 
         reg_write(32'h00000124, 32'h000080ff);
 
-        run_clk(clk, 100000);
+        run_clk(clk, 200000);
 
         reg_read(32'h00000100);
 
-        run_clk(clk, 100000);
+        run_clk(clk, 200000);
 
         reg_read(32'h00000104);
      end

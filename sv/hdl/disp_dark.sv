@@ -98,7 +98,7 @@ module disp_dark
             status_mux <= stat[stat_src];
     end
 
-   pulse_stretch  #(.CYCLES(1000000)) st (.rst_n, .clk, .d(status_mux), .q(status));
+   pulse_stretch  #(.CYCLES(2000000)) st (.rst_n, .clk, .d(status_mux), .q(status));
    assign pdm_status = ~pdm_term & status;
 
     // Final output register

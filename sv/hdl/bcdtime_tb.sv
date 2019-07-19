@@ -36,7 +36,7 @@ module bcdtime_tb
 
    time_t       cur_time;
 
-   clk_gen   #(.period(10), .duty(50)) clk_100MHZ (.clk(clk));
+   clk_gen   #(.period(5), .duty(50))  clk_200MHZ (.clk(clk));
    rst_n_gen #(.delay(996))            reset      (.rst_n(rst_n));
 
    bcdtime digits (.*);
