@@ -3,7 +3,7 @@
 // Project       : Clock
 //-----------------------------------------------------------------------------
 // File          : io.sv
-// Author        : Daniel Sun  <dcsun88osh@gmail.com>
+// Author        : Daniel Sun  <dsun7c4osh@gmail.com>
 // Created       : 02.11.2018
 // Last modified : 02.11.2018
 //-----------------------------------------------------------------------------

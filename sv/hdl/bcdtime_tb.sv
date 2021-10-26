@@ -3,7 +3,7 @@
 // Project       : Clock
 //-----------------------------------------------------------------------------
 // File          : bcdtime_tb.sv
-// Author        : Daniel Sun  <dcsun88osh@gmail.com>
+// Author        : Daniel Sun  <dsun7c4osh@gmail.com>
 // Created       : 29.10.2018
 // Last modified : 29.10.2018
 //-----------------------------------------------------------------------------

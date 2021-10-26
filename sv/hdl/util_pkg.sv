@@ -3,7 +3,7 @@
 // Project       : Clock
 //-----------------------------------------------------------------------------
 // File          : util_pkg.sv
-// Author        : Daniel Sun  <dcsun88osh@gmail.com>
+// Author        : Daniel Sun  <dsun7c4osh@gmail.com>
 // Created       : 22.10.2018
 // Last modified : 22.10.2018
 //-----------------------------------------------------------------------------

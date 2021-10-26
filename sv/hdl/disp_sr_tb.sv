@@ -3,7 +3,7 @@
 // Project       : Clock
 //-----------------------------------------------------------------------------
 // File          : disp_sr_tb.sv
-// Author        : Daniel Sun  <dcsun88osh@gmail.com>
+// Author        : Daniel Sun  <dsun7c4osh@gmail.com>
 // Created       : 30.10.2018
 // Last modified : 30.10.2018
 //-----------------------------------------------------------------------------

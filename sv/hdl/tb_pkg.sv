@@ -3,7 +3,7 @@
 // Project       : Clock
 //-----------------------------------------------------------------------------
 // File          : tb_pkg.sv
-// Author        : Daniel Sun  <dcsun88osh@gmail.com>
+// Author        : Daniel Sun  <dsun7c4osh@gmail.com>
 // Created       : 23.10.2018
 // Last modified : 23.10.2018
 //-----------------------------------------------------------------------------

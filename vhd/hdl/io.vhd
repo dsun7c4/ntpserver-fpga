@@ -3,7 +3,7 @@
 -- Project    :
 -------------------------------------------------------------------------------
 -- File       : io.vhd
--- Author     : Daniel Sun  <dcsun88osh@gmail.com>
+-- Author     : Daniel Sun  <dsun7c4osh@gmail.com>
 -- Company    :
 -- Created    : 2016-05-21
 -- Last update: 2016-08-17
@@ -16,7 +16,7 @@
 -------------------------------------------------------------------------------
 -- Revisions  :
 -- Date        Version  Author      Description
--- 2016-05-21  1.0      dcsun88osh  Created
+-- 2016-05-21  1.0      dsun7c4osh  Created
 -------------------------------------------------------------------------------
 --
 --              Address range: 0x412_0000 - 0x4120_0004

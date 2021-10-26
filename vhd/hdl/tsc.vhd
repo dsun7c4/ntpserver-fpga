@@ -3,7 +3,7 @@
 -- Project    : 
 -------------------------------------------------------------------------------
 -- File       : tsc.vhd
--- Author     : Daniel Sun  <dcsun88osh@gmail.com>
+-- Author     : Daniel Sun  <dsun7c4osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-04-29
 -- Last update: 2017-06-08
@@ -16,7 +16,7 @@
 -------------------------------------------------------------------------------
 -- Revisions  :
 -- Date        Version  Author      Description
--- 2016-04-29  1.0      dcsun88osh  Created
+-- 2016-04-29  1.0      dsun7c4osh  Created
 -------------------------------------------------------------------------------
 
 library IEEE;

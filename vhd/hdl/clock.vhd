@@ -3,7 +3,7 @@
 -- Project    : 
 -------------------------------------------------------------------------------
 -- File       : clock.vhd
--- Author     : Daniel Sun  <dcsun88osh@gmail.com>
+-- Author     : Daniel Sun  <dsun7c4osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-03-13
 -- Last update: 2018-04-21
@@ -16,7 +16,7 @@
 -------------------------------------------------------------------------------
 -- Revisions  :
 -- Date        Version  Author      Description
--- 2016-03-13  1.0      dcsun88osh  Created
+-- 2016-03-13  1.0      dsun7c4osh  Created
 -------------------------------------------------------------------------------
 
 library IEEE;
