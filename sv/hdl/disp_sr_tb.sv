@@ -10,9 +10,7 @@
 // Description : Disp shift register testbench
 // 
 //-----------------------------------------------------------------------------
-// Copyright (c) 2018 by  This model is the confidential and
-// proprietary property of  and the possession or use of this
-// file requires a written license from .
+// Copyright (c) 2018
 //------------------------------------------------------------------------------
 // Modification history :
 // 30.10.2018 : created

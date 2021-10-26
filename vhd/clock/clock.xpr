@@ -3,7 +3,7 @@
 <!--                                                         -->
 <!-- Copyright 1986-2014 Xilinx, Inc. All Rights Reserved.   -->
 
-<Project Version="7" Minor="2" Path="/home/tmp/fpga/vhd/clock/clock.xpr">
+<Project Version="7" Minor="2" Path="/home/guest/cae/fpga/ntpserver/vhd/clock/clock.xpr">
   <DefaultLaunch Dir="$PRUNDIR"/>
   <Configuration>
     <Option Name="Id" Val="958733913d5040aaab06962ca7dab4a5"/>
@@ -144,6 +144,23 @@
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
+        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="hdl/cpu.vhd"/>
+        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_processing_system7_0_axi_periph_1_0/cpu_processing_system7_0_axi_periph_1_0.xci"/>
+        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_axi_epc_0_0/cpu_axi_epc_0_0.xci"/>
+        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_xbar_0/cpu_xbar_0.xci"/>
+        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_axi_iic_0_0/cpu_axi_iic_0_0.xci"/>
+        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_rst_processing_system7_0_100M_0/cpu_rst_processing_system7_0_100M_0.xci"/>
+        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_processing_system7_0_axi_periph_0/cpu_processing_system7_0_axi_periph_0.xci"/>
+        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_axi_gpio_0_0/cpu_axi_gpio_0_0.xci"/>
+        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_processing_system7_0_0/cpu_processing_system7_0_0.xci"/>
+        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="hw_handoff/cpu_bd.tcl"/>
+        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="hw_handoff/cpu.hwh"/>
+        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="cpu_ooc.xdc"/>
+        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_auto_pc_1/cpu_auto_pc_1.xci"/>
+        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_auto_pc_0/cpu_auto_pc_0.xci"/>
+        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_xadc_wiz_0_0/cpu_xadc_wiz_0_0.xci"/>
+        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_xlconcat_0_0/cpu_xlconcat_0_0.xci"/>
+        <CompFileExtendedInfo CompFileName="cpu.bd" FileRelPathName="ip/cpu_rst_M_AXI_GP1_ACLK_100M_0/cpu_rst_M_AXI_GP1_ACLK_100M_0.xci"/>
       </File>
       <File Path="$PPRDIR/../hdl/clock.vhd">
         <FileInfo>
@@ -179,28 +196,28 @@
     </FileSet>
     <FileSet Name="sim_1" Type="SimulationSrcs" RelSrcDir="$PSRCDIR/sim_1">
       <Filter Type="Srcs"/>
+      <File Path="$PPRDIR/../hdl/util_pkg.vhd">
+        <FileInfo>
+          <Attr Name="Library" Val="work"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../hdl/types_pkg.vhd">
+        <FileInfo>
+          <Attr Name="Library" Val="work"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../ip/ocxo_clk_pll/ocxo_clk_pll_clk_wiz.vhd">
+        <FileInfo>
+          <Attr Name="Library" Val="work"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
       <File Path="$PPRDIR/../hdl/version_pkg.vhd">
-        <FileInfo>
-          <Attr Name="Library" Val="work"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../hdl/bcdtime.vhd">
-        <FileInfo>
-          <Attr Name="Library" Val="work"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../hdl/dac.vhd">
-        <FileInfo>
-          <Attr Name="Library" Val="work"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../hdl/disp.vhd">
         <FileInfo>
           <Attr Name="Library" Val="work"/>
           <Attr Name="UsedIn" Val="synthesis"/>
@@ -229,6 +246,41 @@
         </FileInfo>
       </File>
       <File Path="$PPRDIR/../hdl/disp_sr.vhd">
+        <FileInfo>
+          <Attr Name="Library" Val="work"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../ip/ocxo_clk_pll/ocxo_clk_pll.vhd">
+        <FileInfo>
+          <Attr Name="Library" Val="work"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../hdl/tb_pkg.vhd">
+        <FileInfo>
+          <Attr Name="Library" Val="work"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../hdl/bcdtime.vhd">
+        <FileInfo>
+          <Attr Name="Library" Val="work"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../hdl/dac.vhd">
+        <FileInfo>
+          <Attr Name="Library" Val="work"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../hdl/disp.vhd">
         <FileInfo>
           <Attr Name="Library" Val="work"/>
           <Attr Name="UsedIn" Val="synthesis"/>
@@ -270,27 +322,6 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../hdl/util_pkg.vhd">
-        <FileInfo>
-          <Attr Name="Library" Val="work"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../hdl/types_pkg.vhd">
-        <FileInfo>
-          <Attr Name="Library" Val="work"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../hdl/clock.vhd">
-        <FileInfo>
-          <Attr Name="Library" Val="work"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
       <File Path="$PPRDIR/../hdl/clock_.vhd">
         <FileInfo>
           <Attr Name="Library" Val="work"/>
@@ -298,28 +329,14 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../ip/ocxo_clk_pll/ocxo_clk_pll_clk_wiz.vhd">
-        <FileInfo>
-          <Attr Name="Library" Val="work"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../ip/ocxo_clk_pll/ocxo_clk_pll.vhd">
-        <FileInfo>
-          <Attr Name="Library" Val="work"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../hdl/tb_pkg.vhd">
-        <FileInfo>
-          <Attr Name="Library" Val="work"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
       <File Path="$PPRDIR/../hdl/cpu_test.vhd">
+        <FileInfo>
+          <Attr Name="Library" Val="work"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../hdl/clock.vhd">
         <FileInfo>
           <Attr Name="Library" Val="work"/>
           <Attr Name="UsedIn" Val="synthesis"/>

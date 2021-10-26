@@ -36,10 +36,10 @@ $(VHDL_VER_SRC): $(VHDL_SRC) $(XDC)
 	@echo "        conv_std_logic_vector($(DATE_m1), 4) &   -- Min 1" >> $@
 	@echo "        conv_std_logic_vector($(GIT_BUILD), 16);  -- Build" >> $@
 	@echo "    constant DATE_CODE  : std_logic_vector(31 downto 0) :=" >> $@
-	@echo "        conv_std_logic_vector($(DATE_Y1000), 4) &   -- Year" >> $@
-	@echo "        conv_std_logic_vector($(DATE_Y100), 4) &   -- Year" >> $@
-	@echo "        conv_std_logic_vector($(DATE_Y10), 4) &   -- Year" >> $@
-	@echo "        conv_std_logic_vector($(DATE_Y1), 4) &   -- Year" >> $@
+	@echo "        conv_std_logic_vector($(DATE_Y1000), 4) &   -- Year 1000" >> $@
+	@echo "        conv_std_logic_vector($(DATE_Y100), 4) &   -- Year 100" >> $@
+	@echo "        conv_std_logic_vector($(DATE_Y10), 4) &   -- Year 10" >> $@
+	@echo "        conv_std_logic_vector($(DATE_Y1), 4) &   -- Year 1" >> $@
 	@echo "        conv_std_logic_vector($(DATE_M10), 4) &   -- Month 10" >> $@
 	@echo "        conv_std_logic_vector($(DATE_M1), 4) &   -- Month 1" >> $@
 	@echo "        conv_std_logic_vector($(DATE_D10), 4) &   -- Day 10" >> $@
@@ -61,10 +61,10 @@ $(VLOG_VER_SRC): $(VLOG_SRC) $(XDC)
 	@echo "                                    4'd$(DATE_m1),   // Min 1" >> $@
 	@echo "                                    16'd$(GIT_BUILD)};  // Build" >> $@
 	@echo "    localparam [31:0] DATE_CODE  = {" >> $@
-	@echo "                                    4'd$(DATE_Y1000),   // Year" >> $@
-	@echo "                                    4'd$(DATE_Y100),   // Year" >> $@
-	@echo "                                    4'd$(DATE_Y10),   // Year" >> $@
-	@echo "                                    4'd$(DATE_Y1),   // Year" >> $@
+	@echo "                                    4'd$(DATE_Y1000),   // Year 1000" >> $@
+	@echo "                                    4'd$(DATE_Y100),   // Year 100" >> $@
+	@echo "                                    4'd$(DATE_Y10),   // Year 10" >> $@
+	@echo "                                    4'd$(DATE_Y1),   // Year 1" >> $@
 	@echo "                                    4'd$(DATE_M10),   // Month 10" >> $@
 	@echo "                                    4'd$(DATE_M1),   // Month 1" >> $@
 	@echo "                                    4'd$(DATE_D10),   // Day 10" >> $@
