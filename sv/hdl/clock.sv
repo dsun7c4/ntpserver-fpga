@@ -128,12 +128,12 @@ module clock
    logic              iic_1_sda_o;
    logic              iic_1_sda_t;
 
-   logic              iic_scl_i;
-   logic              iic_scl_o;
-   logic              iic_scl_t;
-   logic              iic_sda_i;
-   logic              iic_sda_o;
-   logic              iic_sda_t;
+   logic              iic_2_scl_i;
+   logic              iic_2_scl_o;
+   logic              iic_2_scl_t;
+   logic              iic_2_sda_i;
+   logic              iic_2_sda_o;
+   logic              iic_2_sda_t;
 
    logic [3:0]        intr;
    logic [3:0]        irq;
@@ -249,12 +249,12 @@ module clock
       .IIC_1_sda_o(iic_1_sda_o),
       .IIC_1_sda_t(iic_1_sda_t),
 
-      .IIC_scl_i(iic_scl_i),
-      .IIC_scl_o(iic_scl_o),
-      .IIC_scl_t(iic_scl_t),
-      .IIC_sda_i(iic_sda_i),
-      .IIC_sda_o(iic_sda_o),
-      .IIC_sda_t(iic_sda_t),
+      .IIC_2_scl_i(iic_2_scl_i),
+      .IIC_2_scl_o(iic_2_scl_o),
+      .IIC_2_scl_t(iic_2_scl_t),
+      .IIC_2_sda_i(iic_2_sda_i),
+      .IIC_2_sda_o(iic_2_sda_o),
+      .IIC_2_sda_t(iic_2_sda_t),
 
       .UART_0_rxd(gps_uart_rxd),
       .UART_0_txd(gps_uart_txd),
@@ -283,10 +283,10 @@ module clock
    assign iic_1_sda_i = ocxo_sda;
 
    // Temperature sensor I2C interface
-   assign temp_scl   = iic_scl_t == 1'b0 ? iic_scl_o : 1'bZ;
-   assign iic_scl_i  = temp_scl;
-   assign temp_sda   = iic_sda_t == 1'b0 ? iic_sda_o : 1'bZ;
-   assign iic_sda_i  = temp_sda;
+   assign temp_scl    = iic_2_scl_t == 1'b0 ? iic_2_scl_o : 1'bZ;
+   assign iic_2_scl_i = temp_scl;
+   assign temp_sda    = iic_2_sda_t == 1'b0 ? iic_2_sda_o : 1'bZ;
+   assign iic_2_sda_i = temp_sda;
 
    // GPS uart IOB and tristate
    delay1 #(.CYCLES(1), .INIT(1'b1)) gps_rx_i

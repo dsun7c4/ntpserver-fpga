@@ -3,10 +3,10 @@
 <!--                                                         -->
 <!-- Copyright 1986-2014 Xilinx, Inc. All Rights Reserved.   -->
 
-<Project Version="7" Minor="2" Path="/home/tmp/fpga/sv/clock/clock.xpr">
+<Project Version="7" Minor="2" Path="/home/guest/cae/fpga/n/sv/clock/clock.xpr">
   <DefaultLaunch Dir="$PRUNDIR"/>
   <Configuration>
-    <Option Name="Id" Val="3acf57a4820f4f00a9a0cc45d66c03e0"/>
+    <Option Name="Id" Val="3c0b628b69be48588af5dc9895d872f1"/>
     <Option Name="Part" Val="xc7z010clg400-1"/>
     <Option Name="CompiledLibDir" Val="$PCACHEDIR/compile_simlib"/>
     <Option Name="BoardPart" Val="em.avnet.com:microzed_7010:part0:1.0"/>

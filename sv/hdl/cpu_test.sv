@@ -72,12 +72,12 @@ module cpu
    input logic         IIC_1_sda_i,
    output logic        IIC_1_sda_o,
    output logic        IIC_1_sda_t,
-   input logic         IIC_scl_i,
-   output logic        IIC_scl_o,
-   output logic        IIC_scl_t,
-   input logic         IIC_sda_i,
-   output logic        IIC_sda_o,
-   output logic        IIC_sda_t,
+   input logic         IIC_2_scl_i,
+   output logic        IIC_2_scl_o,
+   output logic        IIC_2_scl_t,
+   input logic         IIC_2_sda_i,
+   output logic        IIC_2_sda_o,
+   output logic        IIC_2_sda_t,
    input logic [0:0]   Int0,
    input logic [0:0]   Int1,
    input logic [0:0]   Int2,
@@ -115,10 +115,10 @@ module cpu
    assign IIC_1_scl_t = 1'b0;
    assign IIC_1_sda_o = 1'b0;
    assign IIC_1_sda_t = 1'b0;
-   assign IIC_scl_o   = 1'b0;
-   assign IIC_scl_t   = 1'b0;
-   assign IIC_sda_o   = 1'b0;
-   assign IIC_sda_t   = 1'b0;
+   assign IIC_2_scl_o = 1'b0;
+   assign IIC_2_scl_t = 1'b0;
+   assign IIC_2_sda_o = 1'b0;
+   assign IIC_2_sda_t = 1'b0;
    assign UART_0_txd  = 1'b0;
 
     

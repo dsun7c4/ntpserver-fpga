@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dsun7c4osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-03-13
--- Last update: 2018-04-21
+-- Last update: 2022-02-06
 -- Platform   : 
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -73,12 +73,12 @@ architecture STRUCTURE of clock is
             GPIO_tri_i        : in    std_logic_vector (15 downto 0);
             GPIO_tri_o        : out   std_logic_vector (15 downto 0);
             GPIO_tri_t        : out   std_logic_vector (15 downto 0);
-            IIC_scl_i         : in    std_logic;
-            IIC_scl_o         : out   std_logic;
-            IIC_scl_t         : out   std_logic;
-            IIC_sda_i         : in    std_logic;
-            IIC_sda_o         : out   std_logic;
-            IIC_sda_t         : out   std_logic;
+            IIC_2_scl_i       : in    std_logic;
+            IIC_2_scl_o       : out   std_logic;
+            IIC_2_scl_t       : out   std_logic;
+            IIC_2_sda_i       : in    std_logic;
+            IIC_2_sda_o       : out   std_logic;
+            IIC_2_sda_t       : out   std_logic;
             EPC_INTF_addr     : out   std_logic_vector (0 to 31);
             EPC_INTF_ads      : out   std_logic;
             EPC_INTF_be       : out   std_logic_vector (0 to 3);
@@ -359,12 +359,12 @@ architecture STRUCTURE of clock is
     signal iic_1_sda_o     : std_logic;
     signal iic_1_sda_t     : std_logic;
 
-    signal iic_scl_i       : std_logic;
-    signal iic_scl_o       : std_logic;
-    signal iic_scl_t       : std_logic;
-    signal iic_sda_i       : std_logic;
-    signal iic_sda_o       : std_logic;
-    signal iic_sda_t       : std_logic;
+    signal iic_2_scl_i     : std_logic;
+    signal iic_2_scl_o     : std_logic;
+    signal iic_2_scl_t     : std_logic;
+    signal iic_2_sda_i     : std_logic;
+    signal iic_2_sda_o     : std_logic;
+    signal iic_2_sda_t     : std_logic;
 
     signal int             : std_logic_vector (3 downto 0);
     signal irq             : std_logic_vector (3 downto 0);
@@ -483,12 +483,12 @@ begin
             IIC_1_sda_o               => iic_1_sda_o,
             IIC_1_sda_t               => iic_1_sda_t,
 
-            IIC_scl_i                 => iic_scl_i,
-            IIC_scl_o                 => iic_scl_o,
-            IIC_scl_t                 => iic_scl_t,
-            IIC_sda_i                 => iic_sda_i,
-            IIC_sda_o                 => iic_sda_o,
-            IIC_sda_t                 => iic_sda_t,
+            iic_2_scl_i               => iic_2_scl_i,
+            iic_2_scl_o               => iic_2_scl_o,
+            iic_2_scl_t               => iic_2_scl_t,
+            iic_2_sda_i               => iic_2_sda_i,
+            iic_2_sda_o               => iic_2_sda_o,
+            iic_2_sda_t               => iic_2_sda_t,
 
             UART_0_rxd                => gps_uart_rxd,
             UART_0_txd                => gps_uart_txd,
@@ -518,10 +518,10 @@ begin
     iic_1_sda_i <= ocxo_sda;
 
     -- Temperature sensor I2C interface
-    temp_scl    <= iic_scl_o when iic_scl_t = '0' else 'Z';
-    iic_scl_i   <= temp_scl;
-    temp_sda    <= iic_sda_o when iic_sda_t = '0' else 'Z';
-    iic_sda_i   <= temp_sda;
+    temp_scl    <= iic_2_scl_o when iic_2_scl_t = '0' else 'Z';
+    iic_2_scl_i <= temp_scl;
+    temp_sda    <= iic_2_sda_o when iic_2_sda_t = '0' else 'Z';
+    iic_2_sda_i <= temp_sda;
 
     -- GPS uart IOB and tristate
     gps_rx_i:  delay_sig generic map (1)      port map (fclk_rst_n, fclk, gps_rxd,      gps_uart_rxd);

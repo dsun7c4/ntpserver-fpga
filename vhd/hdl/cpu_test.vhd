@@ -6,7 +6,7 @@
 -- Author     : Daniel Sun  <dsun7c4osh@gmail.com>
 -- Company    : 
 -- Created    : 2016-03-22
--- Last update: 2016-09-30
+-- Last update: 2022-02-06
 -- Platform   : 
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -85,12 +85,12 @@ entity cpu is
         IIC_1_sda_i       : in    std_logic;
         IIC_1_sda_o       : out   std_logic;
         IIC_1_sda_t       : out   std_logic;
-        IIC_scl_i         : in    std_logic;
-        IIC_scl_o         : out   std_logic;
-        IIC_scl_t         : out   std_logic;
-        IIC_sda_i         : in    std_logic;
-        IIC_sda_o         : out   std_logic;
-        IIC_sda_t         : out   std_logic;
+        IIC_2_scl_i       : in    std_logic;
+        IIC_2_scl_o       : out   std_logic;
+        IIC_2_scl_t       : out   std_logic;
+        IIC_2_sda_i       : in    std_logic;
+        IIC_2_sda_o       : out   std_logic;
+        IIC_2_sda_t       : out   std_logic;
         UART_0_rxd        : in    std_logic;
         UART_0_txd        : out   std_logic;
         OCXO_CLK100       : in    std_logic;
@@ -144,12 +144,12 @@ architecture TEST of cpu is
     --SIGNAL GPIO_tri_i   : std_logic_vector (15 downto 0);
     --SIGNAL GPIO_tri_o   : std_logic_vector (15 downto 0);
     --SIGNAL GPIO_tri_t   : std_logic_vector (15 downto 0);
-    --SIGNAL IIC_scl_i    : std_logic;
-    --SIGNAL IIC_scl_o    : std_logic;
-    --SIGNAL IIC_scl_t    : std_logic;
-    --SIGNAL IIC_sda_i    : std_logic;
-    --SIGNAL IIC_sda_o    : std_logic;
-    --SIGNAL IIC_sda_t    : std_logic;
+    --SIGNAL IIC_2_scl_i  : std_logic;
+    --SIGNAL IIC_2_scl_o  : std_logic;
+    --SIGNAL IIC_2_scl_t  : std_logic;
+    --SIGNAL IIC_2_sda_i  : std_logic;
+    --SIGNAL IIC_2_sda_o  : std_logic;
+    --SIGNAL IIC_2_sda_t  : std_logic;
     --SIGNAL EPC_INTF_addr: std_logic_vector (0 to 31);
     --SIGNAL EPC_INTF_ads : std_logic;
     --SIGNAL EPC_INTF_be  : std_logic_vector (0 to 3);
@@ -194,10 +194,10 @@ begin
     IIC_1_scl_t <= '0';
     IIC_1_sda_o <= '0';
     IIC_1_sda_t <= '0';
-    IIC_scl_o   <= '0';
-    IIC_scl_t   <= '0';
-    IIC_sda_o   <= '0';
-    IIC_sda_t   <= '0';
+    IIC_2_scl_o <= '0';
+    IIC_2_scl_t <= '0';
+    IIC_2_sda_o <= '0';
+    IIC_2_sda_t <= '0';
     UART_0_txd  <= '0';
 
 
