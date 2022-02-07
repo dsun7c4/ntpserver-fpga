@@ -1,8 +1,8 @@
 //Copyright 1986-2014 Xilinx, Inc. All Rights Reserved.
 //--------------------------------------------------------------------------------
 //Tool Version: Vivado v.2014.4 (lin64) Build 1071353 Tue Nov 18 16:47:07 MST 2014
-//Date        : Thu Jul 18 09:15:11 2019
-//Host        : graviton running 64-bit Devuan GNU/Linux ascii
+//Date        : Mon Feb  7 08:51:43 2022
+//Host        : graviton running 64-bit Devuan GNU/Linux 3 (beowulf)
 //Command     : generate_target cpu_wrapper.bd
 //Design      : cpu_wrapper
 //Purpose     : IP block netlist
@@ -60,8 +60,8 @@ module cpu_wrapper
     iic_0_sda_io,
     iic_1_scl_io,
     iic_1_sda_io,
-    iic_scl_io,
-    iic_sda_io);
+    iic_2_scl_io,
+    iic_2_sda_io);
   inout [14:0]DDR_addr;
   inout [2:0]DDR_ba;
   inout DDR_cas_n;
@@ -112,8 +112,8 @@ module cpu_wrapper
   inout iic_0_sda_io;
   inout iic_1_scl_io;
   inout iic_1_sda_io;
-  inout iic_scl_io;
-  inout iic_sda_io;
+  inout iic_2_scl_io;
+  inout iic_2_sda_io;
 
   wire [14:0]DDR_addr;
   wire [2:0]DDR_ba;
@@ -367,14 +367,14 @@ module cpu_wrapper
   wire iic_1_sda_io;
   wire iic_1_sda_o;
   wire iic_1_sda_t;
-  wire iic_scl_i;
-  wire iic_scl_io;
-  wire iic_scl_o;
-  wire iic_scl_t;
-  wire iic_sda_i;
-  wire iic_sda_io;
-  wire iic_sda_o;
-  wire iic_sda_t;
+  wire iic_2_scl_i;
+  wire iic_2_scl_io;
+  wire iic_2_scl_o;
+  wire iic_2_scl_t;
+  wire iic_2_sda_i;
+  wire iic_2_sda_io;
+  wire iic_2_sda_o;
+  wire iic_2_sda_t;
 
 cpu cpu_i
        (.DDR_addr(DDR_addr),
@@ -429,12 +429,12 @@ cpu cpu_i
         .IIC_1_sda_i(iic_1_sda_i),
         .IIC_1_sda_o(iic_1_sda_o),
         .IIC_1_sda_t(iic_1_sda_t),
-        .IIC_scl_i(iic_scl_i),
-        .IIC_scl_o(iic_scl_o),
-        .IIC_scl_t(iic_scl_t),
-        .IIC_sda_i(iic_sda_i),
-        .IIC_sda_o(iic_sda_o),
-        .IIC_sda_t(iic_sda_t),
+        .IIC_2_scl_i(iic_2_scl_i),
+        .IIC_2_scl_o(iic_2_scl_o),
+        .IIC_2_scl_t(iic_2_scl_t),
+        .IIC_2_sda_i(iic_2_sda_i),
+        .IIC_2_sda_o(iic_2_sda_o),
+        .IIC_2_sda_t(iic_2_sda_t),
         .Int0(Int0),
         .Int1(Int1),
         .Int2(Int2),
@@ -705,14 +705,14 @@ IOBUF iic_1_sda_iobuf
         .IO(iic_1_sda_io),
         .O(iic_1_sda_i),
         .T(iic_1_sda_t));
-IOBUF iic_scl_iobuf
-       (.I(iic_scl_o),
-        .IO(iic_scl_io),
-        .O(iic_scl_i),
-        .T(iic_scl_t));
-IOBUF iic_sda_iobuf
-       (.I(iic_sda_o),
-        .IO(iic_sda_io),
-        .O(iic_sda_i),
-        .T(iic_sda_t));
+IOBUF iic_2_scl_iobuf
+       (.I(iic_2_scl_o),
+        .IO(iic_2_scl_io),
+        .O(iic_2_scl_i),
+        .T(iic_2_scl_t));
+IOBUF iic_2_sda_iobuf
+       (.I(iic_2_sda_o),
+        .IO(iic_2_sda_io),
+        .O(iic_2_sda_i),
+        .T(iic_2_sda_t));
 endmodule

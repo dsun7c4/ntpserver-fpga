@@ -120,7 +120,7 @@ architecture xilinx of cpu_xadc_wiz_0_0 is
     -----------------------------------------
     -- SYSMON Generics
     C_INCLUDE_INTR          : integer range 0 to 1   := 1;
-    C_SIM_MONITOR_FILE      : string                 := "/home/guest/cae/fpga/ntpserver/cpu/ip/cpu_xadc_wiz_0_0/cpu_xadc_wiz_0_0/simulation/functional/design.txt"
+    C_SIM_MONITOR_FILE      : string                 := "/home/guest/cae/fpga/n/cpu/ip/cpu_xadc_wiz_0_0/cpu_xadc_wiz_0_0/simulation/functional/design.txt"
    );
    port
    (
@@ -186,7 +186,7 @@ begin
     C_S_AXI_ADDR_WIDTH      => 11,
     C_S_AXI_DATA_WIDTH      => 32,
     C_INCLUDE_INTR          => 1,
-    C_SIM_MONITOR_FILE      => "/home/guest/cae/fpga/ntpserver/cpu/ip/cpu_xadc_wiz_0_0/cpu_xadc_wiz_0_0/simulation/functional/design.txt"
+    C_SIM_MONITOR_FILE      => "/home/guest/cae/fpga/n/cpu/ip/cpu_xadc_wiz_0_0/cpu_xadc_wiz_0_0/simulation/functional/design.txt"
    )
    port map
    (

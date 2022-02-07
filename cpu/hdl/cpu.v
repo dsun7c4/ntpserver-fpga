@@ -1,8 +1,8 @@
 //Copyright 1986-2014 Xilinx, Inc. All Rights Reserved.
 //--------------------------------------------------------------------------------
 //Tool Version: Vivado v.2014.4 (lin64) Build 1071353 Tue Nov 18 16:47:07 MST 2014
-//Date        : Thu Jul 18 09:15:11 2019
-//Host        : graviton running 64-bit Devuan GNU/Linux ascii
+//Date        : Mon Feb  7 08:51:43 2022
+//Host        : graviton running 64-bit Devuan GNU/Linux 3 (beowulf)
 //Command     : generate_target cpu.bd
 //Design      : cpu
 //Purpose     : IP block netlist
@@ -62,12 +62,12 @@ module cpu
     IIC_1_sda_i,
     IIC_1_sda_o,
     IIC_1_sda_t,
-    IIC_scl_i,
-    IIC_scl_o,
-    IIC_scl_t,
-    IIC_sda_i,
-    IIC_sda_o,
-    IIC_sda_t,
+    IIC_2_scl_i,
+    IIC_2_scl_o,
+    IIC_2_scl_t,
+    IIC_2_sda_i,
+    IIC_2_sda_o,
+    IIC_2_sda_t,
     Int0,
     Int1,
     Int2,
@@ -130,12 +130,12 @@ module cpu
   input IIC_1_sda_i;
   output IIC_1_sda_o;
   output IIC_1_sda_t;
-  input IIC_scl_i;
-  output IIC_scl_o;
-  output IIC_scl_t;
-  input IIC_sda_i;
-  output IIC_sda_o;
-  output IIC_sda_t;
+  input IIC_2_scl_i;
+  output IIC_2_scl_o;
+  output IIC_2_scl_t;
+  input IIC_2_sda_i;
+  output IIC_2_sda_o;
+  output IIC_2_sda_t;
   input [0:0]Int0;
   input [0:0]Int1;
   input [0:0]Int2;
@@ -390,10 +390,10 @@ module cpu
   assign IIC_1_scl_t = processing_system7_0_IIC_1_SCL_T;
   assign IIC_1_sda_o = processing_system7_0_IIC_1_SDA_O;
   assign IIC_1_sda_t = processing_system7_0_IIC_1_SDA_T;
-  assign IIC_scl_o = axi_iic_0_IIC_SCL_O;
-  assign IIC_scl_t = axi_iic_0_IIC_SCL_T;
-  assign IIC_sda_o = axi_iic_0_IIC_SDA_O;
-  assign IIC_sda_t = axi_iic_0_IIC_SDA_T;
+  assign IIC_2_scl_o = axi_iic_0_IIC_SCL_O;
+  assign IIC_2_scl_t = axi_iic_0_IIC_SCL_T;
+  assign IIC_2_sda_o = axi_iic_0_IIC_SDA_O;
+  assign IIC_2_sda_t = axi_iic_0_IIC_SDA_T;
   assign In4_1 = Int2[0];
   assign In5_1 = Int3[0];
   assign Int0_1 = Int0[0];
@@ -408,8 +408,8 @@ module cpu
   assign axi_epc_0_EPC_INTF_RDY = EPC_INTF_rdy[0];
   assign axi_epc_0_EPC_INTF_RST = EPC_INTF_rst;
   assign axi_gpio_0_GPIO_TRI_I = GPIO_tri_i[15:0];
-  assign axi_iic_0_IIC_SCL_I = IIC_scl_i;
-  assign axi_iic_0_IIC_SDA_I = IIC_sda_i;
+  assign axi_iic_0_IIC_SCL_I = IIC_2_scl_i;
+  assign axi_iic_0_IIC_SDA_I = IIC_2_sda_i;
   assign processing_system7_0_IIC_0_SCL_I = IIC_0_scl_i;
   assign processing_system7_0_IIC_0_SDA_I = IIC_0_sda_i;
   assign processing_system7_0_IIC_1_SCL_I = IIC_1_scl_i;

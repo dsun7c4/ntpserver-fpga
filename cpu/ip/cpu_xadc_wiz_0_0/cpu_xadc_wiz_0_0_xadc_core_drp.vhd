@@ -984,7 +984,7 @@ alarm_out <= alarm_reg(8 downto 1);-- updated from 2 downto 1 to 8 downto 1 for 
         INIT_5B => X"6AAA",  -- Vccddro upper alarm limit
         INIT_5F => X"6666",  -- Vccddro lower alarm limit
         SIM_DEVICE => "ZYNQ",
-        SIM_MONITOR_FILE => "/home/guest/cae/fpga/ntpserver/cpu/ip/cpu_xadc_wiz_0_0/cpu_xadc_wiz_0_0/simulation/functional/design.txt"
+        SIM_MONITOR_FILE => "/home/guest/cae/fpga/n/cpu/ip/cpu_xadc_wiz_0_0/cpu_xadc_wiz_0_0/simulation/functional/design.txt"
         )
 
 port map (

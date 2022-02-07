@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
-<EDKSYSTEM EDWVERSION="1.2" TIMESTAMP="Fri Sep 30 18:09:01 2016" VIVADOVERSION="2014.4">
+<EDKSYSTEM EDWVERSION="1.2" TIMESTAMP="Mon Feb  7 09:17:57 2022" VIVADOVERSION="2014.4">
 
   <SYSTEMINFO ARCH="zynq" BOARD="em.avnet.com:microzed_7010:part0:1.0" DEVICE="7z010" NAME="cpu_imp" PACKAGE="clg400" SPEEDGRADE="-1"/>
 
@@ -42,12 +42,12 @@
     <PORT DIR="I" LEFT="15" NAME="GPIO_tri_i" RIGHT="0" SIGIS="undef"/>
     <PORT DIR="O" LEFT="15" NAME="GPIO_tri_o" RIGHT="0" SIGIS="undef"/>
     <PORT DIR="O" LEFT="15" NAME="GPIO_tri_t" RIGHT="0" SIGIS="undef"/>
-    <PORT DIR="I" NAME="IIC_scl_i" SIGIS="undef"/>
-    <PORT DIR="O" NAME="IIC_scl_o" SIGIS="undef"/>
-    <PORT DIR="O" NAME="IIC_scl_t" SIGIS="undef"/>
-    <PORT DIR="I" NAME="IIC_sda_i" SIGIS="undef"/>
-    <PORT DIR="O" NAME="IIC_sda_o" SIGIS="undef"/>
-    <PORT DIR="O" NAME="IIC_sda_t" SIGIS="undef"/>
+    <PORT DIR="I" NAME="IIC_2_scl_i" SIGIS="undef"/>
+    <PORT DIR="O" NAME="IIC_2_scl_o" SIGIS="undef"/>
+    <PORT DIR="O" NAME="IIC_2_scl_t" SIGIS="undef"/>
+    <PORT DIR="I" NAME="IIC_2_sda_i" SIGIS="undef"/>
+    <PORT DIR="O" NAME="IIC_2_sda_o" SIGIS="undef"/>
+    <PORT DIR="O" NAME="IIC_2_sda_t" SIGIS="undef"/>
     <PORT DIR="O" LEFT="0" NAME="EPC_INTF_addr" RIGHT="31" SIGIS="undef"/>
     <PORT DIR="O" NAME="EPC_INTF_ads" SIGIS="undef"/>
     <PORT DIR="O" LEFT="0" NAME="EPC_INTF_be" RIGHT="3" SIGIS="undef"/>

@@ -1,8 +1,8 @@
 --Copyright 1986-2014 Xilinx, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------
 --Tool Version: Vivado v.2014.4 (lin64) Build 1071353 Tue Nov 18 16:47:07 MST 2014
---Date        : Fri Sep 30 18:09:05 2016
---Host        : graviton running 64-bit Debian GNU/Linux 7.10 (wheezy)
+--Date        : Mon Feb  7 09:18:00 2022
+--Host        : graviton running 64-bit Devuan GNU/Linux 3 (beowulf)
 --Command     : generate_target cpu_wrapper.bd
 --Design      : cpu_wrapper
 --Purpose     : IP block netlist
@@ -63,8 +63,8 @@ entity cpu_wrapper is
     iic_0_sda_io : inout STD_LOGIC;
     iic_1_scl_io : inout STD_LOGIC;
     iic_1_sda_io : inout STD_LOGIC;
-    iic_scl_io : inout STD_LOGIC;
-    iic_sda_io : inout STD_LOGIC
+    iic_2_scl_io : inout STD_LOGIC;
+    iic_2_sda_io : inout STD_LOGIC
   );
 end cpu_wrapper;
 
@@ -109,12 +109,12 @@ architecture STRUCTURE of cpu_wrapper is
     GPIO_tri_i : in STD_LOGIC_VECTOR ( 15 downto 0 );
     GPIO_tri_o : out STD_LOGIC_VECTOR ( 15 downto 0 );
     GPIO_tri_t : out STD_LOGIC_VECTOR ( 15 downto 0 );
-    IIC_scl_i : in STD_LOGIC;
-    IIC_scl_o : out STD_LOGIC;
-    IIC_scl_t : out STD_LOGIC;
-    IIC_sda_i : in STD_LOGIC;
-    IIC_sda_o : out STD_LOGIC;
-    IIC_sda_t : out STD_LOGIC;
+    IIC_2_scl_i : in STD_LOGIC;
+    IIC_2_scl_o : out STD_LOGIC;
+    IIC_2_scl_t : out STD_LOGIC;
+    IIC_2_sda_i : in STD_LOGIC;
+    IIC_2_sda_o : out STD_LOGIC;
+    IIC_2_sda_t : out STD_LOGIC;
     EPC_INTF_addr : out STD_LOGIC_VECTOR ( 0 to 31 );
     EPC_INTF_ads : out STD_LOGIC;
     EPC_INTF_be : out STD_LOGIC_VECTOR ( 0 to 3 );
@@ -353,12 +353,12 @@ architecture STRUCTURE of cpu_wrapper is
   signal iic_1_sda_i : STD_LOGIC;
   signal iic_1_sda_o : STD_LOGIC;
   signal iic_1_sda_t : STD_LOGIC;
-  signal iic_scl_i : STD_LOGIC;
-  signal iic_scl_o : STD_LOGIC;
-  signal iic_scl_t : STD_LOGIC;
-  signal iic_sda_i : STD_LOGIC;
-  signal iic_sda_o : STD_LOGIC;
-  signal iic_sda_t : STD_LOGIC;
+  signal iic_2_scl_i : STD_LOGIC;
+  signal iic_2_scl_o : STD_LOGIC;
+  signal iic_2_scl_t : STD_LOGIC;
+  signal iic_2_sda_i : STD_LOGIC;
+  signal iic_2_sda_o : STD_LOGIC;
+  signal iic_2_sda_t : STD_LOGIC;
 begin
 cpu_i: component cpu
     port map (
@@ -552,12 +552,12 @@ cpu_i: component cpu
       IIC_1_sda_i => iic_1_sda_i,
       IIC_1_sda_o => iic_1_sda_o,
       IIC_1_sda_t => iic_1_sda_t,
-      IIC_scl_i => iic_scl_i,
-      IIC_scl_o => iic_scl_o,
-      IIC_scl_t => iic_scl_t,
-      IIC_sda_i => iic_sda_i,
-      IIC_sda_o => iic_sda_o,
-      IIC_sda_t => iic_sda_t,
+      IIC_2_scl_i => iic_2_scl_i,
+      IIC_2_scl_o => iic_2_scl_o,
+      IIC_2_scl_t => iic_2_scl_t,
+      IIC_2_sda_i => iic_2_sda_i,
+      IIC_2_sda_o => iic_2_sda_o,
+      IIC_2_sda_t => iic_2_sda_t,
       Int0(0) => Int0(0),
       Int1(0) => Int1(0),
       Int2(0) => Int2(0),
@@ -933,18 +933,18 @@ iic_1_sda_iobuf: component IOBUF
       O => iic_1_sda_i,
       T => iic_1_sda_t
     );
-iic_scl_iobuf: component IOBUF
+iic_2_scl_iobuf: component IOBUF
     port map (
-      I => iic_scl_o,
-      IO => iic_scl_io,
-      O => iic_scl_i,
-      T => iic_scl_t
+      I => iic_2_scl_o,
+      IO => iic_2_scl_io,
+      O => iic_2_scl_i,
+      T => iic_2_scl_t
     );
-iic_sda_iobuf: component IOBUF
+iic_2_sda_iobuf: component IOBUF
     port map (
-      I => iic_sda_o,
-      IO => iic_sda_io,
-      O => iic_sda_i,
-      T => iic_sda_t
+      I => iic_2_sda_o,
+      IO => iic_2_sda_io,
+      O => iic_2_sda_i,
+      T => iic_2_sda_t
     );
 end STRUCTURE;

@@ -1,8 +1,8 @@
 --Copyright 1986-2014 Xilinx, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------
 --Tool Version: Vivado v.2014.4 (lin64) Build 1071353 Tue Nov 18 16:47:07 MST 2014
---Date        : Fri Sep 30 18:09:05 2016
---Host        : graviton running 64-bit Debian GNU/Linux 7.10 (wheezy)
+--Date        : Mon Feb  7 09:17:59 2022
+--Host        : graviton running 64-bit Devuan GNU/Linux 3 (beowulf)
 --Command     : generate_target cpu.bd
 --Design      : cpu
 --Purpose     : IP block netlist
@@ -1938,12 +1938,12 @@ entity cpu is
     IIC_1_sda_i : in STD_LOGIC;
     IIC_1_sda_o : out STD_LOGIC;
     IIC_1_sda_t : out STD_LOGIC;
-    IIC_scl_i : in STD_LOGIC;
-    IIC_scl_o : out STD_LOGIC;
-    IIC_scl_t : out STD_LOGIC;
-    IIC_sda_i : in STD_LOGIC;
-    IIC_sda_o : out STD_LOGIC;
-    IIC_sda_t : out STD_LOGIC;
+    IIC_2_scl_i : in STD_LOGIC;
+    IIC_2_scl_o : out STD_LOGIC;
+    IIC_2_scl_t : out STD_LOGIC;
+    IIC_2_sda_i : in STD_LOGIC;
+    IIC_2_sda_o : out STD_LOGIC;
+    IIC_2_sda_t : out STD_LOGIC;
     Int0 : in STD_LOGIC_VECTOR ( 0 to 0 );
     Int1 : in STD_LOGIC_VECTOR ( 0 to 0 );
     Int2 : in STD_LOGIC_VECTOR ( 0 to 0 );
@@ -2542,10 +2542,10 @@ begin
   IIC_1_scl_t <= processing_system7_0_IIC_1_SCL_T;
   IIC_1_sda_o <= processing_system7_0_IIC_1_SDA_O;
   IIC_1_sda_t <= processing_system7_0_IIC_1_SDA_T;
-  IIC_scl_o <= axi_iic_0_IIC_SCL_O;
-  IIC_scl_t <= axi_iic_0_IIC_SCL_T;
-  IIC_sda_o <= axi_iic_0_IIC_SDA_O;
-  IIC_sda_t <= axi_iic_0_IIC_SDA_T;
+  IIC_2_scl_o <= axi_iic_0_IIC_SCL_O;
+  IIC_2_scl_t <= axi_iic_0_IIC_SCL_T;
+  IIC_2_sda_o <= axi_iic_0_IIC_SDA_O;
+  IIC_2_sda_t <= axi_iic_0_IIC_SDA_T;
   In4_1(0) <= Int2(0);
   In5_1(0) <= Int3(0);
   Int0_1(0) <= Int0(0);
@@ -2560,8 +2560,8 @@ begin
   axi_epc_0_EPC_INTF_RDY(0) <= EPC_INTF_rdy(0);
   axi_epc_0_EPC_INTF_RST <= EPC_INTF_rst;
   axi_gpio_0_GPIO_TRI_I(15 downto 0) <= GPIO_tri_i(15 downto 0);
-  axi_iic_0_IIC_SCL_I <= IIC_scl_i;
-  axi_iic_0_IIC_SDA_I <= IIC_sda_i;
+  axi_iic_0_IIC_SCL_I <= IIC_2_scl_i;
+  axi_iic_0_IIC_SDA_I <= IIC_2_sda_i;
   processing_system7_0_IIC_0_SCL_I <= IIC_0_scl_i;
   processing_system7_0_IIC_0_SDA_I <= IIC_0_sda_i;
   processing_system7_0_IIC_1_SCL_I <= IIC_1_scl_i;
