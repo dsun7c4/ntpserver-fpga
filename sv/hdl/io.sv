@@ -5,7 +5,7 @@
 // File          : io.sv
 // Author        : Daniel Sun  <dsun7c4osh@gmail.com>
 // Created       : 02.11.2018
-// Last modified : 02.11.2018
+// Last modified : 04.14.2025
 //-----------------------------------------------------------------------------
 // Description : GPIO tri-state buffer and clock domain transfer
 // 
@@ -17,7 +17,7 @@
 //-----------------------------------------------------------------------------
 
 //
-//              Address range: 0x412_0000 - 0x4120_0004
+//              Address range: 0x4120_0000 - 0x4120_0004
 //             |  1        |         0         |
 //             |5|4|3|2|1|0|9|8|7|6|5|4|3|2|1|0|
 // default      T T T T T T T T 0 0 T 1 T T 1 1
